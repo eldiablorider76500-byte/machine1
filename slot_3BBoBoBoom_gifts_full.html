@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>3B Bo Bo Boom Slot - Gifts Full</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: #02030a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .slot-wrapper {
+      text-align: center;
+      color: #fff;
+    }
+
+    .title {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      opacity: 0.8;
+      margin-bottom: 18px;
+    }
+
+    .reels {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      padding: 20px 30px;
+      border-radius: 18px;
+      background: radial-gradient(circle at top, #ff007a, #3b0266 40%, #05040a 80%);
+      box-shadow: 0 0 25px rgba(255, 0, 122, 0.6);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .reel {
+      width: 80px;
+      height: 80px;
+      border-radius: 14px;
+      background: #050712;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 38px;
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.7);
+    }
+
+    .status {
+      margin-top: 16px;
+      font-size: 18px;
+      min-height: 24px;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .spin-btn {
+      margin-top: 16px;
+      padding: 8px 18px;
+      font-size: 14px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(135deg, #ff007a, #ffb800);
+      color: #05030a;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: none; /* passe à block pour tester en local */
+    }
+
+    .reel.spinning {
+      animation: spin 0.18s linear infinite;
+    }
+
+    @keyframes spin {
+      0%   { transform: translateY(0); }
+      50%  { transform: translateY(-6px); }
+      100% { transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="slot-wrapper">
+    <div class="title">3B Bo Bo Boom 🎰</div>
+    <div class="subtitle" id="subtitle">Merci pour le cadeau TikTok 💖</div>
+
+    <div class="reels">
+      <div class="reel" id="reel1">🎁</div>
+      <div class="reel" id="reel2">🎁</div>
+      <div class="reel" id="reel3">🎁</div>
+      <div class="reel" id="reel4">🎁</div>
+    </div>
+
+    <div class="status" id="status"></div>
+    <button class="spin-btn" id="spinBtn">Spin</button>
+  </div>
+
+  <script>
+    // Liste des cadeaux (approx visuels avec emoji, tu pourras mettre de vraies images plus tard)
+    const symbols = [
+      { id: "gants_boxe_ores", display: "🥊", giftName: "Gants de boxe dorés" },
+      { id: "pass_aventure", display: "🎫", giftName: "Pass aventure" },
+      { id: "cochon_amoureux", display: "🐷❤️", giftName: "Cochon amoureux" },
+      { id: "coeur_doigts", display: "🫰", giftName: "Cœur avec les doigts" },
+      { id: "tofu", display: "🧀", giftName: "Tofu" },
+      { id: "creme_glacee", display: "🍨", giftName: "Crème glacée" },
+      { id: "peche", display: "🍑", giftName: "Pêche" },
+      { id: "pouce_haut", display: "👍", giftName: "Pouce vers le haut" },
+      { id: "slay", display: "😵‍💫", giftName: "Slay" },
+      { id: "cornet_glace", display: "🍦", giftName: "Cornet de crème glacée" },
+      { id: "rose", display: "🌹", giftName: "Rose" },
+      { id: "tiktok_logo", display: "🎵", giftName: "TikTok" },
+
+      { id: "amour_langage", display: "🤟", giftName: "Amour en langage des signes" },
+      { id: "bagel", display: "🥯", giftName: "Bagel" },
+      { id: "donut", display: "🍩", giftName: "Donut" },
+      { id: "you_are_my_jam", display: "🍓", giftName: "You are my Jam" },
+      { id: "miso", display: "🍜", giftName: "U make Miso happy" },
+      { id: "on_a_roll", display: "🍥", giftName: "You are on a Roll" },
+      { id: "capybara", display: "🐹", giftName: "Capybara" },
+      { id: "fleurs_s", display: "💐", giftName: "Fleurs S" },
+      { id: "parfum", display: "💄", giftName: "Parfum" },
+      { id: "bougie", display: "🕯️", giftName: "Bougie" },
+      { id: "rosa", display: "🌹", giftName: "Rosa" },
+      { id: "collier_amitie", display: "💞", giftName: "Collier d'amitié" },
+
+      { id: "signe_coeur", display: "🤍", giftName: "Signe du cœur" },
+      { id: "manette_jeu", display: "🎮", giftName: "Manette de jeu" },
+      { id: "energie_coquillage", display: "🐚", giftName: "Énergie dans un coquillage" },
+      { id: "coeur_mains", display: "🤲", giftName: "Cœur dans les mains" },
+      { id: "party_horn", display: "🎉", giftName: "Cadeau fête" },
+      { id: "ours_coeur", display: "🧸", giftName: "Ours avec cœur" },
+      { id: "coeur_orbite", display: "💘", giftName: "Cœur en orbite" },
+      { id: "cible_coeur", display: "🎯", giftName: "Cible cœur" },
+
+      // Gros cadeaux perso que tu as montrés en screen :
+      { id: "orb_arc_en_ciel", display: "🌀", giftName: "Orbe arc-en-ciel" },
+      { id: "money_gun", display: "💸", giftName: "Pistolet TikTok money" },
+      { id: "aigle", display: "🦅", giftName: "Aigle" },
+      { id: "moto_future", display: "🏍️", giftName: "Moto futuriste" },
+      { id: "leon_chaton", display: "🦁", giftName: "Léon chaton" }
+    ];
+
+    const reels = [
+      document.getElementById("reel1"),
+      document.getElementById("reel2"),
+      document.getElementById("reel3"),
+      document.getElementById("reel4")
+    ];
+    const statusEl = document.getElementById("status");
+    const spinBtn = document.getElementById("spinBtn");
+    const subtitleEl = document.getElementById("subtitle");
+
+    // Récup paramètre ?user=Pseudo
+    function getParam(name) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(name);
+    }
+
+    const viewerName = getParam("user") || "toi";
+
+    // Sous-titre personnalisé
+    subtitleEl.textContent = `Merci pour le cadeau, ${viewerName} 💖`;
+
+    function randomSymbol() {
+      return symbols[Math.floor(Math.random() * symbols.length)];
+    }
+
+    function randomFrom(list) {
+      return list[Math.floor(Math.random() * list.length)];
+    }
+
+    function getGiftWinMessage(symbolObj) {
+      // message spécifique par cadeau
+      return `${symbolObj.display} ${viewerName}, 4 ${symbolObj.giftName} alignés ! Je te dois ${symbolObj.giftName} sur TikTok.`;
+    }
+
+    function evaluateResult(result) {
+      // Compter les occurrences par id
+      const counts = {};
+      result.forEach(symObj => {
+        counts[symObj.id] = (counts[symObj.id] || 0) + 1;
+      });
+
+      const maxCount = Math.max(...Object.values(counts));
+
+      const loseMessages = [
+        `Merci pour le cadeau ${viewerName} 💖 Rappel : tu gagnes seulement si tu as les 4 mêmes cadeaux.`,
+        `😈 ${viewerName}, pas encore… Pour gagner, il faut 4 symboles identiques.`,
+        `🧨 ${viewerName}, la machine est chaude. 4 symboles identiques = je t’envoie ce cadeau.`,
+        `${viewerName}, règle officielle : 4 cadeaux identiques = tu remportes ce même cadeau.`
+      ];
+
+      if (maxCount === 4) {
+        // Trouver l'id gagnant
+        let winningId = null;
+        for (const id in counts) {
+          if (counts[id] === 4) {
+            winningId = id;
+            break;
+          }
+        }
+        const winningSymbolObj = symbols.find(s => s.id === winningId);
+        statusEl.textContent = getGiftWinMessage(winningSymbolObj);
+      } else {
+        statusEl.textContent = randomFrom(loseMessages);
+      }
+    }
+
+    function spinOnce() {
+      statusEl.textContent = `Bo Bo Boom en cours pour ${viewerName}...`;
+      const result = [];
+
+      reels.forEach((reel) => {
+        reel.classList.add("spinning");
+      });
+
+      const spinDuration = 1400;
+
+      setTimeout(() => {
+        reels.forEach((reel, index) => {
+          const symObj = randomSymbol();
+          result[index] = symObj;
+          reel.textContent = symObj.display;
+          reel.classList.remove("spinning");
+        });
+
+        evaluateResult(result);
+      }, spinDuration);
+    }
+
+    window.addEventListener("load", () => {
+      // Ticfinity recharge l’overlay à chaque cadeau → spin automatique
+      spinOnce();
+    });
+
+    spinBtn.addEventListener("click", spinOnce);
+  </script>
+</body>
+</html>
