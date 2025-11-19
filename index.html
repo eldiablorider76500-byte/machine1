@@ -1,9 +1,188 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-  <meta http-equiv="refresh" content="0; url=https://github.com/eldiablorider76500-byte/slotmachine/blob/main/slot_3BBoBoBoom_gifts_full.html
+  <meta charset="UTF-8" />
+  <title>Machine à sous TikTok</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #262626, #000);
+      color: #fff;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .wrapper {
+      text-align: center;
+      padding: 20px;
+    }
+    .title {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .subtitle {
+      font-size: 16px;
+      opacity: 0.8;
+      margin-bottom: 20px;
+    }
+    .viewer {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+    .viewer span {
+      color: #ff4ddb;
+      font-weight: 700;
+    }
+    .slot-box {
+      background: rgba(0,0,0,0.8);
+      border-radius: 18px;
+      border: 2px solid #ff4ddb;
+      padding: 20px 25px 25px;
+      box-shadow: 0 0 25px rgba(255, 77, 219, 0.5);
+      display: inline-block;
+      min-width: 280px;
+    }
+    .reels {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .reel {
+      background: #111;
+      border-radius: 12px;
+      border: 1px solid #333;
+      padding: 12px 8px;
+      min-width: 55px;
+    }
+    .symbol {
+      font-size: 32px;
+      margin-bottom: 4px;
+    }
+    .label {
+      font-size: 11px;
+      opacity: 0.8;
+    }
+    .result {
+      min-height: 40px;
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+    .result.win {
+      color: #4dff7b;
+      font-weight: 700;
+    }
+    .result.lose {
+      color: #ffb74d;
+    }
+    .rules {
+      font-size: 12px;
+      opacity: 0.8;
+      line-height: 1.3;
+    }
+    .btn {
+      margin-top: 8px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      background: linear-gradient(90deg, #ff4ddb, #ff9a3c);
+      color: #000;
+    }
+    .btn:active {
+      transform: scale(0.97);
+    }
+  </style>
 </head>
 <body>
-  Redirection vers la machine à sous...
+  <div class="wrapper">
+    <div class="title">Machine à sous TikTok 🎰</div>
+    <div class="subtitle">Spéciale cadeaux – 4 symboles identiques = cadeau envoyé</div>
+    <div class="viewer">Viewer : <span id="viewerName">???</span></div>
+
+    <div class="slot-box">
+      <div class="reels" id="reels">
+        <!-- rempli par le script -->
+      </div>
+
+      <div id="result" class="result"></div>
+
+      <button class="btn" id="spinBtn">Relancer (pour tester)</button>
+
+      <div class="rules">
+        4 symboles identiques = tu gagnes ce cadeau.<br />
+        Sinon, ça ne compte pas. Les cadeaux sont envoyés manuellement par le streamer.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 🔹 Liste des cadeaux / symboles (tu pourras en ajouter)
+    const symbols = [
+      { id: "rose", emoji: "🌹", name: "Rose" },
+      { id: "donut", emoji: "🍩", name: "Donut" },
+      { id: "tiktok", emoji: "🎵", name: "Logo TikTok" },
+      { id: "lion", emoji: "🦁", name: "Léon Chaton" },
+      { id: "galaxy", emoji: "🌌", name: "Galaxy" },
+      { id: "moto", emoji: "🏍️", name: "Moto Futuriste" }
+    ];
+
+    const reelsContainer = document.getElementById("reels");
+    const resultEl = document.getElementById("result");
+    const spinBtn = document.getElementById("spinBtn");
+
+    // 🔹 Récup du pseudo depuis ?user= dans l’URL
+    const params = new URLSearchParams(window.location.search);
+    const viewer = params.get("user") || params.get("username") || "Viewer";
+    document.getElementById("viewerName").textContent = viewer;
+
+    function randomSymbol() {
+      return symbols[Math.floor(Math.random() * symbols.length)];
+    }
+
+    function renderReels(picks) {
+      reelsContainer.innerHTML = "";
+      picks.forEach(sym => {
+        const div = document.createElement("div");
+        div.className = "reel";
+        div.innerHTML = `
+          <div class="symbol">${sym.emoji}</div>
+          <div class="label">${sym.name}</div>
+        `;
+        reelsContainer.appendChild(div);
+      });
+    }
+
+    function spin() {
+      const picks = [randomSymbol(), randomSymbol(), randomSymbol(), randomSymbol()];
+      renderReels(picks);
+
+      const allSame = picks.every(s => s.id === picks[0].id);
+
+      if (allSame) {
+        resultEl.className = "result win";
+        resultEl.textContent = `🎁 ${viewer}, 4x ${picks[0].name} alignés ! Le streamer te doit ce cadeau sur TikTok.`;
+      } else {
+        resultEl.className = "result lose";
+        resultEl.textContent = `Pas 4 symboles identiques… Il faut 4x le même cadeau pour gagner.`;
+      }
+    }
+
+    // Premier spin à l’ouverture (pour Ticfinity)
+    spin();
+
+    // Bouton pour tester manuellement
+    spinBtn.addEventListener("click", spin);
+  </script>
 </body>
 </html>
