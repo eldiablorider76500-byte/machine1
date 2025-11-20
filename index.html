@@ -1,18 +1,17 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Machine à sous TikTok – Casino</title>
+  <title>Machine à sous TikTok – 3B Bo Bo Boom</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Google Fonts -->
+  <!-- Police style casino -->
   <link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
   <style>
     :root {
       --gold: #ffc94a;
       --gold-dark: #b47b26;
-      --red: #ff3355;
       --green: #18d46b;
       --bg-dark: #05020a;
       --panel: rgba(10, 6, 20, 0.9);
@@ -35,7 +34,7 @@
       overflow: hidden;
     }
 
-    /* Container principal de la machine */
+    /* ===== CONTAINER PRINCIPAL ===== */
     .casino-wrapper {
       width: 100%;
       max-width: 1280px;
@@ -54,7 +53,7 @@
       gap: 12px;
     }
 
-    /* Bandeau JACKPOT */
+    /* ===== BANDEAU JACKPOT ===== */
     .top-banner {
       grid-column: 1 / 4;
       text-align: center;
@@ -70,24 +69,25 @@
 
     .top-banner-title {
       font-family: "Russo One", system-ui;
-      font-size: 42px;
-      letter-spacing: 2px;
+      font-size: 32px;
+      letter-spacing: 3px;
       color: var(--gold);
       text-shadow:
         0 0 12px rgba(0, 0, 0, 0.8),
         0 0 18px rgba(255, 255, 255, 0.25),
         0 0 35px rgba(255, 196, 0, 0.65);
+      text-transform: uppercase;
     }
 
     .top-banner-sub {
-      font-size: 14px;
-      letter-spacing: 6px;
+      font-size: 12px;
+      letter-spacing: 5px;
       color: #ffe9a2;
       text-transform: uppercase;
       margin-top: 4px;
     }
 
-    /* Colonne gauche : “WIN / PAYTABLE” */
+    /* ===== PANNEAU GAUCHE (paytable) ===== */
     .side-panel {
       background: var(--panel);
       border-radius: 24px;
@@ -130,7 +130,7 @@
       font-weight: 700;
     }
 
-    /* Colonne droite : infos stream */
+    /* ===== PANNEAU DROIT (infos live) ===== */
     .side-panel-right {
       background: var(--panel);
       border-radius: 24px;
@@ -177,7 +177,7 @@
       background: radial-gradient(circle at top, rgba(255, 119, 190, 0.6), rgba(57, 4, 26, 0.95));
     }
 
-    /* Zone centrale : les rouleaux */
+    /* ===== ZONE CENTRALE (machine) ===== */
     .slot-area {
       background: radial-gradient(circle at top, #3e2948 0%, #120a17 55%, #050308 100%);
       border-radius: 26px;
@@ -223,9 +223,18 @@
       letter-spacing: 2px;
       color: #ffeaa0;
       text-shadow: 0 0 12px rgba(0, 0, 0, 0.9);
+      text-align: right;
     }
 
-    /* Les rouleaux eux-mêmes */
+    .status-display.win {
+      color: #5cffb5;
+    }
+
+    .status-display.lose {
+      color: #ff6f8a;
+    }
+
+    /* ===== ROULEAUX ===== */
     .reels-frame {
       margin-top: 4px;
       flex: 1;
@@ -240,6 +249,13 @@
       grid-template-columns: repeat(4, 1fr);
       gap: 10px;
       align-items: center;
+    }
+
+    .reels-frame.win .reel {
+      box-shadow:
+        inset 0 0 18px rgba(0, 0, 0, 1),
+        0 0 18px rgba(88, 255, 175, 0.7);
+      border-color: rgba(122, 255, 196, 0.8);
     }
 
     .reel {
@@ -278,7 +294,7 @@
       color: #fff;
       font-weight: 700;
       letter-spacing: 1px;
-      font-size: 14px;
+      font-size: 13px;
       text-transform: uppercase;
       text-shadow:
         0 1px 0 rgba(0, 0, 0, 0.9),
@@ -290,9 +306,21 @@
       display: block;
       opacity: 0.9;
       font-weight: 500;
+      margin-top: 2px;
     }
 
-    /* Ligne de séparation bas */
+    .reel.spinning .gift-symbol {
+      filter: brightness(1.05);
+      animation: spinPulse 0.18s linear infinite;
+    }
+
+    @keyframes spinPulse {
+      0%   { transform: translateY(-2px); }
+      50%  { transform: translateY(2px); }
+      100% { transform: translateY(-2px); }
+    }
+
+    /* ===== BAS : crédits + bouton ===== */
     .bottom-bar {
       grid-column: 1 / 4;
       display: flex;
@@ -324,11 +352,10 @@
       color: var(--gold);
     }
 
-    /* Bouton SPIN */
     .spin-button {
       position: relative;
-      width: 126px;
-      height: 126px;
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
       border: 4px solid #0b3b1f;
       background: radial-gradient(circle at top, #3bf29b, #00a84f 70%, #005929 100%);
@@ -374,22 +401,6 @@
       opacity: 0.85;
     }
 
-    /* MESSAGE WIN / LOSE */
-    .status-display.win {
-      color: #5cffb5;
-    }
-
-    .status-display.lose {
-      color: #ff6f8a;
-    }
-
-    .reels-frame.win .reel {
-      box-shadow:
-        inset 0 0 18px rgba(0, 0, 0, 1),
-        0 0 18px rgba(88, 255, 175, 0.7);
-      border-color: rgba(122, 255, 196, 0.8);
-    }
-
     .note-bottom {
       font-size: 11px;
       opacity: 0.7;
@@ -397,69 +408,52 @@
       margin-top: 4px;
     }
 
-    /* Responsive petit écran : on réduit un peu */
     @media (max-width: 1100px) {
-      .casino-wrapper {
-        transform: scale(0.9);
-      }
+      .casino-wrapper { transform: scale(0.9); }
     }
-
     @media (max-width: 900px) {
-      body {
-        align-items: flex-start;
-        padding-top: 20px;
-      }
-      .casino-wrapper {
-        transform: scale(0.8);
-      }
+      body { align-items: flex-start; padding-top: 20px; }
+      .casino-wrapper { transform: scale(0.8); }
     }
-
     @media (max-width: 720px) {
-      .casino-wrapper {
-        transform: scale(0.7);
-      }
+      .casino-wrapper { transform: scale(0.7); }
     }
   </style>
 </head>
 <body>
   <div class="casino-wrapper">
-    <!-- Bandeau Jackpot -->
+    <!-- Bandeau -->
     <div class="top-banner">
-      <div class="top-banner-title">JACKPOT TESTER 50&nbsp;000</div>
-      <div class="top-banner-sub">SPECIAL TIKTOK LIVE • 4&nbsp;CADEAUX IDENTIQUES = WIN</div>
+      <div class="top-banner-title">3B BO BO BOOM • SLOT</div>
+      <div class="top-banner-sub">4 CADEAUX IDENTIQUES SUR LA LIGNE = JACKPOT</div>
     </div>
 
-    <!-- Colonne gauche : paytable -->
+    <!-- Panneau gauche -->
     <aside class="side-panel">
-      <h3>TABLE DES CADEAUX</h3>
-
+      <h3>CADEAUX TIKTOK</h3>
       <div class="payline-row">
-        <div class="pay-symbol">4 × GALAXY</div>
-        <div class="pay-multiplier">GIGAGIFT 🔥</div>
+        <div class="pay-symbol">4 × Galaxy</div>
+        <div class="pay-multiplier">GIGA WIN</div>
       </div>
       <div class="payline-row">
-        <div class="pay-symbol">4 × LÉON CHATON</div>
-        <div class="pay-multiplier">MEGA</div>
+        <div class="pay-symbol">4 × Loup / Moto</div>
+        <div class="pay-multiplier">MEGA WIN</div>
       </div>
       <div class="payline-row">
-        <div class="pay-symbol">4 × DONUT</div>
+        <div class="pay-symbol">4 × Léon / Cygne</div>
         <div class="pay-multiplier">BIG WIN</div>
       </div>
       <div class="payline-row">
-        <div class="pay-symbol">4 × ROSE</div>
+        <div class="pay-symbol">4 × Donut / Rosa</div>
         <div class="pay-multiplier">NICE GIFT</div>
       </div>
       <div class="payline-row">
-        <div class="pay-symbol">4 × TIKTOK ICON</div>
-        <div class="pay-multiplier">BONUS</div>
-      </div>
-      <div class="payline-row">
-        <div class="pay-symbol">4 × HEART</div>
-        <div class="pay-multiplier">LOVE DROP</div>
+        <div class="pay-symbol">4 × GG / Coeur</div>
+        <div class="pay-multiplier">CLEAN</div>
       </div>
     </aside>
 
-    <!-- Zone centrale : machine -->
+    <!-- Zone centrale machine -->
     <main class="slot-area">
       <header class="slot-header">
         <div class="slot-header-left">
@@ -469,7 +463,7 @@
           </div>
           <div>
             <span class="slot-label">Condition</span>
-            <span class="slot-value">4 symboles identiques</span>
+            <span class="slot-value">4 symboles identiques sur la ligne</span>
           </div>
         </div>
         <div id="status" class="status-display">
@@ -477,32 +471,36 @@
         </div>
       </header>
 
-      <!-- Rouleaux -->
       <section id="reelsFrame" class="reels-frame">
+        <!-- 4 rouleaux -->
         <div class="reel" data-index="0">
           <div class="gift-symbol" data-symbol>
-            ROSE <span>Flower</span>
+            GG
+            <span>Good Game</span>
           </div>
         </div>
         <div class="reel" data-index="1">
           <div class="gift-symbol" data-symbol>
-            DONUT <span>Sweet</span>
+            COEUR
+            <span>Cloud</span>
           </div>
         </div>
         <div class="reel" data-index="2">
           <div class="gift-symbol" data-symbol>
-            GALAXY <span>Cosmic</span>
+            DONUT
+            <span>Sweet</span>
           </div>
         </div>
         <div class="reel" data-index="3">
           <div class="gift-symbol" data-symbol>
-            LÉON <span>Chaton</span>
+            GALAXY
+            <span>Cosmic</span>
           </div>
         </div>
       </section>
     </main>
 
-    <!-- Colonne droite : infos stream -->
+    <!-- Panneau droit -->
     <aside class="side-panel-right">
       <div>
         <div class="stream-label">Nom du jeu</div>
@@ -515,49 +513,62 @@
       </div>
 
       <div>
-        <div class="stream-label">Statut du live</div>
-        <div class="viewer-tag stream-tag">En direct 🔴</div>
-      </div>
-
-      <div>
-        <div class="stream-label">Rappel</div>
-        <div class="stream-value">4 symboles identiques → tu envoies ce cadeau à la personne qui a trigger le spin.</div>
+        <div class="stream-label">Rappel règles</div>
+        <div class="stream-value">
+          Le viewer qui déclenche le spin et aligne 4 mêmes cadeaux sur la ligne
+          centrale gagne ce cadeau en retour.
+        </div>
       </div>
     </aside>
 
-    <!-- Barre du bas -->
+    <!-- Barre bas -->
     <footer class="bottom-bar">
       <div class="credits">
         <div>
-          <div class="credits-label">Balance virtuelle</div>
-          <div class="credits-value gold">€ 870.00</div>
+          <div class="credits-label">Mode</div>
+          <div class="credits-value gold">TEST OFFLINE</div>
         </div>
         <div>
-          <div class="credits-label">Mise par spin</div>
-          <div class="credits-value">1 cadeau</div>
+          <div class="credits-label">Rappel</div>
+          <div class="credits-value">4 symboles identiques = tu envoies ce cadeau</div>
         </div>
       </div>
 
       <button id="spinButton" class="spin-button">
         SPIN
-        <div class="spin-button-small-label">test hors live</div>
+        <div class="spin-button-small-label">TEST</div>
       </button>
 
       <div class="note-bottom">
-        Intégré avec Ticfinity ensuite pour lancer un spin dès qu’un cadeau arrive.
+        À connecter ensuite à Ticfinity pour lancer un spin à chaque cadeau.
       </div>
     </footer>
   </div>
 
   <script>
-    // --- CONFIG DES SYMBOLES (TikTok gifts style) ---
+    // ===== LISTE COMPLÈTE DE TES CADEAUX =====
     const symbols = [
-      { name: "ROSE", label: "Flower", color: "#ff4b7a", colorDark: "#8b1237" },
-      { name: "DONUT", label: "Sweet", color: "#ffb347", colorDark: "#a35408" },
-      { name: "GALAXY", label: "Cosmic", color: "#7e5dff", colorDark: "#291465" },
-      { name: "LÉON", label: "Chaton", color: "#ffe066", colorDark: "#a36b12" },
-      { name: "TIKTOK", label: "Icon", color: "#00f2ea", colorDark: "#007b78" },
-      { name: "HEART", label: "Love", color: "#ff4b81", colorDark: "#8b1536" }
+      { id: "gg", name: "GG", label: "Good Game", color: "#22c55e", colorDark: "#14532d" },
+      { id: "coeur_nuage", name: "Coeur nuage", label: "Love", color: "#f97316", colorDark: "#7c2d12" },
+      { id: "coeur_doigts", name: "Coeur doigts", label: "Love", color: "#fb7185", colorDark: "#881337" },
+      { id: "tofu", name: "Tofu", label: "Cute", color: "#e5e7eb", colorDark: "#4b5563" },
+      { id: "gant_boxe", name: "Gant doré", label: "Boxe", color: "#facc15", colorDark: "#854d0e" },
+      { id: "cornet_glace", name: "Cornet glacé", label: "Ice", color: "#38bdf8", colorDark: "#075985" },
+      { id: "rosa", name: "Rosa", label: "Rose", color: "#ec4899", colorDark: "#831843" },
+      { id: "parfum", name: "Parfum", label: "Chic", color: "#a855f7", colorDark: "#4c1d95" },
+      { id: "donut", name: "Donut", label: "Sweet", color: "#fb923c", colorDark: "#7c2d12" },
+      { id: "amour_langage", name: "Amour langage", label: "Love", color: "#f97316", colorDark: "#7c2d12" },
+      { id: "manette", name: "Manette", label: "Game", color: "#38bdf8", colorDark: "#0f172a" },
+      { id: "casquette", name: "Casquette", label: "Style", color: "#0ea5e9", colorDark: "#082f49" },
+      { id: "confettis", name: "Confettis", label: "Party", color: "#e879f9", colorDark: "#701a75" },
+      { id: "positivite", name: "Positivité", label: "Good vibes", color: "#22c55e", colorDark: "#166534" },
+      { id: "corgi", name: "Corgi", label: "Doggo", color: "#facc15", colorDark: "#854d0e" },
+      { id: "rose_jamais", name: "Rose à jamais", label: "Forever", color: "#f97316", colorDark: "#7c2d12" },
+      { id: "pistolet_argent", name: "Pistolet argent", label: "Cash", color: "#a3a3a3", colorDark: "#404040" },
+      { id: "cygne", name: "Cygne", label: "Elegant", color: "#e5e7eb", colorDark: "#4b5563" },
+      { id: "feux_artifice", name: "Feux d’artifice", label: "Show", color: "#6366f1", colorDark: "#1e3a8a" },
+      { id: "moto", name: "Moto", label: "Speed", color: "#ef4444", colorDark: "#7f1d1d" },
+      { id: "loup", name: "Loup", label: "Wolf", color: "#9ca3af", colorDark: "#111827" }
     ];
 
     const reels = Array.from(document.querySelectorAll(".reel"));
@@ -576,7 +587,7 @@
       el.style.setProperty("--gift-color", symbolData.color);
       el.style.setProperty("--gift-color-dark", symbolData.colorDark);
 
-      const title = document.createTextNode(symbolData.name);
+      const title = document.createTextNode(symbolData.name.toUpperCase());
       const sub = document.createElement("span");
       sub.textContent = symbolData.label;
 
@@ -599,38 +610,40 @@
       reels.forEach((reel, index) => {
         const symbolEl = reel.querySelector("[data-symbol]");
         let elapsed = 0;
-        const spinDuration = 1000 + index * 250; // léger décalage comme une vraie machine
+
+        // 1er rouleau = 3000 ms, puis 3300, 3600, 3900
+        const spinDuration = 3000 + index * 300;
 
         const interval = setInterval(() => {
           const s = randomSymbol();
           renderSymbol(symbolEl, s);
-          elapsed += 80;
+          elapsed += 100;
           if (elapsed >= spinDuration) {
             clearInterval(interval);
-            // on fige un dernier symbole “officiel”
             const finalSymbol = randomSymbol();
             renderSymbol(symbolEl, finalSymbol);
-            finalResults[index] = finalSymbol.name;
+            finalResults[index] = finalSymbol.id;
             reelsFinished++;
 
             if (reelsFinished === reels.length) {
               onSpinEnd(finalResults);
             }
           }
-        }, 80);
+        }, 100);
       });
     }
 
     function onSpinEnd(results) {
-      // Test: tous identiques ?
-      const allSame = results.every((s) => s === results[0]);
+      // Ici : 1 symbole par rouleau = ligne visible
+      // Jackpot UNIQUEMENT si les 4 sont identiques sur cette ligne
+      const allSame = results.every((id) => id === results[0]);
 
       if (allSame) {
-        statusEl.textContent = "JACKPOT TIKTOK ! 4× " + results[0] + " 🎉";
+        statusEl.textContent = "JACKPOT ! 4× " + results[0].toUpperCase() + " sur la ligne 🔥";
         statusEl.classList.add("win");
         reelsFrame.classList.add("win");
       } else {
-        statusEl.textContent = "Pas encore… en attente du prochain cadeau TikTok.";
+        statusEl.textContent = "Pas 4 mêmes cadeaux sur la ligne… prochain cadeau TikTok pour relancer.";
         statusEl.classList.add("lose");
       }
 
@@ -640,12 +653,15 @@
 
     spinButton.addEventListener("click", spin);
 
-    // Initialisation : on affiche des symboles random au chargement
+    // Symbols de départ au chargement
     reels.forEach((reel) => {
       const symbolEl = reel.querySelector("[data-symbol]");
       const s = randomSymbol();
       renderSymbol(symbolEl, s);
     });
+
+    // Tu pourras appeler window.tiktokSpin() plus tard depuis Ticfinity
+    window.tiktokSpin = spin;
   </script>
 </body>
 </html>
