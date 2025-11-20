@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Machine à sous TikTok</title>
+  <title>Machine à sous TikTok – 3B Bo Bo Boom</title>
   <style>
     * {
       box-sizing: border-box;
@@ -40,7 +40,7 @@
       padding-bottom: 10px;
     }
     .top-title {
-      font-size: 40px;
+      font-size: 36px;
       font-weight: 900;
       letter-spacing: 6px;
       text-transform: uppercase;
@@ -181,7 +181,7 @@
     }
 
     .spin-btn {
-      margin-left: 20px;
+      margin-top: 8px;
       padding: 10px 26px;
       border-radius: 999px;
       background: radial-gradient(circle at top, #62ff9b, #00c853);
@@ -229,8 +229,8 @@
 <body>
 <div class="machine-wrapper">
   <div class="top-panel">
-    <div class="top-title">SLOT 3B CASINO</div>
-    <div class="top-subtitle">CADEAUX TIKTOK • 4&nbsp;ROULEAUX • GIGA&nbsp;WIN / MEGA&nbsp;WIN / BIG&nbsp;WIN</div>
+    <div class="top-title">SLOT 3B BO BO BOOM</div>
+    <div class="top-subtitle">4 CADEAUX IDENTIQUES SUR LA LIGNE = GAIN • MINIMUM 49 PIÈCES</div>
   </div>
 
   <div class="screen">
@@ -240,11 +240,12 @@
     </div>
 
     <div class="message-banner">
-      <span id="statusText" class="ok">En attente de cadeau TikTok (min. 49 pièces)…</span>
+      <span id="statusText" class="ok">
+        En attente de cadeau TikTok (minimum 49 pièces)…
+      </span>
     </div>
 
     <div class="reels" id="reelsContainer">
-      <!-- 4 cadres de rouleaux -->
       <div class="reel-frame"><div class="reel" data-index="0"></div></div>
       <div class="reel-frame"><div class="reel" data-index="1"></div></div>
       <div class="reel-frame"><div class="reel" data-index="2"></div></div>
@@ -253,7 +254,9 @@
   </div>
 
   <div class="bottom-panel">
-    <div class="win-display" id="winDisplay"><span>AUCUN GAIN POUR LE MOMENT</span></div>
+    <div class="win-display" id="winDisplay">
+      <span>AUCUN GAIN POUR LE MOMENT</span>
+    </div>
     <div class="min-bet">
       Mise minimum&nbsp;: <strong>49&nbsp;pièces</strong><br/>
       <button class="spin-btn" id="testSpinBtn">Spin test</button>
@@ -262,40 +265,44 @@
 </div>
 
 <script>
-  // ========= CONFIG =========
+  // ================= CONFIG =================
 
   const MIN_COINS = 49;
 
-  // ⚠️ ICI tu mets les bons fichiers correspondant à chaque cadeau.
-  // Le chemin est relatif depuis index.html → "Cadeaux/TON_FICHIER.jpg"
-
-  const symboles = [
-    { key: "loup",       label: "Loup",            img: "Cadeaux/IMG-20251120-WA0018.jpg" },
-    { key: "moto",       label: "Moto",            img: "Cadeaux/IMG-20251120-WA0019.jpg" },
-    { key: "rose",       label: "Rose à jamais",   img: "Cadeaux/IMG-20251120-WA0020.jpg" },
-    { key: "coeur",      label: "Cœur nuage",      img: "Cadeaux/IMG-20251120-WA0021.jpg" },
-    { key: "donut",      label: "Donut",           img: "Cadeaux/IMG-20251120-WA0022.jpg" },
-    { key: "cygne",      label: "Cygne",           img: "Cadeaux/IMG-20251120-WA0023.jpg" },
-    { key: "positif",    label: "Positivité",      img: "Cadeaux/IMG-20251120-WA0024.jpg" },
-    { key: "corgi",      label: "Corgi",           img: "Cadeaux/IMG-20251120-WA0025.jpg" },
-    { key: "manette",    label: "Manette",         img: "Cadeaux/IMG-20251120-WA0026.jpg" },
-    { key: "casquette",  label: "Casquette",       img: "Cadeaux/IMG-20251120-WA0027.jpg" },
-    { key: "confettis",  label: "Confettis",       img: "Cadeaux/IMG-20251120-WA0028.jpg" },
-    { key: "pistolet",   label: "Pistolet argent", img: "Cadeaux/IMG-20251120-WA0029.jpg" },
-    { key: "feux",       label: "Feux d'artifice", img: "Cadeaux/IMG-20251120-WA0030.jpg" },
-    { key: "gg",         label: "GG",              img: "Cadeaux/IMG-20251120-WA0031.jpg" },
-    { key: "nez",        label: "Nez",             img: "Cadeaux/IMG-20251120-WA0032.jpg" }
+  // Tous tes cadeaux avec les VRAIS fichiers (dans /Cadeaux/)
+  const SYMBOLS = [
+    { key: "cygne",           label: "Cygne",               img: "Cadeaux/IMG-20251120-WA0017.jpg" },
+    { key: "loup",            label: "Loup",                img: "Cadeaux/IMG-20251120-WA0018.jpg" },
+    { key: "rose_ajamais",    label: "Rose à jamais",       img: "Cadeaux/IMG-20251120-WA0019.jpg" },
+    { key: "casquette",       label: "Casquette",           img: "Cadeaux/IMG-20251120-WA0020.jpg" },
+    { key: "manette",         label: "Manette de jeu",      img: "Cadeaux/IMG-20251120-WA0021.jpg" },
+    { key: "confettis",       label: "Confettis",           img: "Cadeaux/IMG-20251120-WA0022.jpg" },
+    { key: "amour_langage",   label: "Amour en langage",    img: "Cadeaux/IMG-20251120-WA0023.jpg" },
+    { key: "donut",           label: "Donut",               img: "Cadeaux/IMG-20251120-WA0024.jpg" },
+    { key: "cornet_glace",    label: "Cornet de crème glacée", img: "Cadeaux/IMG-20251120-WA0025.jpg" },
+    { key: "parfum",          label: "Parfum",              img: "Cadeaux/IMG-20251120-WA0026.jpg" },
+    { key: "corgi",           label: "Corgi",               img: "Cadeaux/IMG-20251120-WA0027.jpg" },
+    { key: "gants_boxe",      label: "Gants de boxe dorés", img: "Cadeaux/IMG-20251120-WA0028.jpg" },
+    { key: "rosa",            label: "Rosa",                img: "Cadeaux/IMG-20251120-WA0029.jpg" },
+    { key: "gg",              label: "GG",                  img: "Cadeaux/IMG-20251120-WA0030.jpg" },
+    { key: "positivite",      label: "De la positivité",    img: "Cadeaux/IMG-20251120-WA0031.jpg" },
+    { key: "tofu",            label: "Tofu",                img: "Cadeaux/IMG-20251120-WA0032.jpg" },
+    { key: "coeur_doigts",    label: "Cœur avec les doigts",img: "Cadeaux/IMG-20251120-WA0033.jpg" },
+    { key: "coeur_nuage",     label: "Cœur nuage",          img: "Cadeaux/IMG-20251120-WA0034.jpg" },
+    { key: "moto",            label: "Moto",                img: "Cadeaux/IMG-20251120-WA0035.jpg" },
+    { key: "pistolet_argent", label: "Pistolet à argent",   img: "Cadeaux/IMG-20251120-WA0042.jpg" }
   ];
 
-  // GigaWin / MegaWin / BigWin selon le symbole
-  const GIGA_KEY = "loup";
-  const MEGA_KEY = "moto";
-  const BIG_KEY  = "rose";
+  // GIGAWIN / MEGAWIN / BIGWIN
+  const GIGA_KEY = "loup";          // 4 loups
+  const MEGA_KEY = "moto";          // 4 motos
+  const BIG_KEY  = "rose_ajamais";  // 4 roses à jamais
 
   const reels = [];
   const reelHeights = [];
-  const symbolsPerReel = 12; // nombre de symboles empilés verticalement
-  const spinDurations = [3000, 3300, 3600, 4000]; // ms
+  const SYMBOL_HEIGHT = 120;  // doit match .symbol height
+  const SYMBOLS_PER_REEL = 12;
+  const SPIN_DURATIONS = [3000, 3300, 3600, 4000]; // ms (4 rouleaux)
   let spinning = false;
 
   const playerNameEl = document.getElementById("playerName");
@@ -304,14 +311,14 @@
   const winDisplayEl = document.getElementById("winDisplay");
   const testSpinBtn = document.getElementById("testSpinBtn");
 
-  // ========= INITIALISATION DES ROULEAUX =========
+  // ============= INITIALISATION ROULEAUX =============
+
   function initReels() {
     const reelNodes = document.querySelectorAll(".reel");
     reelNodes.forEach((reelNode, index) => {
       reels[index] = reelNode;
-      // on duplique une séquence de symboles
-      for (let i = 0; i < symbolsPerReel; i++) {
-        const sym = symboles[Math.floor(Math.random() * symboles.length)];
+      for (let i = 0; i < SYMBOLS_PER_REEL; i++) {
+        const sym = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
         const div = document.createElement("div");
         div.className = "symbol";
         const img = document.createElement("img");
@@ -320,8 +327,7 @@
         div.appendChild(img);
         reelNode.appendChild(div);
       }
-      // hauteur totale
-      const totalHeight = symbolsPerReel * 120; // 120px = hauteur .symbol
+      const totalHeight = SYMBOLS_PER_REEL * SYMBOL_HEIGHT;
       reelHeights[index] = totalHeight;
       reelNode.style.transform = "translateY(0px)";
     });
@@ -329,18 +335,17 @@
 
   initReels();
 
-  // ========= LOGIQUE DE SPIN =========
+  // ============= LOGIQUE DE SPIN =============
 
   function spinForGift({ user, coins, giftKey }) {
-    if (spinning) return; // on ignore si déjà en spin
+    if (spinning) return;
 
     if (coins < MIN_COINS) {
-      statusTextEl.textContent = `Mise insuffisante (${coins} pièces). Minimum 49 pièces pour jouer.`;
+      statusTextEl.textContent = `${user} a envoyé ${coins} pièces (minimum ${MIN_COINS} pour jouer).`;
       statusTextEl.className = "error";
       return;
     }
 
-    // Mise à jour infos joueur
     playerNameEl.textContent = `En jeu : ${user}`;
     betInfoEl.textContent = `Mise : ${coins} pièces`;
     statusTextEl.textContent = `Spin en cours pour ${user}…`;
@@ -350,53 +355,46 @@
     testSpinBtn.disabled = true;
     resetWinDisplay();
 
-    // On choisit des lignes gagnantes si le giftKey correspond
-    // Index du symbole pour ce giftKey (ou random s'il n'existe pas)
-    let forcedSymbolIndex = symboles.findIndex(s => s.key === giftKey);
-    if (forcedSymbolIndex === -1) {
-      forcedSymbolIndex = Math.floor(Math.random() * symboles.length);
+    // On essaie de faire correspondre le giftKey à un symbole
+    let forcedIndex = SYMBOLS.findIndex(s => s.key === giftKey);
+    if (forcedIndex === -1) {
+      // si le giftKey n'existe pas, on prend random
+      forcedIndex = Math.floor(Math.random() * SYMBOLS.length);
     }
 
-    // 4 symboles identiques sur une ligne = on va aligner la même image sur chaque rouleau
-    const symbolIndexForWin = forcedSymbolIndex;
-
+    const symbolForWin = SYMBOLS[forcedIndex];
     const promises = [];
+    const finalKeys = [];
 
     document.querySelectorAll(".reel").forEach((reelNode, i) => {
-      const duration = spinDurations[i];
+      const duration = SPIN_DURATIONS[i];
       const promise = new Promise(resolve => {
         const start = performance.now();
-
         const totalHeight = reelHeights[i];
 
         function animate(now) {
           const elapsed = now - start;
-          const t = Math.min(elapsed / duration, 1); // 0 → 1
+          const t = Math.min(elapsed / duration, 1);
 
-          // vitesse easing
           const speed = (1 - Math.pow(1 - t, 3)) * 30 + 10;
-
           const offset = (elapsed * speed) % totalHeight;
           reelNode.style.transform = `translateY(${-offset}px)`;
 
           if (t < 1) {
             requestAnimationFrame(animate);
           } else {
-            // On force l'arrêt sur le symbole choisi
-            // On choisit une position où ce symbole est sur la "ligne du milieu"
-            const row = 4; // par ex. 4e symbole
-            const targetOffset = row * 120;
+            // On aligne le symbole choisi sur la "ligne gagnante"
+            const row = 4; // ligne milieu approx
+            const symbolsImg = reelNode.querySelectorAll(".symbol img");
+            const imgNode = symbolsImg[row];
+            imgNode.src = symbolForWin.img;
+            imgNode.alt = symbolForWin.label;
 
-            // On remplace cette ligne par notre symbole forcé
-            const symbols = reelNode.querySelectorAll(".symbol img");
-            const imgNode = symbols[row];
-            imgNode.src = symboles[symbolIndexForWin].img;
-            imgNode.alt = symboles[symbolIndexForWin].label;
-
-            // Alignement final
+            const targetOffset = row * SYMBOL_HEIGHT;
             reelNode.style.transform = `translateY(${-targetOffset}px)`;
 
-            resolve(symboles[symbolIndexForWin]);
+            finalKeys[i] = symbolForWin.key;
+            resolve(symbolForWin.key);
           }
         }
 
@@ -406,10 +404,10 @@
       promises.push(promise);
     });
 
-    Promise.all(promises).then(results => {
+    Promise.all(promises).then(() => {
       spinning = false;
       testSpinBtn.disabled = false;
-      checkWin(results.map(r => r.key), user);
+      checkWin(finalKeys, user);
     });
   }
 
@@ -419,43 +417,55 @@
   }
 
   function checkWin(keys, user) {
-    // On a 4 rouleaux → 4 clés (toutes identiques si on force le symbole)
-    const key = keys[0];
+    const allSame = keys.every(k => k === keys[0]);
 
-    if (keys.every(k => k === GIGA_KEY)) {
-      winDisplayEl.classList.add("gigawin");
-      winDisplayEl.innerHTML = `<span>GIGAWIN pour ${user} !!!</span>`;
-    } else if (keys.every(k => k === MEGA_KEY)) {
-      winDisplayEl.classList.add("megawin");
-      winDisplayEl.innerHTML = `<span>MEGAWIN pour ${user} !</span>`;
-    } else if (keys.every(k => k === BIG_KEY)) {
-      winDisplayEl.classList.add("bigwin");
-      winDisplayEl.innerHTML = `<span>BIGWIN pour ${user} !</span>`;
-    } else {
+    if (!allSame) {
       winDisplayEl.innerHTML = `<span>Merci ${user} ❤</span>`;
+      statusTextEl.textContent = "En attente de cadeau TikTok (minimum 49 pièces)…";
+      statusTextEl.className = "ok";
+      return;
     }
 
-    statusTextEl.textContent = "En attente de cadeau TikTok (min. 49 pièces)…";
+    const id = keys[0];
+
+    if (id === GIGA_KEY) {
+      winDisplayEl.classList.add("gigawin");
+      winDisplayEl.innerHTML = `<span>GIGAWIN pour ${user} (4× loup) !!!</span>`;
+    } else if (id === MEGA_KEY) {
+      winDisplayEl.classList.add("megawin");
+      winDisplayEl.innerHTML = `<span>MEGAWIN pour ${user} (4× moto) !!</span>`;
+    } else if (id === BIG_KEY) {
+      winDisplayEl.classList.add("bigwin");
+      winDisplayEl.innerHTML = `<span>BIGWIN pour ${user} (4× rose à jamais) !</span>`;
+    } else {
+      winDisplayEl.innerHTML = `<span>WIN pour ${user} !</span>`;
+    }
+
+    statusTextEl.textContent = "En attente de cadeau TikTok (minimum 49 pièces)…";
     statusTextEl.className = "ok";
   }
 
-  // ========= BOUTON SPIN TEST (pour OBS / navigateur) =========
+  // ============= BOUTON SPIN TEST =============
 
   testSpinBtn.addEventListener("click", () => {
-    // Test → on simule un joueur avec 100 coins et un gift "loup"
+    // Test : simuler un viewer
     spinForGift({
       user: "TestUser",
-      coins: 100,
-      giftKey: "loup"
+      coins: 100,       // >= 49 -> OK
+      giftKey: "loup"   // teste GIGAWIN ; mets "moto" pour MEGAWIN, etc.
     });
   });
 
-  // ========= API GLOBALE POUR TON SCRIPT TIKTOK =========
-  // Dans ton script TikTok (extension, node, etc.) tu pourras appeler :
-  // window.tiktokSpin({ user: 'Pseudo', coins: 100, giftKey: 'moto' });
+  // ============= API POUR TICFINITY / TIKTOK =============
+  // Quand tu seras branché à Ticfinity, tu pourras appeler :
+  //
+  // window.tiktokSpin({
+  //   user: "PseudoDuViewer",
+  //   coins: 80,          // nombre de pièces envoyées
+  //   giftKey: "moto"     // "loup", "moto", "rose_ajamais", etc.
+  // });
 
   window.tiktokSpin = function(event) {
-    // event = { user: 'Pseudo', coins: nombreDePièces, giftKey: 'loup' | 'moto' | 'rose' | ... }
     spinForGift(event);
   };
 </script>
