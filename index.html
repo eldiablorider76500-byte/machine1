@@ -71,7 +71,6 @@
       font-size:12px;
       color:#b0a5ff;
     }
-
     .machine-body {
       flex:1;
       display:flex;
@@ -130,6 +129,7 @@
       align-items:center;
       justify-content:center;
       overflow:hidden;
+      position:relative;
     }
 
     .reel img {
@@ -338,7 +338,6 @@
         Tours joués : <span id="totalSpinsDisplay">0</span>
       </div>
     </div>
-
     <div class="machine-body">
       <div class="reels-container">
         <div id="winBanner" class="win-banner">
@@ -385,7 +384,7 @@
   <div id="fx-confetti" class="fx fx-confetti hidden"></div>
 <script>
   /* CONFIG DES SYMBOLES */
-  const IMAGE_BASE_PATH = ""; // Mets "images/" si tes images sont dans un dossier
+  const IMAGE_BASE_PATH = ""; // ajoute "images/" si tes images sont dans un dossier
 
   const SYMBOLS = [
     { id:"cygne",        file:"IMG-20251120-WA0017.jpg", label:"Cygne royal",        isBig:false },
@@ -418,7 +417,7 @@
     "parfum","tofu","glace","casquette"
   ];
 
-  /* LOTS 70 TOUR */
+  /* LOTS 70 TOURS */
   const MEDIUM_REWARD_IDS = [
     "rosejamais","pistolet","corgi","casquette",
     "positivite","confetti","amourlangage","rosa","parfum"
@@ -431,7 +430,6 @@
     "cygne","moto","cygne","pistolet","moto","loup"
   ];
   let big260Index = 0;
-
   /* ÉTAT GLOBAL */
   let currentPlayerName = "";
   let currentGiftCoins  = 0;
@@ -439,15 +437,15 @@
   let isSpinning        = false;
   let totalSpins        = 0;
 
-  let moto200Given      = false;      // moto unique au premier 200
+  let moto200Given      = false;      // moto unique au premier tour 200
   let nextSmallRewardAt = getRandomInt(15, 20);
   let lastRewardSource  = null;       // "200" / "260" / "70" / "small"
 
   /* Sélecteurs */
-  const reels            = Array.from(document.querySelectorAll(".reel"));
-  const winBanner        = document.getElementById("winBanner");
-  const winTypeLabel     = document.getElementById("winTypeLabel");
-  const winSymbolLabel   = document.getElementById("winSymbolLabel");
+  const reels             = Array.from(document.querySelectorAll(".reel"));
+  const winBanner         = document.getElementById("winBanner");
+  const winTypeLabel      = document.getElementById("winTypeLabel");
+  const winSymbolLabel    = document.getElementById("winSymbolLabel");
   const playerNameDisplay = document.getElementById("playerNameDisplay");
   const giftCoinsDisplay  = document.getElementById("giftCoinsDisplay");
   const spinsLeftDisplay  = document.getElementById("spinsLeftDisplay");
@@ -461,15 +459,19 @@
   function getSymbolById(id){
     return SYMBOLS.find(s => s.id === id);
   }
+
   function randomSymbol(pool = SYMBOLS){
     return pool[Math.floor(Math.random() * pool.length)];
   }
+
   function randomNonBigSymbol(){
     return randomSymbol(NON_BIG_SYMBOLS);
   }
+
   function getRandomInt(min, max){
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
+
   function calcSpinsFromCoins(coins){
     if (coins >= 2999) return 70;
     if (coins >= 299)  return 7;
@@ -523,14 +525,13 @@
 
   initReels();
   updateStatusDisplays();
-
-  /* LOGIQUE DES SPINS */
+  /* LOGIQUE DES RÉSULTATS D'UN SPIN */
   function computeFinalSymbols(){
     totalSpins++;
     const spinIndex = totalSpins;
 
     let forcedSymbolId = null;
-    lastRewardSource = null;
+    lastRewardSource   = null;
 
     // 1) Moto unique au premier tour 200
     if (!moto200Given && spinIndex === 200) {
@@ -538,21 +539,21 @@
       moto200Given     = true;
       lastRewardSource = "200";
     }
-    // 2) Cycle 260 tours
+    // 2) Après 200, tous les 260 tours → cycle spécial
     else if (spinIndex > 200 && spinIndex % 260 === 0) {
       forcedSymbolId   = BIG_260_SEQUENCE[big260Index];
       big260Index      = (big260Index + 1) % BIG_260_SEQUENCE.length;
       lastRewardSource = "260";
     }
-    // 3) Lots 70 tours
+    // 3) Tous les 70 tours → lot moyen
     else if (spinIndex % 70 === 0) {
-      forcedSymbolId   = MEDIUM_REWARD_IDS[Math.floor(Math.random()*MEDIUM_REWARD_IDS.length)];
+      forcedSymbolId   = MEDIUM_REWARD_IDS[Math.floor(Math.random() * MEDIUM_REWARD_IDS.length)];
       lastRewardSource = "70";
     }
-    // 4) Petits lots 15–20
+    // 4) Tous les 15–20 tours → petit lot
     else if (spinIndex === nextSmallRewardAt) {
-      forcedSymbolId   = SMALL_REWARD_IDS[Math.floor(Math.random()*SMALL_REWARD_IDS.length)];
-      nextSmallRewardAt = spinIndex + getRandomInt(15,20);
+      forcedSymbolId   = SMALL_REWARD_IDS[Math.floor(Math.random() * SMALL_REWARD_IDS.length)];
+      nextSmallRewardAt = spinIndex + getRandomInt(15, 20);
       lastRewardSource = "small";
     }
 
@@ -560,21 +561,67 @@
 
     if (forcedSymbolId) {
       const sym = getSymbolById(forcedSymbolId);
-      for (let i=0; i<4; i++) finalSymbols.push(sym);
+      for (let i = 0; i < 4; i++) finalSymbols.push(sym);
     } else {
-      for (let i=0; i<4; i++) finalSymbols.push(randomNonBigSymbol());
+      for (let i = 0; i < 4; i++) finalSymbols.push(randomNonBigSymbol());
     }
 
     return finalSymbols;
   }
-  /* ----- DÉBUT ANIMATION DES SPINS ----- */
+  /* VALIDATION DU CADEAU / ATTRIBUTION DES TOURS */
+  setGiftBtn.addEventListener("click", ()=>{
+    const nameInput  = document.getElementById("playerName");
+    const coinsInput = document.getElementById("giftCoins");
+
+    const name  = nameInput.value.trim();
+    const coins = parseInt(coinsInput.value, 10);
+
+    if (!name) {
+      alert("Merci d'entrer le pseudo TikTok du joueur.");
+      return;
+    }
+
+    if (isNaN(coins) || coins <= 0) {
+      alert("Merci d'entrer le nombre de pièces du cadeau.");
+      return;
+    }
+
+    const spins = calcSpinsFromCoins(coins);
+    if (spins === 0) {
+      alert("Minimum 49 pièces pour jouer.");
+      return;
+    }
+
+    currentPlayerName = name;
+    currentGiftCoins  = coins;
+    spinsLeft        += spins;
+    updateStatusDisplays();
+    spinBtn.disabled  = false;
+  });
+
+  /* CLICK SUR SPIN */
+  spinBtn.addEventListener("click", ()=>{
+    if (isSpinning) return;
+    if (spinsLeft <= 0) {
+      alert("Plus de tours pour ce joueur. Nouveau cadeau nécessaire (min 49 pièces).");
+      spinBtn.disabled = true;
+      return;
+    }
+
+    spinsLeft--;
+    const finalSymbols = computeFinalSymbols();
+    updateStatusDisplays();
+    startSpin(finalSymbols);
+  });
+
+  /* ANIMATION DU SPIN */
   function startSpin(finalSymbols){
     isSpinning = true;
     hideWinBanner();
 
     const reelDurations = [1600, 2000, 2400, 2800];
     let reelsStopped = 0;
-    const finalIds = new Array(4);
+    const finalIds   = new Array(4);
 
     reels.forEach((reel, index)=>{
       reel.classList.add("spinning");
@@ -585,7 +632,6 @@
         img.src = IMAGE_BASE_PATH + sym.file;
         img.alt = sym.label;
       }, 80);
-
       setTimeout(()=>{
         clearInterval(shuffleInterval);
 
@@ -595,7 +641,6 @@
         img.src = IMAGE_BASE_PATH + finalSym.file;
         img.alt = finalSym.label;
         reel.dataset.symbolId = finalSym.id;
-
         reel.classList.remove("spinning");
 
         reelsStopped++;
@@ -609,7 +654,7 @@
     });
   }
 
-  /* ----- APPLICATION DES RÈGLES DE GAIN ----- */
+  /* APPLICATION DES GAINS */
   function applyPrizeRules(finalSymbols, finalIds){
     const allSame = finalIds.every(id => id === finalIds[0]);
     if (!allSame) {
@@ -631,49 +676,12 @@
       showWinBanner("big", winningSymbol);
     }
 
-    // Effet spécial pour les récompenses 260 tours
+    // Effet spécial pour les tours 260
     if (lastRewardSource === "260") {
       fxFireworks.classList.remove("hidden");
       fxConfetti.classList.remove("hidden");
     }
   }
-
-  /* ----- LISTENERS ----- */
-  setGiftBtn.addEventListener("click", ()=>{
-    const name  = document.getElementById("playerName").value.trim();
-    const coins = parseInt(document.getElementById("giftCoins").value, 10);
-
-    if (!name) { alert("Merci d'entrer le pseudo TikTok."); return; }
-    if (isNaN(coins) || coins <= 0) { alert("Valeur du cadeau incorrecte."); return; }
-
-    const spins = calcSpinsFromCoins(coins);
-    if (spins === 0) {
-      alert("Minimum 49 pièces pour jouer.");
-      return;
-    }
-
-    currentPlayerName = name;
-    currentGiftCoins  = coins;
-    spinsLeft        += spins;
-
-    updateStatusDisplays();
-    spinBtn.disabled = false;
-  });
-
-  spinBtn.addEventListener("click", ()=>{
-    if (isSpinning) return;
-    if (spinsLeft <= 0) {
-      alert("Plus de tours. Nouveau cadeau demandé.");
-      spinBtn.disabled = true;
-      return;
-    }
-
-    spinsLeft--;
-    const finalSymbols = computeFinalSymbols();
-    updateStatusDisplays();
-    startSpin(finalSymbols);
-  });
-
 </script>
 </body>
 </html>
