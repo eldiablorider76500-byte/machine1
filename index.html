@@ -130,7 +130,6 @@
       align-items:center;
       justify-content:center;
       overflow:hidden;
-      position:relative;
     }
 
     .reel img {
@@ -175,7 +174,6 @@
     .win-banner.big span  { color:#ffeb3b; }
     .win-banner.mega span { color:#00e5ff; }
     .win-banner.giga span { color:#ff1744; }
-
     .machine-footer {
       display:flex;
       gap:14px;
@@ -322,12 +320,13 @@
     }
   </style>
 </head>
+
 <body>
   <div class="machine-wrapper">
     <div class="machine-header">
       <div class="machine-title">Slot 3B TikTok</div>
       <div class="machine-subtitle">
-        4 mêmes cadeaux sur la ligne = gain • Loup = <strong>GIGA WIN</strong> • Moto = <strong>MEGA WIN</strong>
+        4 mêmes cadeaux = gain • Loup = <strong>GIGA WIN</strong> • Moto = <strong>MEGA WIN</strong>
       </div>
     </div>
 
@@ -336,7 +335,7 @@
         Joueur : <span id="playerNameDisplay">-</span> • Cadeau : <span id="giftCoinsDisplay">0</span> pièces • Tours restants : <span id="spinsLeftDisplay">0</span>
       </div>
       <div class="spin-counter">
-        Tours joués : <span id="totalSpinsDisplay">0</span> • Tours depuis gros gain : <span id="sinceBigDisplay">0</span>
+        Tours joués : <span id="totalSpinsDisplay">0</span>
       </div>
     </div>
 
@@ -369,12 +368,12 @@
           <div class="helper-text">
             Minimum <strong>49 pièces</strong> pour jouer.<br>
             49–98 → 1 tour • 99–298 → 3 tours • 299–2998 → 7 tours • 2999+ → 70 tours.<br>
-            Règles scriptées : petits lots, 70 tours, moto 200, gros cycle 260.
+            Règles scriptées incluses.
           </div>
         </div>
 
         <div class="buttons-panel">
-          <button id="setGiftBtn" class="btn btn-secondary">Valider le cadeau</button>
+          <button id="setGiftBtn" class="btn btn-secondary">Valider</button>
           <button id="spinBtn" class="btn btn-primary" disabled>SPIN</button>
         </div>
       </div>
@@ -384,315 +383,297 @@
   <!-- Effets plein écran -->
   <div id="fx-fireworks" class="fx fx-fireworks hidden"></div>
   <div id="fx-confetti" class="fx fx-confetti hidden"></div>
+<script>
+  /* CONFIG DES SYMBOLES */
+  const IMAGE_BASE_PATH = ""; // Mets "images/" si tes images sont dans un dossier
 
-  <script>
-    /* CONFIG DES SYMBOLS */
-    const IMAGE_BASE_PATH = ""; // si tes images sont dans un dossier, mets "images/" etc.
+  const SYMBOLS = [
+    { id:"cygne",        file:"IMG-20251120-WA0017.jpg", label:"Cygne royal",        isBig:false },
+    { id:"loup",         file:"IMG-20251120-WA0018.jpg", label:"Loup",               isBig:true,  bigType:"giga" },
+    { id:"rosejamais",   file:"IMG-20251120-WA0019.jpg", label:"Rose à jamais",      isBig:false },
+    { id:"casquette",    file:"IMG-20251120-WA0020.jpg", label:"Casquette",          isBig:false },
+    { id:"manette",      file:"IMG-20251120-WA0021.jpg", label:"Manette de jeu",     isBig:false },
+    { id:"confetti",     file:"IMG-20251120-WA0022.jpg", label:"Confetti",           isBig:false },
+    { id:"amourlangage", file:"IMG-20251120-WA0023.jpg", label:"Amour en langage",   isBig:false },
+    { id:"donuts",       file:"IMG-20251120-WA0024.jpg", label:"Donut",              isBig:false },
+    { id:"glace",        file:"IMG-20251120-WA0025.jpg", label:"Cornet glacé",       isBig:false },
+    { id:"parfum",       file:"IMG-20251120-WA0026.jpg", label:"Parfum",             isBig:false },
+    { id:"corgi",        file:"IMG-20251120-WA0027.jpg", label:"Corgi",              isBig:false },
+    { id:"gants",        file:"IMG-20251120-WA0028.jpg", label:"Gants de boxe",      isBig:false },
+    { id:"rosa",         file:"IMG-20251120-WA0029.jpg", label:"Rosa",               isBig:false },
+    { id:"gg",           file:"IMG-20251120-WA0030.jpg", label:"GG",                 isBig:false },
+    { id:"positivite",   file:"IMG-20251120-WA0031.jpg", label:"De la positivité",   isBig:false },
+    { id:"tofu",         file:"IMG-20251120-WA0032.jpg", label:"Tofu",               isBig:false },
+    { id:"coeurdoigts",  file:"IMG-20251120-WA0033.jpg", label:"Cœur avec les doigts", isBig:false },
+    { id:"coeurnuage",   file:"IMG-20251120-WA0034.jpg", label:"Cœur nuage",         isBig:false },
+    { id:"moto",         file:"IMG-20251120-WA0035.jpg", label:"Moto",               isBig:true,  bigType:"mega" },
+    { id:"pistolet",     file:"IMG-20251120-WA0042.jpg", label:"Pistolet à argent",  isBig:false }
+  ];
 
-    const SYMBOLS = [
-      { id:"cygne",        file:"IMG-20251120-WA0017.jpg", label:"Cygne royal",        isBig:false },
-      { id:"loup",         file:"IMG-20251120-WA0018.jpg", label:"Loup",               isBig:true,  bigType:"giga" },
-      { id:"rosejamais",   file:"IMG-20251120-WA0019.jpg", label:"Rose à jamais",      isBig:false },
-      { id:"casquette",    file:"IMG-20251120-WA0020.jpg", label:"Casquette",          isBig:false },
-      { id:"manette",      file:"IMG-20251120-WA0021.jpg", label:"Manette de jeu",     isBig:false },
-      { id:"confetti",     file:"IMG-20251120-WA0022.jpg", label:"Confetti",           isBig:false },
-      { id:"amourlangage", file:"IMG-20251120-WA0023.jpg", label:"Amour en langage",   isBig:false },
-      { id:"donuts",       file:"IMG-20251120-WA0024.jpg", label:"Donut",              isBig:false },
-      { id:"glace",        file:"IMG-20251120-WA0025.jpg", label:"Cornet glacé",       isBig:false },
-      { id:"parfum",       file:"IMG-20251120-WA0026.jpg", label:"Parfum",             isBig:false },
-      { id:"corgi",        file:"IMG-20251120-WA0027.jpg", label:"Corgi",              isBig:false },
-      { id:"gants",        file:"IMG-20251120-WA0028.jpg", label:"Gants de boxe",      isBig:false },
-      { id:"rosa",         file:"IMG-20251120-WA0029.jpg", label:"Rosa",               isBig:false },
-      { id:"gg",           file:"IMG-20251120-WA0030.jpg", label:"GG",                 isBig:false },
-      { id:"positivite",   file:"IMG-20251120-WA0031.jpg", label:"De la positivité",   isBig:false },
-      { id:"tofu",         file:"IMG-20251120-WA0032.jpg", label:"Tofu",               isBig:false },
-      { id:"coeurdoigts",  file:"IMG-20251120-WA0033.jpg", label:"Cœur avec les doigts", isBig:false },
-      { id:"coeurnuage",   file:"IMG-20251120-WA0034.jpg", label:"Cœur nuage",         isBig:false },
-      { id:"moto",         file:"IMG-20251120-WA0035.jpg", label:"Moto",               isBig:true,  bigType:"mega" },
-      { id:"pistolet",     file:"IMG-20251120-WA0042.jpg", label:"Pistolet à argent",  isBig:false }
-    ];
+  const NON_BIG_SYMBOLS = SYMBOLS.filter(s => !s.isBig);
 
-    const NON_BIG_SYMBOLS = SYMBOLS.filter(s => !s.isBig);
+  /* PETITS LOTS (15–20 TOURS) */
+  const SMALL_REWARD_IDS = [
+    "donuts","rosa","manette","confetti",
+    "parfum","tofu","glace","casquette"
+  ];
 
-    // Petits lots 15–20
-    const SMALL_REWARD_IDS = [
-      "donuts","rosa","manette","confetti",
-      "parfum","tofu","glace","casquette"
-    ];
+  /* LOTS 70 TOUR */
+  const MEDIUM_REWARD_IDS = [
+    "rosejamais","pistolet","corgi","casquette",
+    "positivite","confetti","amourlangage","rosa","parfum"
+  ];
 
-    // Lots 70 tours
-    const MEDIUM_REWARD_IDS = [
-      "rosejamais","pistolet","corgi","casquette",
-      "positivite","confetti","amourlangage","rosa","parfum"
-    ];
+  /* CYCLE 260 TOURS (15 éléments) */
+  const BIG_260_SEQUENCE = [
+    "cygne","pistolet","moto","loup",
+    "pistolet","cygne","moto","pistolet","loup",
+    "cygne","moto","cygne","pistolet","moto","loup"
+  ];
+  let big260Index = 0;
 
-    // Cycle complet 260+
-    const BIG_260_SEQUENCE = [
-      "cygne","pistolet","moto","loup",
-      "pistolet","cygne","moto","pistolet","loup",
-      "cygne","moto","cygne","pistolet","moto","loup"
-    ];
-    let big260Index = 0;
+  /* ÉTAT GLOBAL */
+  let currentPlayerName = "";
+  let currentGiftCoins  = 0;
+  let spinsLeft         = 0;
+  let isSpinning        = false;
+  let totalSpins        = 0;
 
-    // État global
-    let currentPlayerName = "";
-    let currentGiftCoins  = 0;
-    let spinsLeft         = 0;
-    let isSpinning        = false;
-    let totalSpins        = 0;
+  let moto200Given      = false;      // moto unique au premier 200
+  let nextSmallRewardAt = getRandomInt(15, 20);
+  let lastRewardSource  = null;       // "200" / "260" / "70" / "small"
 
-    let moto200Given      = false;          // moto obligatoire une seule fois
-    let nextSmallRewardAt = getRandomInt(15, 20);
-    let lastRewardSource  = null;           // "200" / "260" / "70" / "small" / null
+  /* Sélecteurs */
+  const reels            = Array.from(document.querySelectorAll(".reel"));
+  const winBanner        = document.getElementById("winBanner");
+  const winTypeLabel     = document.getElementById("winTypeLabel");
+  const winSymbolLabel   = document.getElementById("winSymbolLabel");
+  const playerNameDisplay = document.getElementById("playerNameDisplay");
+  const giftCoinsDisplay  = document.getElementById("giftCoinsDisplay");
+  const spinsLeftDisplay  = document.getElementById("spinsLeftDisplay");
+  const totalSpinsDisplay = document.getElementById("totalSpinsDisplay");
+  const setGiftBtn        = document.getElementById("setGiftBtn");
+  const spinBtn           = document.getElementById("spinBtn");
+  const fxFireworks       = document.getElementById("fx-fireworks");
+  const fxConfetti        = document.getElementById("fx-confetti");
 
-    // Sélecteurs
-    const reels            = Array.from(document.querySelectorAll(".reel"));
-    const winBanner        = document.getElementById("winBanner");
-    const winTypeLabel     = document.getElementById("winTypeLabel");
-    const winSymbolLabel   = document.getElementById("winSymbolLabel");
-    const playerNameDisplay = document.getElementById("playerNameDisplay");
-    const giftCoinsDisplay  = document.getElementById("giftCoinsDisplay");
-    const spinsLeftDisplay  = document.getElementById("spinsLeftDisplay");
-    const totalSpinsDisplay = document.getElementById("totalSpinsDisplay");
-    const sinceBigDisplay   = document.getElementById("sinceBigDisplay");
-    const setGiftBtn        = document.getElementById("setGiftBtn");
-    const spinBtn           = document.getElementById("spinBtn");
-    const fxFireworks       = document.getElementById("fx-fireworks");
-    const fxConfetti        = document.getElementById("fx-confetti");
+  /* UTILITAIRES */
+  function getSymbolById(id){
+    return SYMBOLS.find(s => s.id === id);
+  }
+  function randomSymbol(pool = SYMBOLS){
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
+  function randomNonBigSymbol(){
+    return randomSymbol(NON_BIG_SYMBOLS);
+  }
+  function getRandomInt(min, max){
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+  function calcSpinsFromCoins(coins){
+    if (coins >= 2999) return 70;
+    if (coins >= 299)  return 7;
+    if (coins >= 99)   return 3;
+    if (coins >= 49)   return 1;
+    return 0;
+  }
 
-    function getSymbolById(id){
-      return SYMBOLS.find(s => s.id === id);
+  function updateStatusDisplays(){
+    playerNameDisplay.textContent = currentPlayerName || "-";
+    giftCoinsDisplay.textContent  = currentGiftCoins;
+    spinsLeftDisplay.textContent  = spinsLeft;
+    totalSpinsDisplay.textContent = totalSpins;
+  }
+
+  function showWinBanner(type, symbol){
+    let cls="", label="";
+    if (type==="giga") { cls="giga"; label="GIGA WIN"; }
+    else if (type==="mega") { cls="mega"; label="MEGA WIN"; }
+    else { cls="big"; label="BIG WIN"; }
+
+    winBanner.className = "win-banner " + cls;
+    winTypeLabel.textContent   = `${label} pour ${currentPlayerName}`;
+    winSymbolLabel.textContent = `4× ${symbol.label}`;
+    winBanner.style.display    = "flex";
+
+    fxFireworks.classList.add("hidden");
+    fxConfetti.classList.add("hidden");
+
+    if (type==="giga") fxFireworks.classList.remove("hidden");
+    if (type==="mega") fxConfetti.classList.remove("hidden");
+
+    setTimeout(()=>{ hideWinBanner(); },4000);
+  }
+
+  function hideWinBanner(){
+    winBanner.style.display="none";
+    fxFireworks.classList.add("hidden");
+    fxConfetti.classList.add("hidden");
+  }
+
+  function initReels(){
+    reels.forEach(reel=>{
+      const img = reel.querySelector("img");
+      const sym = randomSymbol();
+      img.src = IMAGE_BASE_PATH + sym.file;
+      img.alt = sym.label;
+      reel.dataset.symbolId = sym.id;
+    });
+  }
+
+  initReels();
+  updateStatusDisplays();
+
+  /* LOGIQUE DES SPINS */
+  function computeFinalSymbols(){
+    totalSpins++;
+    const spinIndex = totalSpins;
+
+    let forcedSymbolId = null;
+    lastRewardSource = null;
+
+    // 1) Moto unique au premier tour 200
+    if (!moto200Given && spinIndex === 200) {
+      forcedSymbolId   = "moto";
+      moto200Given     = true;
+      lastRewardSource = "200";
     }
-    function randomSymbol(pool = SYMBOLS){
-      return pool[Math.floor(Math.random() * pool.length)];
+    // 2) Cycle 260 tours
+    else if (spinIndex > 200 && spinIndex % 260 === 0) {
+      forcedSymbolId   = BIG_260_SEQUENCE[big260Index];
+      big260Index      = (big260Index + 1) % BIG_260_SEQUENCE.length;
+      lastRewardSource = "260";
     }
-    function randomNonBigSymbol(){
-      return randomSymbol(NON_BIG_SYMBOLS);
+    // 3) Lots 70 tours
+    else if (spinIndex % 70 === 0) {
+      forcedSymbolId   = MEDIUM_REWARD_IDS[Math.floor(Math.random()*MEDIUM_REWARD_IDS.length)];
+      lastRewardSource = "70";
     }
-    function getRandomInt(min, max){
-      min = Math.ceil(min);
-      max = Math.floor(max);
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-    function calcSpinsFromCoins(coins){
-      if (coins >= 2999) return 70;
-      if (coins >= 299)  return 7;
-      if (coins >= 99)   return 3;
-      if (coins >= 49)   return 1;
-      return 0;
-    }
-
-    function updateStatusDisplays(){
-      playerNameDisplay.textContent = currentPlayerName || "-";
-      giftCoinsDisplay.textContent  = currentGiftCoins.toString();
-      spinsLeftDisplay.textContent  = spinsLeft.toString();
-      totalSpinsDisplay.textContent = totalSpins.toString();
-      sinceBigDisplay.textContent   = "0";
+    // 4) Petits lots 15–20
+    else if (spinIndex === nextSmallRewardAt) {
+      forcedSymbolId   = SMALL_REWARD_IDS[Math.floor(Math.random()*SMALL_REWARD_IDS.length)];
+      nextSmallRewardAt = spinIndex + getRandomInt(15,20);
+      lastRewardSource = "small";
     }
 
-    function showWinBanner(type, symbol){
-      let cls = "";
-      let label = "";
-      if (type === "giga") { cls="giga"; label="GIGA WIN"; }
-      else if (type === "mega") { cls="mega"; label="MEGA WIN"; }
-      else if (type === "big") { cls="big"; label="BIG WIN"; }
-      else {
-        winBanner.style.display = "none";
-        return;
-      }
+    const finalSymbols = [];
 
-      winBanner.classList.remove("big","mega","giga");
-      winBanner.classList.add(cls);
-      winTypeLabel.textContent   = `${label} pour ${currentPlayerName || "-"}`;
-      winSymbolLabel.textContent = `4× ${symbol.label}`;
-      winBanner.style.display    = "flex";
-
-      // reset FX
-      fxFireworks.classList.add("hidden");
-      fxConfetti.classList.add("hidden");
-
-      // loup / moto gardent leur effet de base
-      if (type === "giga") {
-        fxFireworks.classList.remove("hidden");
-      } else if (type === "mega") {
-        fxConfetti.classList.remove("hidden");
-      }
-
-      setTimeout(() => { hideWinBanner(); }, 4000);
+    if (forcedSymbolId) {
+      const sym = getSymbolById(forcedSymbolId);
+      for (let i=0; i<4; i++) finalSymbols.push(sym);
+    } else {
+      for (let i=0; i<4; i++) finalSymbols.push(randomNonBigSymbol());
     }
 
-    function hideWinBanner(){
-      winBanner.style.display = "none";
-      fxFireworks.classList.add("hidden");
-      fxConfetti.classList.add("hidden");
-    }
+    return finalSymbols;
+  }
+  /* ----- DÉBUT ANIMATION DES SPINS ----- */
+  function startSpin(finalSymbols){
+    isSpinning = true;
+    hideWinBanner();
 
-    function initReels(){
-      reels.forEach(reel => {
-        const img = reel.querySelector("img");
+    const reelDurations = [1600, 2000, 2400, 2800];
+    let reelsStopped = 0;
+    const finalIds = new Array(4);
+
+    reels.forEach((reel, index)=>{
+      reel.classList.add("spinning");
+      const img = reel.querySelector("img");
+
+      const shuffleInterval = setInterval(()=>{
         const sym = randomSymbol();
-        img.src   = IMAGE_BASE_PATH + sym.file;
-        img.alt   = sym.label;
-        reel.dataset.symbolId = sym.id;
-      });
-    }
+        img.src = IMAGE_BASE_PATH + sym.file;
+        img.alt = sym.label;
+      }, 80);
 
-    initReels();
-    updateStatusDisplays();
+      setTimeout(()=>{
+        clearInterval(shuffleInterval);
 
-    // LOGIQUE DES RÉSULTATS
-    function computeFinalSymbols(){
-      totalSpins++;
-      const spinIndex = totalSpins;
+        const finalSym = finalSymbols[index];
+        finalIds[index] = finalSym.id;
 
-      let forcedSymbolId = null;
-      lastRewardSource = null;
+        img.src = IMAGE_BASE_PATH + finalSym.file;
+        img.alt = finalSym.label;
+        reel.dataset.symbolId = finalSym.id;
 
-      // 1) première fois 200 → moto
-      if (!moto200Given && spinIndex === 200) {
-        forcedSymbolId   = "moto";
-        moto200Given     = true;
-        lastRewardSource = "200";
-      }
-      // 2) >200 et multiple de 260 → cycle spécial
-      else if (spinIndex > 200 && spinIndex % 260 === 0) {
-        forcedSymbolId   = BIG_260_SEQUENCE[big260Index];
-        big260Index      = (big260Index + 1) % BIG_260_SEQUENCE.length;
-        lastRewardSource = "260";
-      }
-      // 3) multiple de 70
-      else if (spinIndex % 70 === 0) {
-        forcedSymbolId   = MEDIUM_REWARD_IDS[Math.floor(Math.random() * MEDIUM_REWARD_IDS.length)];
-        lastRewardSource = "70";
-      }
-      // 4) petit lot 15–20
-      else if (spinIndex === nextSmallRewardAt) {
-        forcedSymbolId   = SMALL_REWARD_IDS[Math.floor(Math.random() * SMALL_REWARD_IDS.length)];
-        nextSmallRewardAt = spinIndex + getRandomInt(15, 20);
-        lastRewardSource = "small";
-      }
+        reel.classList.remove("spinning");
 
-      const finalSymbols = [];
-
-      if (forcedSymbolId) {
-        const sym = getSymbolById(forcedSymbolId);
-        for (let i = 0; i < 4; i++) finalSymbols.push(sym);
-      } else {
-        for (let i = 0; i < 4; i++) finalSymbols.push(randomNonBigSymbol());
-      }
-
-      return finalSymbols;
-    }
-
-    // Cadeau / validation
-    setGiftBtn.addEventListener("click", () => {
-      const name  = document.getElementById("playerName").value.trim();
-      const coins = parseInt(document.getElementById("giftCoins").value, 10);
-
-      if (!name) {
-        alert("Merci d'entrer le pseudo TikTok du joueur.");
-        return;
-      }
-      if (isNaN(coins) || coins <= 0) {
-        alert("Merci d'entrer le nombre de pièces du cadeau.");
-        return;
-      }
-
-      const spins = calcSpinsFromCoins(coins);
-      if (spins === 0) {
-        alert("Minimum 49 pièces pour jouer.");
-        return;
-      }
-
-      currentPlayerName = name;
-      currentGiftCoins  = coins;
-      spinsLeft        += spins;
-      updateStatusDisplays();
-      spinBtn.disabled  = false;
-    });
-
-    // SPIN
-    spinBtn.addEventListener("click", () => {
-      if (isSpinning) return;
-      if (spinsLeft <= 0) {
-        alert("Plus de tours pour ce joueur. Nouveau cadeau nécessaire.");
-        spinBtn.disabled = true;
-        return;
-      }
-
-      spinsLeft--;
-      const finalSymbols = computeFinalSymbols();
-      updateStatusDisplays();
-      startSpin(finalSymbols);
-    });
-
-    function startSpin(finalSymbols){
-      isSpinning = true;
-      hideWinBanner();
-
-      const reelDurations = [1600, 2000, 2400, 2800];
-      let reelsStopped = 0;
-      const finalIds = new Array(4);
-
-      reels.forEach((reel, index) => {
-        reel.classList.add("spinning");
-        const img = reel.querySelector("img");
-
-        const shuffleInterval = setInterval(() => {
-          const sym = randomSymbol();
-          img.src = IMAGE_BASE_PATH + sym.file;
-          img.alt = sym.label;
-        }, 80);
-
-        setTimeout(() => {
-          clearInterval(shuffleInterval);
-
-          const finalSym = finalSymbols[index];
-          finalIds[index] = finalSym.id;
-
-          img.src = IMAGE_BASE_PATH + finalSym.file;
-          img.alt = finalSym.label;
-          reel.dataset.symbolId = finalSym.id;
-          reel.classList.remove("spinning");
-
-          reelsStopped++;
-          if (reelsStopped === reels.length) {
-            applyPrizeRules(finalSymbols, finalIds);
-            isSpinning = false;
-            updateStatusDisplays();
-            if (spinsLeft <= 0) spinBtn.disabled = true;
-          }
-        }, reelDurations[index]);
-      });
-    }
-
-    function applyPrizeRules(finalSymbols, finalIds){
-      const allSame = finalIds.every(id => id === finalIds[0]);
-      if (!allSame) {
-        hideWinBanner();
-        return;
-      }
-
-      const winningSymbol = finalSymbols[0];
-
-      if (winningSymbol.isBig) {
-        if (winningSymbol.id === "loup") {
-          showWinBanner("giga", winningSymbol);
-        } else if (winningSymbol.id === "moto") {
-          showWinBanner("mega", winningSymbol);
-        } else {
-          showWinBanner("big", winningSymbol);
+        reelsStopped++;
+        if (reelsStopped === reels.length) {
+          applyPrizeRules(finalSymbols, finalIds);
+          isSpinning = false;
+          updateStatusDisplays();
+          if (spinsLeft <= 0) spinBtn.disabled = true;
         }
+      }, reelDurations[index]);
+    });
+  }
+
+  /* ----- APPLICATION DES RÈGLES DE GAIN ----- */
+  function applyPrizeRules(finalSymbols, finalIds){
+    const allSame = finalIds.every(id => id === finalIds[0]);
+    if (!allSame) {
+      hideWinBanner();
+      return;
+    }
+
+    const winningSymbol = finalSymbols[0];
+
+    if (winningSymbol.isBig) {
+      if (winningSymbol.id === "loup") {
+        showWinBanner("giga", winningSymbol);
+      } else if (winningSymbol.id === "moto") {
+        showWinBanner("mega", winningSymbol);
       } else {
         showWinBanner("big", winningSymbol);
       }
-
-      // Effet spécial pour les tours 260
-      if (lastRewardSource === "260") {
-        fxFireworks.classList.remove("hidden");
-        fxConfetti.classList.remove("hidden");
-      }
+    } else {
+      showWinBanner("big", winningSymbol);
     }
-  </script>
+
+    // Effet spécial pour les récompenses 260 tours
+    if (lastRewardSource === "260") {
+      fxFireworks.classList.remove("hidden");
+      fxConfetti.classList.remove("hidden");
+    }
+  }
+
+  /* ----- LISTENERS ----- */
+  setGiftBtn.addEventListener("click", ()=>{
+    const name  = document.getElementById("playerName").value.trim();
+    const coins = parseInt(document.getElementById("giftCoins").value, 10);
+
+    if (!name) { alert("Merci d'entrer le pseudo TikTok."); return; }
+    if (isNaN(coins) || coins <= 0) { alert("Valeur du cadeau incorrecte."); return; }
+
+    const spins = calcSpinsFromCoins(coins);
+    if (spins === 0) {
+      alert("Minimum 49 pièces pour jouer.");
+      return;
+    }
+
+    currentPlayerName = name;
+    currentGiftCoins  = coins;
+    spinsLeft        += spins;
+
+    updateStatusDisplays();
+    spinBtn.disabled = false;
+  });
+
+  spinBtn.addEventListener("click", ()=>{
+    if (isSpinning) return;
+    if (spinsLeft <= 0) {
+      alert("Plus de tours. Nouveau cadeau demandé.");
+      spinBtn.disabled = true;
+      return;
+    }
+
+    spinsLeft--;
+    const finalSymbols = computeFinalSymbols();
+    updateStatusDisplays();
+    startSpin(finalSymbols);
+  });
+
+</script>
 </body>
 </html>
