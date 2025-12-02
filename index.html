@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Machine à sous TikTok</title>
+  <title>Slot 3B TikTok</title>
 
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
@@ -15,15 +15,16 @@
       display:flex;
       align-items:center;
       justify-content:center;
+      overflow:hidden;
     }
 
-    .machine-wrapper {
-      width:90vw;
-      max-width:1100px;
-      height:90vh;
-      max-height:650px;
+    .app {
+      width:95vw;
+      max-width:1400px;
+      height:92vh;
+      max-height:720px;
       border-radius:40px;
-      padding:20px 24px 28px;
+      padding:20px 26px 26px;
       background:linear-gradient(180deg,#2c0f33 0%,#120615 50%,#20183b 100%);
       box-shadow:0 0 40px rgba(0,0,0,0.8),0 0 80px rgba(147,51,234,0.6);
       display:flex;
@@ -32,9 +33,30 @@
       overflow:hidden;
     }
 
+    .app-main {
+      flex:1;
+      display:flex;
+      gap:18px;
+      margin-top:10px;
+    }
+
+    .machine-column {
+      flex:1.6;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .side-column {
+      flex:0.9;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
     .machine-header {
       text-align:center;
-      margin-bottom:10px;
+      margin-bottom:4px;
     }
 
     .machine-title {
@@ -57,7 +79,7 @@
       display:flex;
       justify-content:space-between;
       align-items:center;
-      margin:10px 0 12px;
+      margin:4px 0 6px;
       font-size:13px;
       color:#e5e5ff;
     }
@@ -70,13 +92,6 @@
     .spin-counter {
       font-size:12px;
       color:#b0a5ff;
-    }
-
-    .machine-body {
-      flex:1;
-      display:flex;
-      flex-direction:column;
-      gap:14px;
     }
 
     .reels-container {
@@ -169,6 +184,7 @@
       align-items:center;
       gap:8px;
       pointer-events:none;
+      z-index:5;
     }
 
     .win-banner span { font-weight:700; }
@@ -180,7 +196,7 @@
       display:flex;
       gap:14px;
       align-items:center;
-      margin-top:6px;
+      margin-top:4px;
     }
 
     .control-panel {
@@ -191,7 +207,7 @@
       display:flex;
       flex-wrap:wrap;
       gap:8px 12px;
-      align-items:center;
+      align-items:flex-start;
       font-size:13px;
     }
 
@@ -217,13 +233,14 @@
     }
 
     .helper-text {
-      font-size:11px;
+      font-size:10px;
       color:#b9b9ff;
       margin-top:4px;
+      max-width:360px;
     }
 
     .buttons-panel {
-      flex:1;
+      flex:0.9;
       display:flex;
       justify-content:flex-end;
       gap:8px;
@@ -246,7 +263,7 @@
     }
 
     .btn:disabled {
-      opacity:0.45;
+      opacity:0.40;
       cursor:not-allowed;
       box-shadow:none;
     }
@@ -273,14 +290,79 @@
       box-shadow:0 0 8px rgba(255,255,255,0.2);
     }
 
+    /* Side column */
+
+    .side-card {
+      background:rgba(0,0,0,0.5);
+      border-radius:18px;
+      padding:10px 14px;
+      font-size:12px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    .side-title {
+      font-size:12px;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+      color:#ffeb3b;
+    }
+
+    .side-sub {
+      font-size:11px;
+      color:#b9b9ff;
+    }
+
+    .side-content {
+      font-size:12px;
+      color:#f5f5ff;
+      max-height:150px;
+      overflow-y:auto;
+    }
+
+    .queue-item {
+      margin-bottom:2px;
+    }
+
+    .winner-item {
+      margin-bottom:2px;
+    }
+
+    .status-dot {
+      display:inline-block;
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      margin-right:6px;
+      background:#f44336;
+    }
+
+    .status-dot.online {
+      background:#00e676;
+    }
+
+    @media (max-width:1100px){
+      .app-main {
+        flex-direction:column;
+      }
+      .side-column {
+        flex-direction:row;
+      }
+    }
+
     @media (max-width:900px){
-      .machine-wrapper { padding:16px; }
+      .app {
+        padding:16px;
+      }
       .machine-title { font-size:26px; }
       .machine-footer {
         flex-direction:column;
         align-items:stretch;
       }
       .buttons-panel { justify-content:center; }
+      .side-column { flex-direction:column; }
     }
 
     /* Effets plein écran */
@@ -323,9 +405,9 @@
   </style>
 </head>
 <body>
-  <div class="machine-wrapper">
+  <div class="app">
     <div class="machine-header">
-      <div class="machine-title">Slot 3B TikTok</div>
+      <div class="machine-title">SLOT 3B TIKTOK</div>
       <div class="machine-subtitle">
         4 mêmes cadeaux sur la ligne = gain • Loup = <strong>GIGA WIN</strong> • Moto = <strong>MEGA WIN</strong>
       </div>
@@ -333,49 +415,83 @@
 
     <div class="top-status">
       <div class="player-info">
-        Joueur : <span id="playerNameDisplay">-</span> • Cadeau : <span id="giftCoinsDisplay">0</span> pièces • Tours restants : <span id="spinsLeftDisplay">0</span>
+        Joueur : <span id="playerNameDisplay">-</span> • Tours restants : <span id="spinsLeftDisplay">0</span>
       </div>
       <div class="spin-counter">
-        Tours joués : <span id="totalSpinsDisplay">0</span> • Tours depuis gros gain : <span id="sinceBigDisplay">0</span>
+        Tours joués : <span id="totalSpinsDisplay">0</span> • Depuis gros gain : <span id="sinceBigDisplay">0</span>
       </div>
     </div>
 
-    <div class="machine-body">
-      <div class="reels-container">
-        <div id="winBanner" class="win-banner">
-          <span id="winTypeLabel"></span> — <span id="winSymbolLabel"></span>
+    <div class="app-main">
+      <!-- COLONNE MACHINE -->
+      <div class="machine-column">
+        <div class="reels-container">
+          <div id="winBanner" class="win-banner">
+            <span id="winTypeLabel"></span> — <span id="winSymbolLabel"></span>
+          </div>
+
+          <div class="reels-frame">
+            <div class="reels-inner">
+              <div class="reel" data-index="0"><img src="" alt="reel 1"></div>
+              <div class="reel" data-index="1"><img src="" alt="reel 2"></div>
+              <div class="reel" data-index="2"><img src="" alt="reel 3"></div>
+              <div class="reel" data-index="3"><img src="" alt="reel 4"></div>
+            </div>
+          </div>
         </div>
 
-        <div class="reels-frame">
-          <div class="reels-inner">
-            <div class="reel" data-index="0"><img src="" alt="reel 1"></div>
-            <div class="reel" data-index="1"><img src="" alt="reel 2"></div>
-            <div class="reel" data-index="2"><img src="" alt="reel 3"></div>
-            <div class="reel" data-index="3"><img src="" alt="reel 4"></div>
+        <div class="machine-footer">
+          <div class="control-panel">
+            <div>
+              <label for="playerName">Pseudo TikTok (manuel) :</label><br>
+              <input id="playerName" type="text" placeholder="Pseudo..." />
+            </div>
+            <div>
+              <label for="giftCoins">Valeur du cadeau (pièces) :</label><br>
+              <input id="giftCoins" type="number" min="1" placeholder="ex: 99" />
+            </div>
+            <div class="helper-text">
+              Minimum <strong>49 pièces</strong> pour jouer.<br>
+              49–98 = 1 tour • 99–298 = 3 tours • 299–2998 = 7 tours • 2999+ = 70 tours.<br>
+              Les cadeaux TikTok reçus par @el_diablorider ajoutent automatiquement les joueurs dans la file.
+            </div>
+          </div>
+
+          <div class="buttons-panel">
+            <button id="addManualBtn" class="btn btn-secondary">Ajouter (manuel)</button>
+            <button id="spinBtn" class="btn btn-primary" disabled>SPIN</button>
           </div>
         </div>
       </div>
 
-      <div class="machine-footer">
-        <div class="control-panel">
-          <div>
-            <label for="playerName">Pseudo TikTok :</label><br>
-            <input id="playerName" type="text" placeholder="Pseudo…" />
-          </div>
-          <div>
-            <label for="giftCoins">Valeur du cadeau (pièces) :</label><br>
-            <input id="giftCoins" type="number" min="1" placeholder="ex: 99" />
-          </div>
-          <div class="helper-text">
-            Minimum <strong>49 pièces</strong> pour jouer.<br>
-            49–98 → 1 tour • 99–298 → 3 tours • 299–2998 → 7 tours • 2999+ → 70 tours.<br>
-            Règles scriptées : petits lots, 70 tours, moto 200, gros cycle 260.
+      <!-- COLONNE DROITE -->
+      <div class="side-column">
+        <div class="side-card">
+          <div class="side-title">File d'attente</div>
+          <div class="side-sub">Nombre de joueurs : <span id="queueCount">0</span></div>
+          <div id="queueList" class="side-content">
+            Personne dans la file.
           </div>
         </div>
 
-        <div class="buttons-panel">
-          <button id="setGiftBtn" class="btn btn-secondary">Valider le cadeau</button>
-          <button id="spinBtn" class="btn btn-primary" disabled>SPIN</button>
+        <div class="side-card">
+          <div class="side-title">Historique des gagnants (session)</div>
+          <div class="side-sub">Total gagnants : <span id="winnersCount">0</span></div>
+          <div id="winnersList" class="side-content">
+            Aucun gagnant pour l'instant.
+          </div>
+        </div>
+
+        <div class="side-card">
+          <div class="side-title">Statut TikTok</div>
+          <div class="side-content">
+            <span id="tiktokDot" class="status-dot"></span>
+            <span id="tiktokStatusText">Déconnecté du serveur</span>
+          </div>
+          <div id="tiktokHelp" class="side-sub">
+            Lance ton serveur Node puis un vrai live TikTok avec @el_diablorider.<br>
+            Les cadeaux valides seront ajoutés automatiquement dans la file.
+          </div>
         </div>
       </div>
     </div>
@@ -386,8 +502,10 @@
   <div id="fx-confetti" class="fx fx-confetti hidden"></div>
 
   <script>
-    /* CONFIG DES SYMBOLS */
-    const IMAGE_BASE_PATH = ""; // si tes images sont dans un dossier, mets "images/" etc.
+    /**************************************
+     * CONFIG IMAGES & SYMBOLS
+     **************************************/
+    const IMAGE_BASE_PATH = "Cadeaux/"; // Dossier Cadeaux à côté de ce fichier
 
     const SYMBOLS = [
       { id:"cygne",        file:"IMG-20251120-WA0017.jpg", label:"Cygne royal",        isBig:false },
@@ -434,32 +552,55 @@
     ];
     let big260Index = 0;
 
-    // État global
-    let currentPlayerName = "";
-    let currentGiftCoins  = 0;
-    let spinsLeft         = 0;
-    let isSpinning        = false;
-    let totalSpins        = 0;
+    /**************************************
+     * ÉTAT GLOBAL
+     **************************************/
+    let totalSpins = 0;
+    let spinsSinceBig = 0;
 
-    let moto200Given      = false;          // moto obligatoire une seule fois
     let nextSmallRewardAt = getRandomInt(15, 20);
-    let lastRewardSource  = null;           // "200" / "260" / "70" / "small" / null
+    let moto200Given = false;
+    let lastRewardSource = null; // "200" / "260" / "70" / "small" / null
 
-    // Sélecteurs
-    const reels            = Array.from(document.querySelectorAll(".reel"));
-    const winBanner        = document.getElementById("winBanner");
-    const winTypeLabel     = document.getElementById("winTypeLabel");
-    const winSymbolLabel   = document.getElementById("winSymbolLabel");
+    // File d'attente & joueur courant
+    let queue = []; // { name, spinsLeft }
+    let currentPlayer = null;
+    let winnersHistory = [];
+    let winnersCount = 0;
+
+    // Spin
+    let isSpinning = false;
+
+    /**************************************
+     * SÉLECTEURS DOM
+     **************************************/
+    const reels = Array.from(document.querySelectorAll(".reel"));
+    const winBanner = document.getElementById("winBanner");
+    const winTypeLabel = document.getElementById("winTypeLabel");
+    const winSymbolLabel = document.getElementById("winSymbolLabel");
+
     const playerNameDisplay = document.getElementById("playerNameDisplay");
-    const giftCoinsDisplay  = document.getElementById("giftCoinsDisplay");
-    const spinsLeftDisplay  = document.getElementById("spinsLeftDisplay");
+    const spinsLeftDisplay = document.getElementById("spinsLeftDisplay");
     const totalSpinsDisplay = document.getElementById("totalSpinsDisplay");
-    const sinceBigDisplay   = document.getElementById("sinceBigDisplay");
-    const setGiftBtn        = document.getElementById("setGiftBtn");
-    const spinBtn           = document.getElementById("spinBtn");
-    const fxFireworks       = document.getElementById("fx-fireworks");
-    const fxConfetti        = document.getElementById("fx-confetti");
+    const sinceBigDisplay = document.getElementById("sinceBigDisplay");
 
+    const addManualBtn = document.getElementById("addManualBtn");
+    const spinBtn = document.getElementById("spinBtn");
+
+    const queueListEl = document.getElementById("queueList");
+    const queueCountEl = document.getElementById("queueCount");
+    const winnersListEl = document.getElementById("winnersList");
+    const winnersCountEl = document.getElementById("winnersCount");
+
+    const tiktokDot = document.getElementById("tiktokDot");
+    const tiktokStatusText = document.getElementById("tiktokStatusText");
+
+    const fxFireworks = document.getElementById("fx-fireworks");
+    const fxConfetti = document.getElementById("fx-confetti");
+
+    /**************************************
+     * FONCTIONS UTILITAIRES
+     **************************************/
     function getSymbolById(id){
       return SYMBOLS.find(s => s.id === id);
     }
@@ -482,12 +623,49 @@
       return 0;
     }
 
-    function updateStatusDisplays(){
-      playerNameDisplay.textContent = currentPlayerName || "-";
-      giftCoinsDisplay.textContent  = currentGiftCoins.toString();
-      spinsLeftDisplay.textContent  = spinsLeft.toString();
+    /**************************************
+     * AFFICHAGES
+     **************************************/
+    function updateTopStatus(){
+      if (currentPlayer){
+        playerNameDisplay.textContent = currentPlayer.name;
+        spinsLeftDisplay.textContent = currentPlayer.spinsLeft;
+      } else {
+        playerNameDisplay.textContent = "-";
+        spinsLeftDisplay.textContent = "0";
+      }
       totalSpinsDisplay.textContent = totalSpins.toString();
-      sinceBigDisplay.textContent   = "0";
+      sinceBigDisplay.textContent = spinsSinceBig.toString();
+    }
+
+    function updateQueueDisplay(){
+      queueCountEl.textContent = queue.length.toString();
+      if (queue.length === 0){
+        queueListEl.textContent = "Personne dans la file.";
+        return;
+      }
+      queueListEl.innerHTML = "";
+      queue.forEach((p, index) => {
+        const div = document.createElement("div");
+        div.className = "queue-item";
+        div.textContent = `${index+1}. ${p.name} — ${p.spinsLeft} tour(s)`;
+        queueListEl.appendChild(div);
+      });
+    }
+
+    function updateWinnersDisplay(){
+      winnersCountEl.textContent = winnersCount.toString();
+      if (winnersHistory.length === 0){
+        winnersListEl.textContent = "Aucun gagnant pour l'instant.";
+        return;
+      }
+      winnersListEl.innerHTML = "";
+      winnersHistory.slice(-50).forEach(w => {
+        const div = document.createElement("div");
+        div.className = "winner-item";
+        div.textContent = `${w.name} — ${w.symbol}`;
+        winnersListEl.appendChild(div);
+      });
     }
 
     function showWinBanner(type, symbol){
@@ -503,15 +681,13 @@
 
       winBanner.classList.remove("big","mega","giga");
       winBanner.classList.add(cls);
-      winTypeLabel.textContent   = label + " pour " + (currentPlayerName || "-");
-      winSymbolLabel.textContent = "4× " + symbol.label;
-      winBanner.style.display    = "flex";
+      winTypeLabel.textContent = `${label} pour ${currentPlayer ? currentPlayer.name : "-"}`;
+      winSymbolLabel.textContent = `4× ${symbol.label}`;
+      winBanner.style.display = "flex";
 
-      // reset FX
       fxFireworks.classList.add("hidden");
       fxConfetti.classList.add("hidden");
 
-      // loup / moto gardent leur effet de base
       if (type === "giga") {
         fxFireworks.classList.remove("hidden");
       } else if (type === "mega") {
@@ -537,12 +713,49 @@
       });
     }
 
-    initReels();
-    updateStatusDisplays();
+    /**************************************
+     * FILE D'ATTENTE
+     **************************************/
+    function ensureCurrentPlayer(){
+      if (!currentPlayer && queue.length > 0){
+        currentPlayer = queue.shift();
+        spinBtn.disabled = false;
+      }
+      if (!currentPlayer){
+        spinBtn.disabled = true;
+      }
+      updateTopStatus();
+      updateQueueDisplay();
+    }
 
-    // LOGIQUE DES RÉSULTATS
+    function addPlayerFromGift(username, coins){
+      const spins = calcSpinsFromCoins(coins);
+      if (spins === 0) return;
+
+      // Si déjà joueur courant
+      if (currentPlayer && currentPlayer.name === username){
+        currentPlayer.spinsLeft += spins;
+        updateTopStatus();
+        return;
+      }
+
+      // Si déjà dans la file
+      const existing = queue.find(p => p.name === username);
+      if (existing){
+        existing.spinsLeft += spins;
+      } else {
+        queue.push({ name: username, spinsLeft: spins });
+      }
+
+      ensureCurrentPlayer();
+    }
+
+    /**************************************
+     * LOGIQUE DE RÉSULTAT (TON ANCIEN SCRIPT)
+     **************************************/
     function computeFinalSymbols(){
       totalSpins++;
+      spinsSinceBig++;
       const spinIndex = totalSpins;
 
       let forcedSymbolId = null;
@@ -584,55 +797,67 @@
       return finalSymbols;
     }
 
-    // Cadeau / validation
-    setGiftBtn.addEventListener("click", () => {
-      const name  = document.getElementById("playerName").value.trim();
-      const coins = parseInt(document.getElementById("giftCoins").value, 10);
-
-      if (!name) {
-        alert("Merci d'entrer le pseudo TikTok du joueur.");
-        return;
-      }
-      if (isNaN(coins) || coins <= 0) {
-        alert("Merci d'entrer le nombre de pièces du cadeau.");
+    /**************************************
+     * SPIN
+     **************************************/
+    function applyPrizeRules(finalSymbols, finalIds){
+      const allSame = finalIds.every(id => id === finalIds[0]);
+      if (!allSame) {
+        hideWinBanner();
         return;
       }
 
-      const spins = calcSpinsFromCoins(coins);
-      if (spins === 0) {
-        alert("Minimum 49 pièces pour jouer.");
-        return;
+      const winningSymbol = finalSymbols[0];
+
+      // Reset compteur “depuis gros gain” si gros gain
+      if (winningSymbol.isBig) {
+        spinsSinceBig = 0;
       }
 
-      currentPlayerName = name;
-      currentGiftCoins  = coins;
-      spinsLeft        += spins;
-      updateStatusDisplays();
-      spinBtn.disabled  = false;
-    });
+      if (winningSymbol.isBig) {
+        if (winningSymbol.id === "loup") {
+          showWinBanner("giga", winningSymbol);
+        } else if (winningSymbol.id === "moto") {
+          showWinBanner("mega", winningSymbol);
+        } else {
+          showWinBanner("big", winningSymbol);
+        }
+      } else {
+        showWinBanner("big", winningSymbol);
+      }
 
-    // SPIN
-    spinBtn.addEventListener("click", () => {
+      // Effet spécial pour les tours 260
+      if (lastRewardSource === "260") {
+        fxFireworks.classList.remove("hidden");
+        fxConfetti.classList.remove("hidden");
+      }
+
+      // Ajout au tableau des gagnants
+      if (currentPlayer){
+        winnersHistory.push({ name: currentPlayer.name, symbol: winningSymbol.label });
+        winnersCount++;
+        updateWinnersDisplay();
+      }
+    }
+
+    function startSpin(){
+      if (!currentPlayer || currentPlayer.spinsLeft <= 0) {
+        ensureCurrentPlayer();
+        if (!currentPlayer) return;
+      }
       if (isSpinning) return;
-      if (spinsLeft <= 0) {
-        alert("Plus de tours pour ce joueur. Nouveau cadeau nécessaire.");
-        spinBtn.disabled = true;
-        return;
-      }
 
-      spinsLeft--;
-      const finalSymbols = computeFinalSymbols();
-      updateStatusDisplays();
-      startSpin(finalSymbols);
-    });
+      currentPlayer.spinsLeft--;
+      updateTopStatus();
 
-    function startSpin(finalSymbols){
       isSpinning = true;
       hideWinBanner();
 
+      const finalSymbols = computeFinalSymbols();
+      const finalIds = new Array(4);
+
       const reelDurations = [1600, 2000, 2400, 2800];
       let reelsStopped = 0;
-      const finalIds = new Array(4);
 
       reels.forEach((reel, index) => {
         reel.classList.add("spinning");
@@ -659,40 +884,89 @@
           if (reelsStopped === reels.length) {
             applyPrizeRules(finalSymbols, finalIds);
             isSpinning = false;
-            updateStatusDisplays();
-            if (spinsLeft <= 0) spinBtn.disabled = true;
+
+            // Si plus de tours pour ce joueur → suivant
+            if (!currentPlayer || currentPlayer.spinsLeft <= 0) {
+              currentPlayer = null;
+              ensureCurrentPlayer();
+            }
+
+            updateTopStatus();
           }
         }, reelDurations[index]);
       });
     }
 
-    function applyPrizeRules(finalSymbols, finalIds){
-      const allSame = finalIds.every(id => id === finalIds[0]);
-      if (!allSame) {
-        hideWinBanner();
+    /**************************************
+     * ÉVÉNEMENTS BOUTONS
+     **************************************/
+    addManualBtn.addEventListener("click", () => {
+      const name = document.getElementById("playerName").value.trim();
+      const coins = parseInt(document.getElementById("giftCoins").value, 10);
+
+      if (!name){
+        alert("Merci d'entrer le pseudo TikTok.");
+        return;
+      }
+      if (isNaN(coins) || coins <= 0){
+        alert("Merci d'entrer le nombre de pièces du cadeau.");
         return;
       }
 
-      const winningSymbol = finalSymbols[0];
+      addPlayerFromGift(name, coins);
+      document.getElementById("playerName").value = "";
+      document.getElementById("giftCoins").value = "";
+    });
 
-      if (winningSymbol.isBig) {
-        if (winningSymbol.id === "loup") {
-          showWinBanner("giga", winningSymbol);
-        } else if (winningSymbol.id === "moto") {
-          showWinBanner("mega", winningSymbol);
-        } else {
-          showWinBanner("big", winningSymbol);
-        }
-      } else {
-        showWinBanner("big", winningSymbol);
-      }
+    spinBtn.addEventListener("click", () => {
+      startSpin();
+    });
 
-      // Effet spécial pour les tours 260
-      if (lastRewardSource === "260") {
-        fxFireworks.classList.remove("hidden");
-        fxConfetti.classList.remove("hidden");
+    /**************************************
+     * WEBSOCKET AVEC TON SERVEUR NODE
+     **************************************/
+    function setupWebSocket(){
+      try {
+        const ws = new WebSocket("ws://localhost:8080");
+
+        ws.onopen = () => {
+          tiktokDot.classList.add("online");
+          tiktokStatusText.textContent = "Connecté au serveur (en attente de cadeaux)";
+        };
+
+        ws.onclose = () => {
+          tiktokDot.classList.remove("online");
+          tiktokStatusText.textContent = "Déconnecté du serveur";
+        };
+
+        ws.onerror = () => {
+          tiktokDot.classList.remove("online");
+          tiktokStatusText.textContent = "Erreur de connexion au serveur";
+        };
+
+        ws.onmessage = (event) => {
+          try {
+            const data = JSON.parse(event.data);
+            if (data.type === "gift"){
+              addPlayerFromGift(data.username, data.coins);
+            }
+          } catch(e){
+            console.error("Message invalide :", e);
+          }
+        };
+      } catch (e){
+        console.error("Impossible de créer le WebSocket", e);
       }
     }
+
+    /**************************************
+     * INIT
+     **************************************/
+    initReels();
+    updateTopStatus();
+    updateQueueDisplay();
+    updateWinnersDisplay();
+    setupWebSocket();
   </script>
 </body>
 </html>
