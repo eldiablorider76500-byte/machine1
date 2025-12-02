@@ -1,0 +1,211 @@
+  <div class="machine-header">
+    <div class="machine-title">Slot 3B TikTok</div>
+    <div class="machine-subtitle">
+      4 mêmes cadeaux sur la ligne = gain • Loup = <strong>GIGA WIN</strong> • Moto = <strong>MEGA WIN</strong>
+    </div>
+  </div>
+
+  <div class="top-status">
+    <div class="player-info">
+      Joueur : <span id="playerNameDisplay">-</span> • Cadeau : <span id="giftCoinsDisplay">0</span> pièces • Tours restants : <span id="spinsLeftDisplay">0</span>
+    </div>
+    <div class="spin-counter">
+      Tours joués : <span id="totalSpinsDisplay">0</span>
+    </div>
+  </div>
+
+  <div class="machine-body">
+    <div class="reels-container">
+      <div id="winBanner" class="win-banner">
+        <span id="winTypeLabel"></span> — <span id="winSymbolLabel"></span>
+      </div>
+
+      <div class="reels-frame">
+        <div class="reels-inner">
+          <div class="reel" data-index="0"><img src="" alt=""></div>
+          <div class="reel" data-index="1"><img src="" alt=""></div>
+          <div class="reel" data-index="2"><img src="" alt=""></div>
+          <div class="reel" data-index="3"><img src="" alt=""></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="machine-footer">
+      <div class="control-panel">
+        <div>
+          <label for="playerName">Pseudo TikTok :</label><br>
+          <input id="playerName" type="text" placeholder="Pseudo…" />
+        </div>
+        <div>
+          <label for="giftCoins">Valeur du cadeau (pièces) :</label><br>
+          <input id="giftCoins" type="number" min="1" placeholder="ex: 99" />
+        </div>
+
+        <div class="helper-text">
+          Minimum <strong>49 pièces</strong><br>
+          49–98 = 1 tour • 99–298 = 3 tours • 299–2998 = 7 tours • 2999+ = 70 tours
+        </div>
+      </div>
+
+      <div class="buttons-panel">
+        <button id="setGiftBtn" class="btn btn-secondary">Valider le cadeau</button>
+        <button id="spinBtn" class="btn btn-primary" disabled>SPIN</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================
+     SCRIPT FINAL (VERSION QUI MARCHAIT)
+=================================== -->
+<script>
+// ====================================
+// IMAGES ORIGINALES (NE PAS TOUCHER)
+// ====================================
+const IMAGE_BASE_PATH = ""; // images dans même dossier
+const SYMBOLS = [
+  { id:"cygne",        file:"IMG-20251120-WA0017.jpg", label:"Cygne royal", isBig:false },
+  { id:"loup",         file:"IMG-20251120-WA0018.jpg", label:"Loup", isBig:true, bigType:"giga" },
+  { id:"rosejamais",   file:"IMG-20251120-WA0019.jpg", label:"Rose à jamais", isBig:false },
+  { id:"casquette",    file:"IMG-20251120-WA0020.jpg", label:"Casquette", isBig:false },
+  { id:"manette",      file:"IMG-20251120-WA0021.jpg", label:"Manette de jeu", isBig:false },
+  { id:"confetti",     file:"IMG-20251120-WA0022.jpg", label:"Confetti", isBig:false },
+  { id:"amourlangage", file:"IMG-20251120-WA0023.jpg", label:"Amour", isBig:false },
+  { id:"donuts",       file:"IMG-20251120-WA0024.jpg", label:"Donut", isBig:false },
+  { id:"glace",        file:"IMG-20251120-WA0025.jpg", label:"Glace", isBig:false },
+  { id:"parfum",       file:"IMG-20251120-WA0026.jpg", label:"Parfum", isBig:false },
+  { id:"corgi",        file:"IMG-20251120-WA0027.jpg", label:"Corgi", isBig:false },
+  { id:"gants",        file:"IMG-20251120-WA0028.jpg", label:"Gants", isBig:false },
+  { id:"rosa",         file:"IMG-20251120-WA0029.jpg", label:"Rosa", isBig:false },
+  { id:"gg",           file:"IMG-20251120-WA0030.jpg", label:"GG", isBig:false },
+  { id:"positivite",   file:"IMG-20251120-WA0031.jpg", label:"Positivité", isBig:false },
+  { id:"tofu",         file:"IMG-20251120-WA0032.jpg", label:"Tofu", isBig:false },
+  { id:"coeurdoigts",  file:"IMG-20251120-WA0033.jpg", label:"Cœur doigts", isBig:false },
+  { id:"coeurnuage",   file:"IMG-20251120-WA0034.jpg", label:"Cœur nuage", isBig:false },
+  { id:"moto",         file:"IMG-20251120-WA0035.jpg", label:"Moto", isBig:true, bigType:"mega" },
+  { id:"pistolet",     file:"IMG-20251120-WA0042.jpg", label:"Pistolet argent", isBig:false }
+];
+
+const NON_BIG = SYMBOLS.filter(s => !s.isBig);
+
+// ====================================
+// VARIABLES
+// ====================================
+let queue = [];
+let currentPlayer = null;
+let totalSpins = 0;
+let isSpinning = false;
+
+// ====================================
+// WEBSOCKET
+// ====================================
+let ws = new WebSocket("ws://localhost:8080");
+
+ws.onopen = () => {
+  document.getElementById("queueBox").style.border = "2px solid #0f0";
+};
+
+ws.onmessage = (msg)=>{
+  const data = JSON.parse(msg.data);
+
+  if(data.type === "gift"){
+    addToQueue(data.username, data.coins);
+  }
+};
+
+// ====================================
+// FILE D’ATTENTE AUTOMATIQUE
+// ====================================
+function calcSpins(coins){
+  if(coins >= 2999) return 70;
+  if(coins >= 299) return 7;
+  if(coins >= 99) return 3;
+  if(coins >= 49) return 1;
+  return 0;
+}
+
+function addToQueue(username, coins){
+  let tours = calcSpins(coins);
+  if(tours <= 0) return;
+
+  queue.push({username, tours});
+  showQueue();
+
+  if(!currentPlayer) startNextPlayer();
+}
+
+function showQueue(){
+  const el = document.getElementById("queueBox");
+
+  if(queue.length === 0){
+    el.innerHTML = "Aucun joueur en attente.";
+    return;
+  }
+
+  el.innerHTML = queue
+    .map((p,i)=> `${i+1}. @${p.username} — ${p.tours} tour(s)`)
+    .join("<br>");
+}
+
+function startNextPlayer(){
+  if(queue.length === 0){
+    currentPlayer = null;
+    document.getElementById("spinBtn").disabled = true;
+    return;
+  }
+
+  currentPlayer = queue[0];
+
+  document.getElementById("playerNameDisplay").textContent = currentPlayer.username;
+  document.getElementById("spinsLeftDisplay").textContent  = currentPlayer.tours;
+  document.getElementById("spinBtn").disabled = false;
+}
+
+// ====================================
+// SPIN
+// ====================================
+document.getElementById("spinBtn").onclick = ()=>{
+
+  if(!currentPlayer || isSpinning) return;
+
+  isSpinning = true;
+  currentPlayer.tours--;
+  document.getElementById("spinsLeftDisplay").textContent = currentPlayer.tours;
+
+  spinAnimation();
+};
+
+function randomSymbol(){
+  return NON_BIG[Math.floor(Math.random()*NON_BIG.length)];
+}
+
+function spinAnimation(){
+
+  totalSpins++;
+  document.getElementById("totalSpinsDisplay").textContent = totalSpins;
+
+  let symbols = [
+    randomSymbol(),
+    randomSymbol(),
+    randomSymbol(),
+    randomSymbol()
+  ];
+
+  const imgs = document.querySelectorAll(".reel img");
+  symbols.forEach((s,i)=>{
+    imgs[i].src = s.file;
+    imgs[i].alt = s.label;
+  });
+
+  isSpinning = false;
+
+  if(currentPlayer.tours <= 0){
+    queue.shift();
+    showQueue();
+    startNextPlayer();
+  }
+}
+</script>
+
+</body>
+</html>
