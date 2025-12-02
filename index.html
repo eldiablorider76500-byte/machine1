@@ -1,210 +1,269 @@
-  <div class="machine-header">
-    <div class="machine-title">Slot 3B TikTok</div>
-    <div class="machine-subtitle">
-      4 mêmes cadeaux sur la ligne = gain • Loup = <strong>GIGA WIN</strong> • Moto = <strong>MEGA WIN</strong>
-    </div>
-  </div>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Slot 3B TikTok</title>
 
-  <div class="top-status">
-    <div class="player-info">
-      Joueur : <span id="playerNameDisplay">-</span> • Cadeau : <span id="giftCoinsDisplay">0</span> pièces • Tours restants : <span id="spinsLeftDisplay">0</span>
-    </div>
-    <div class="spin-counter">
-      Tours joués : <span id="totalSpinsDisplay">0</span>
-    </div>
-  </div>
+<style>
+body {
+    margin: 0;
+    background: radial-gradient(circle at top, #0f1625, #000 70%);
+    font-family: Arial, sans-serif;
+    color: white;
+    overflow-x: hidden;
+}
 
-  <div class="machine-body">
-    <div class="reels-container">
-      <div id="winBanner" class="win-banner">
-        <span id="winTypeLabel"></span> — <span id="winSymbolLabel"></span>
-      </div>
+#main-container {
+    width: 100%;
+    padding: 20px;
+}
 
-      <div class="reels-frame">
-        <div class="reels-inner">
-          <div class="reel" data-index="0"><img src="" alt=""></div>
-          <div class="reel" data-index="1"><img src="" alt=""></div>
-          <div class="reel" data-index="2"><img src="" alt=""></div>
-          <div class="reel" data-index="3"><img src="" alt=""></div>
-        </div>
-      </div>
-    </div>
+h1 {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 38px;
+    color: #ffdd55;
+    text-shadow: 0 0 12px #ff00ff;
+}
 
-    <div class="machine-footer">
-      <div class="control-panel">
-        <div>
-          <label for="playerName">Pseudo TikTok :</label><br>
-          <input id="playerName" type="text" placeholder="Pseudo…" />
-        </div>
-        <div>
-          <label for="giftCoins">Valeur du cadeau (pièces) :</label><br>
-          <input id="giftCoins" type="number" min="1" placeholder="ex: 99" />
-        </div>
+#top-info {
+    text-align: center;
+    margin: 10px 0 20px;
+}
 
-        <div class="helper-text">
-          Minimum <strong>49 pièces</strong><br>
-          49–98 = 1 tour • 99–298 = 3 tours • 299–2998 = 7 tours • 2999+ = 70 tours
-        </div>
-      </div>
+#slot-machine {
+    width: 900px;
+    margin: auto;
+    padding: 20px;
+    background: #1b0d25;
+    border-radius: 20px;
+    box-shadow: 0 0 25px #ff00ff;
+}
 
-      <div class="buttons-panel">
-        <button id="setGiftBtn" class="btn btn-secondary">Valider le cadeau</button>
-        <button id="spinBtn" class="btn btn-primary" disabled>SPIN</button>
-      </div>
-    </div>
-  </div>
+.slot-frame {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background: linear-gradient(180deg, #ff00c8, #ff8d00);
+    border-radius: 18px;
+}
+
+.reel {
+    width: 180px;
+    height: 220px;
+    background: #111a2c;
+    border-radius: 15px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.reel img {
+    width: 150px;
+    height: auto;
+}
+
+#right-panel {
+    position: fixed;
+    left: 20px;
+    top: 120px;
+    width: 250px;
+}
+
+.panel-block {
+    background: #0d0d12;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px #5d3396;
+}
+
+.panel-block h3 {
+    margin-top: 0;
+    font-size: 18px;
+    color: #ffbb55;
+}
+
+#winners-list, #queue-list {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.red { background: red; }
+.green { background: lime; }
+
+#bottom-panel {
+    width: 100%;
+    padding: 20px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background: #12081d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#manual-panel input {
+    background: #1a1a2b;
+    color: white;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 6px 10px;
+    margin-right: 10px;
+}
+
+#manual-add, #spin-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 12px;
+    background: #00d9ff;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 12px #00eaff;
+}
+
+#spin-btn:disabled {
+    background: #555;
+    cursor: not-allowed;
+}
+</style>
+
+</head>
+<body>
+
+<h1>SLOT 3B TIKTOK</h1>
+
+<div id="top-info">
+    Joueur : <span id="pName">-</span> •
+    Cadeau : <span id="pGift">0</span> pièces •
+    Tours : <span id="pTurns">0</span>
 </div>
 
-<!-- ================================
-     SCRIPT FINAL (VERSION QUI MARCHAIT)
-=================================== -->
+<div id="slot-machine">
+    <div class="slot-frame">
+        <div class="reel"><img id="r1" src="IMG-20251120-WA0017.jpg"></div>
+        <div class="reel"><img id="r2" src="IMG-20251120-WA0019.jpg"></div>
+        <div class="reel"><img id="r3" src="IMG-20251120-WA0034.jpg"></div>
+        <div class="reel"><img id="r4" src="IMG-20251120-WA0020.jpg"></div>
+    </div>
+</div>
+
+<div id="right-panel">
+
+    <div class="panel-block">
+        <h3>Connexion TikTok</h3>
+        <p><span id="statusDot" class="dot red"></span> Déconnecté</p>
+    </div>
+
+    <div class="panel-block">
+        <h3>File d'attente</h3>
+        <div id="queue-list">Aucun joueur.</div>
+    </div>
+
+    <div class="panel-block">
+        <h3>Historique des gagnants</h3>
+        Total gagnants : <span id="winTotal">0</span>
+        <div id="winners-list"></div>
+    </div>
+
+</div>
+
+<div id="bottom-panel">
+    <div id="manual-panel">
+        <input id="manual-name" placeholder="Pseudo…">
+        <input id="manual-gift" placeholder="Pièces…">
+        <button id="manual-add">Ajouter</button>
+    </div>
+
+    <button id="spin-btn" disabled>SPIN</button>
+</div>
+
 <script>
-// ====================================
-// IMAGES ORIGINALES (NE PAS TOUCHER)
-// ====================================
-const IMAGE_BASE_PATH = ""; // images dans même dossier
-const SYMBOLS = [
-  { id:"cygne",        file:"IMG-20251120-WA0017.jpg", label:"Cygne royal", isBig:false },
-  { id:"loup",         file:"IMG-20251120-WA0018.jpg", label:"Loup", isBig:true, bigType:"giga" },
-  { id:"rosejamais",   file:"IMG-20251120-WA0019.jpg", label:"Rose à jamais", isBig:false },
-  { id:"casquette",    file:"IMG-20251120-WA0020.jpg", label:"Casquette", isBig:false },
-  { id:"manette",      file:"IMG-20251120-WA0021.jpg", label:"Manette de jeu", isBig:false },
-  { id:"confetti",     file:"IMG-20251120-WA0022.jpg", label:"Confetti", isBig:false },
-  { id:"amourlangage", file:"IMG-20251120-WA0023.jpg", label:"Amour", isBig:false },
-  { id:"donuts",       file:"IMG-20251120-WA0024.jpg", label:"Donut", isBig:false },
-  { id:"glace",        file:"IMG-20251120-WA0025.jpg", label:"Glace", isBig:false },
-  { id:"parfum",       file:"IMG-20251120-WA0026.jpg", label:"Parfum", isBig:false },
-  { id:"corgi",        file:"IMG-20251120-WA0027.jpg", label:"Corgi", isBig:false },
-  { id:"gants",        file:"IMG-20251120-WA0028.jpg", label:"Gants", isBig:false },
-  { id:"rosa",         file:"IMG-20251120-WA0029.jpg", label:"Rosa", isBig:false },
-  { id:"gg",           file:"IMG-20251120-WA0030.jpg", label:"GG", isBig:false },
-  { id:"positivite",   file:"IMG-20251120-WA0031.jpg", label:"Positivité", isBig:false },
-  { id:"tofu",         file:"IMG-20251120-WA0032.jpg", label:"Tofu", isBig:false },
-  { id:"coeurdoigts",  file:"IMG-20251120-WA0033.jpg", label:"Cœur doigts", isBig:false },
-  { id:"coeurnuage",   file:"IMG-20251120-WA0034.jpg", label:"Cœur nuage", isBig:false },
-  { id:"moto",         file:"IMG-20251120-WA0035.jpg", label:"Moto", isBig:true, bigType:"mega" },
-  { id:"pistolet",     file:"IMG-20251120-WA0042.jpg", label:"Pistolet argent", isBig:false }
-];
-
-const NON_BIG = SYMBOLS.filter(s => !s.isBig);
-
-// ====================================
-// VARIABLES
-// ====================================
 let queue = [];
 let currentPlayer = null;
-let totalSpins = 0;
-let isSpinning = false;
+let winners = 0;
 
-// ====================================
-// WEBSOCKET
-// ====================================
-let ws = new WebSocket("ws://localhost:8080");
+const pName = document.getElementById("pName");
+const pGift = document.getElementById("pGift");
+const pTurns = document.getElementById("pTurns");
 
-ws.onopen = () => {
-  document.getElementById("queueBox").style.border = "2px solid #0f0";
+function updateQueue() {
+    const box = document.getElementById("queue-list");
+    if (queue.length === 0) box.innerHTML = "Aucun joueur.";
+    else box.innerHTML = queue.map((p,i)=>`${i+1}. ${p.name} — ${p.turns} tours`).join("<br>");
+}
+
+function nextPlayer() {
+    currentPlayer = queue.shift() || null;
+
+    if (!currentPlayer) {
+        pName.textContent = "-";
+        pGift.textContent = "0";
+        pTurns.textContent = "0";
+        document.getElementById("spin-btn").disabled = true;
+        updateQueue();
+        return;
+    }
+
+    pName.textContent = currentPlayer.name;
+    pGift.textContent = currentPlayer.gift;
+    pTurns.textContent = currentPlayer.turns;
+    document.getElementById("spin-btn").disabled = false;
+
+    updateQueue();
+}
+
+function addPlayer(name, gift) {
+    let turns = 0;
+
+    if (gift >= 2999) turns = 70;
+    else if (gift >= 299) turns = 7;
+    else if (gift >= 99) turns = 3;
+    else if (gift >= 49) turns = 1;
+
+    queue.push({name, gift, turns});
+    if (!currentPlayer) nextPlayer();
+    else updateQueue();
+}
+
+document.getElementById("manual-add").onclick = () => {
+    const name = document.getElementById("manual-name").value.trim();
+    const gift = parseInt(document.getElementById("manual-gift").value);
+
+    if (!name || isNaN(gift) || gift < 49) return alert("Cadeau invalide.");
+
+    addPlayer(name, gift);
+
+    document.getElementById("manual-name").value = "";
+    document.getElementById("manual-gift").value = "";
 };
 
-ws.onmessage = (msg)=>{
-  const data = JSON.parse(msg.data);
+document.getElementById("spin-btn").onclick = () => {
+    if (!currentPlayer) return;
 
-  if(data.type === "gift"){
-    addToQueue(data.username, data.coins);
-  }
+    const imgs = ["IMG-20251120-WA0017.jpg","IMG-20251120-WA0019.jpg","IMG-20251120-WA0034.jpg","IMG-20251120-WA0020.jpg","IMG-20251120-WA0027.jpg"];
+    r1.src = imgs[Math.floor(Math.random()*imgs.length)];
+    r2.src = imgs[Math.floor(Math.random()*imgs.length)];
+    r3.src = imgs[Math.floor(Math.random()*imgs.length)];
+    r4.src = imgs[Math.floor(Math.random()*imgs.length)];
+
+    currentPlayer.turns--;
+    pTurns.textContent = currentPlayer.turns;
+
+    if (currentPlayer.turns <= 0) nextPlayer();
 };
 
-// ====================================
-// FILE D’ATTENTE AUTOMATIQUE
-// ====================================
-function calcSpins(coins){
-  if(coins >= 2999) return 70;
-  if(coins >= 299) return 7;
-  if(coins >= 99) return 3;
-  if(coins >= 49) return 1;
-  return 0;
-}
-
-function addToQueue(username, coins){
-  let tours = calcSpins(coins);
-  if(tours <= 0) return;
-
-  queue.push({username, tours});
-  showQueue();
-
-  if(!currentPlayer) startNextPlayer();
-}
-
-function showQueue(){
-  const el = document.getElementById("queueBox");
-
-  if(queue.length === 0){
-    el.innerHTML = "Aucun joueur en attente.";
-    return;
-  }
-
-  el.innerHTML = queue
-    .map((p,i)=> `${i+1}. @${p.username} — ${p.tours} tour(s)`)
-    .join("<br>");
-}
-
-function startNextPlayer(){
-  if(queue.length === 0){
-    currentPlayer = null;
-    document.getElementById("spinBtn").disabled = true;
-    return;
-  }
-
-  currentPlayer = queue[0];
-
-  document.getElementById("playerNameDisplay").textContent = currentPlayer.username;
-  document.getElementById("spinsLeftDisplay").textContent  = currentPlayer.tours;
-  document.getElementById("spinBtn").disabled = false;
-}
-
-// ====================================
-// SPIN
-// ====================================
-document.getElementById("spinBtn").onclick = ()=>{
-
-  if(!currentPlayer || isSpinning) return;
-
-  isSpinning = true;
-  currentPlayer.tours--;
-  document.getElementById("spinsLeftDisplay").textContent = currentPlayer.tours;
-
-  spinAnimation();
-};
-
-function randomSymbol(){
-  return NON_BIG[Math.floor(Math.random()*NON_BIG.length)];
-}
-
-function spinAnimation(){
-
-  totalSpins++;
-  document.getElementById("totalSpinsDisplay").textContent = totalSpins;
-
-  let symbols = [
-    randomSymbol(),
-    randomSymbol(),
-    randomSymbol(),
-    randomSymbol()
-  ];
-
-  const imgs = document.querySelectorAll(".reel img");
-  symbols.forEach((s,i)=>{
-    imgs[i].src = s.file;
-    imgs[i].alt = s.label;
-  });
-
-  isSpinning = false;
-
-  if(currentPlayer.tours <= 0){
-    queue.shift();
-    showQueue();
-    startNextPlayer();
-  }
-}
 </script>
 
 </body>
