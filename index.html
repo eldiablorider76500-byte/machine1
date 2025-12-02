@@ -3,185 +3,198 @@
 <head>
 <meta charset="UTF-8">
 <title>Slot 3B TikTok</title>
+
 <style>
     body {
+        background: radial-gradient(circle at top, #0e1425, #02040a);
+        margin: 0;
         font-family: Arial, sans-serif;
-        background: #0b0f1a;
         color: white;
         text-align: center;
-        margin: 0;
-        padding: 0;
     }
-    h1 {
-        margin-top: 40px;
-        color: #f4d03f;
-        text-shadow: 0 0 15px #ff00ff;
-        font-size: 40px;
-    }
-    .slot-container {
-        margin: 40px auto;
-        width: 700px;
-        background: rgba(40, 0, 60, 0.6);
-        padding: 30px;
+
+    .main {
+        width: 1000px;
+        margin: auto;
+        margin-top: 80px;
+        padding: 40px;
         border-radius: 20px;
-        box-shadow: 0 0 25px #ff00cc;
+        background: rgba(20, 0, 40, 0.7);
+        box-shadow: 0 0 40px #6200ff40;
     }
-    .reels {
-        display: flex;
-        justify-content: center;
-        background: black;
+
+    h1 {
+        font-size: 32px;
+        color: #ffdd55;
+        text-shadow: 0 0 12px #ff00ff;
+        letter-spacing: 2px;
+        margin-bottom: 25px;
+    }
+
+    /* CADRE NÉON */
+    .slot-frame {
+        width: 650px;
+        height: 250px;
+        margin: auto;
+        border-radius: 20px;
         padding: 20px;
-        border-radius: 15px;
-        border: 5px solid #ff00ff;
-        margin-bottom: 20px;
+        background: linear-gradient(45deg, #ff00ff, #ff8800, #ffee00);
+        box-shadow: 0 0 20px #ff00ff;
     }
-    .reel {
-        width: 120px;
-        height: 120px;
-        margin: 0 10px;
-        background: #111;
-        border-radius: 10px;
+
+    .slot-inner {
+        background: #0d0d16;
+        border-radius: 15px;
+        height: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
+        gap: 20px;
+        padding: 15px;
     }
+
+    .reel {
+        width: 120px;
+        height: 140px;
+        background: #0a0a12;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: inset 0 0 20px #000;
+    }
+
     .reel img {
         width: 100px;
         height: 100px;
     }
-    button {
-        padding: 12px 26px;
-        font-size: 20px;
-        margin: 10px;
-        border-radius: 8px;
-        cursor: pointer;
-        border: none;
-        font-weight: bold;
+
+    .right-panel {
+        float: right;
+        width: 280px;
+        text-align: left;
     }
-    #spinBtn {
-        background: limegreen;
-        color: black;
+
+    .panel-box {
+        background: rgba(255, 255, 255, 0.08);
+        padding: 14px;
+        border-radius: 10px;
+        margin-bottom: 18px;
     }
-    #addManual {
-        background: orange;
-    }
-    .side-panel {
+
+    .buttons {
         margin-top: 20px;
     }
-    #history, #queue {
-        background: rgba(255,255,255,0.1);
-        padding: 15px;
-        border-radius: 10px;
-        width: 300px;
-        margin: 10px auto;
-        text-align: left;
-        font-size: 14px;
+
+    button {
+        padding: 12px 25px;
+        font-size: 17px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
     }
+
+    #btnAdd { background: #ffaa00; }
+    #btnSpin { background: #00ff7f; }
 </style>
 </head>
 
 <body>
 
-<h1>SLOT 3B TIKTOK</h1>
+<div class="main">
 
-<div class="slot-container">
+    <h1>SLOT 3B TIKTOK</h1>
 
-    <div class="reels">
-        <div class="reel" id="reel1"></div>
-        <div class="reel" id="reel2"></div>
-        <div class="reel" id="reel3"></div>
+    <div class="right-panel">
+        <div class="panel-box" id="queueBox">
+            <b>File d'attente :</b><br>
+            0 joueur(s)
+        </div>
+
+        <div class="panel-box" id="historyBox">
+            <b>Historique des gagnants :</b><br>
+        </div>
     </div>
 
-    <div>
-        <button id="addManual">Ajouter (manuel)</button>
-        <button id="spinBtn">SPIN</button>
+    <div class="slot-frame">
+        <div class="slot-inner">
+            <div class="reel" id="r1"></div>
+            <div class="reel" id="r2"></div>
+            <div class="reel" id="r3"></div>
+            <div class="reel" id="r4"></div>
+        </div>
     </div>
 
-    <div class="side-panel">
-        <div id="queue"><b>File d’attente :</b><br>0 joueur(s)</div>
-        <div id="history"><b>Historique :</b><br></div>
+    <div class="buttons">
+        <button id="btnAdd">AJOUTER (MANUEL)</button>
+        <button id="btnSpin">SPIN</button>
     </div>
 
 </div>
 
 <script>
-/* --- ÉMOTES --- */
-const icons = [
+const icones = [
     "https://i.imgur.com/G8vdXLL.png",
     "https://i.imgur.com/vt2N6hE.png",
     "https://i.imgur.com/KkvyH2L.png",
     "https://i.imgur.com/6jQy2rA.png"
 ];
 
-/* --- DOM --- */
-const r1 = document.getElementById("reel1");
-const r2 = document.getElementById("reel2");
-const r3 = document.getElementById("reel3");
-const btnSpin = document.getElementById("spinBtn");
-const btnAdd = document.getElementById("addManual");
-const queueDiv = document.getElementById("queue");
-const historyDiv = document.getElementById("history");
+let queue = [];
 
-/* FILE D’ATTENTE */
-let file = [];
+const reels = [
+    document.getElementById("r1"),
+    document.getElementById("r2"),
+    document.getElementById("r3"),
+    document.getElementById("r4")
+];
 
-/* AUTO-AJOUT LORS D’UN CADEAU (tu appelles cette fonction quand TikTok envoie l’event) */
-function ajouterPseudoAuto(pseudo) {
-    file.push(pseudo);
-    majFile();
+function majQueue() {
+    document.getElementById("queueBox").innerHTML =
+        "<b>File d'attente :</b><br>" + queue.length + " joueur(s)<br><br>" +
+        queue.map(j => "• " + j).join("<br>");
 }
 
-/* MODE MANUEL */
-btnAdd.addEventListener("click", () => {
+document.getElementById("btnAdd").onclick = () => {
     const pseudo = "Joueur_" + Math.floor(Math.random() * 9999);
-    file.push(pseudo);
-    majFile();
-});
+    queue.push(pseudo);
+    majQueue();
+};
 
-/* MET À JOUR L’AFFICHAGE FILE */
-function majFile() {
-    queueDiv.innerHTML = "<b>File d’attente :</b><br>" + file.length + " joueur(s)<br><br>";
-    file.forEach(p => {
-        queueDiv.innerHTML += "• " + p + "<br>";
-    });
-}
-
-/* SPIN */
-btnSpin.addEventListener("click", spin);
-
-function spin() {
-    if (file.length === 0) {
-        alert("Aucun joueur dans la file !");
+document.getElementById("btnSpin").onclick = () => {
+    if (queue.length === 0) {
+        alert("Aucun joueur !");
         return;
     }
 
-    const joueur = file.shift();
-    majFile();
+    const joueur = queue.shift();
+    majQueue();
 
-    const i1 = randomIcon();
-    const i2 = randomIcon();
-    const i3 = randomIcon();
+    let resultats = [];
 
-    r1.innerHTML = `<img src="${i1}">`;
-    r2.innerHTML = `<img src="${i2}">`;
-    r3.innerHTML = `<img src="${i3}">`;
+    reels.forEach((r, i) => {
+        r.innerHTML = "<img src='https://i.imgur.com/3oQZP61.gif' width='70'>";
+        setTimeout(() => {
+            const ic = icones[Math.floor(Math.random() * icones.length)];
+            resultats[i] = ic;
+            r.innerHTML = `<img src="${ic}">`;
+        }, 400 + i * 300);
+    });
 
-    let gain = "PERDU";
-    if (i1 === i2 && i2 === i3) gain = "MEGA WIN";
-    else if (i1 === i2 || i2 === i3 || i1 === i3) gain = "GAGNE";
+    setTimeout(() => {
+        const unique = new Set(resultats).size;
 
-    addHistory(joueur, gain);
-}
+        let gagne =
+            unique === 1 ? "MEGA WIN" :
+            unique === 2 || unique === 3 ? "GIGA WIN" :
+            "PERDU";
 
-/* RANDOM */
-function randomIcon() {
-    return icons[Math.floor(Math.random() * icons.length)];
-}
+        document.getElementById("historyBox").innerHTML +=
+            `<br><b>${joueur}</b> → ${gagne}`;
 
-/* HISTORIQUE */
-function addHistory(user, result) {
-    historyDiv.innerHTML += `<br><b>${user}</b> → ${result}`;
-}
+    }, 1800);
+};
 </script>
 
 </body>
