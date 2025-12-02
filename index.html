@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Slot 3B TikTok</title>
-
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -11,16 +10,17 @@
         color: white;
         text-align: center;
         margin: 0;
+        padding: 0;
     }
     h1 {
         margin-top: 40px;
-        color: #ffd43b;
+        color: #f4d03f;
         text-shadow: 0 0 15px #ff00ff;
         font-size: 40px;
     }
     .slot-container {
         margin: 40px auto;
-        width: 850px;
+        width: 700px;
         background: rgba(40, 0, 60, 0.6);
         padding: 30px;
         border-radius: 20px;
@@ -36,8 +36,8 @@
         margin-bottom: 20px;
     }
     .reel {
-        width: 140px;
-        height: 140px;
+        width: 120px;
+        height: 120px;
         margin: 0 10px;
         background: #111;
         border-radius: 10px;
@@ -46,20 +46,9 @@
         align-items: center;
     }
     .reel img {
-        width: 120px;
-        height: 120px;
+        width: 100px;
+        height: 100px;
     }
-
-    .reel.spin img {
-        animation: spinAnim 0.2s linear infinite;
-        opacity: 0.5;
-    }
-
-    @keyframes spinAnim {
-        0% { transform: translateY(0px) rotate(0deg); }
-        100% { transform: translateY(-20px) rotate(20deg); }
-    }
-
     button {
         padding: 12px 26px;
         font-size: 20px;
@@ -69,46 +58,24 @@
         border: none;
         font-weight: bold;
     }
-    #spinBtn { background: limegreen; }
-    #addManual { background: orange; }
-
-    #queue, #history {
+    #spinBtn {
+        background: limegreen;
+        color: black;
+    }
+    #addManual {
+        background: orange;
+    }
+    .side-panel {
+        margin-top: 20px;
+    }
+    #history, #queue {
         background: rgba(255,255,255,0.1);
         padding: 15px;
         border-radius: 10px;
-        width: 350px;
+        width: 300px;
         margin: 10px auto;
         text-align: left;
         font-size: 14px;
-    }
-
-    /* FEUX D’ARTIFICE / CONFETTIS */
-    #fireworks, #confetti {
-        position: fixed;
-        top: 0; left: 0;
-        width: 100vw;
-        height: 100vh;
-        pointer-events: none;
-        display: none;
-        z-index: 9999;
-    }
-
-    .firework {
-        position: absolute;
-        width: 6px;
-        height: 6px;
-        background: yellow;
-        border-radius: 50%;
-        animation: explode 1s ease-out forwards;
-    }
-
-    @keyframes explode {
-        0% { transform: scale(1); opacity: 1; }
-        100% { transform: scale(15); opacity: 0; }
-    }
-
-    @keyframes fall {
-        to { transform: translateY(120vh) rotate(360deg); }
     }
 </style>
 </head>
@@ -123,28 +90,22 @@
         <div class="reel" id="reel1"></div>
         <div class="reel" id="reel2"></div>
         <div class="reel" id="reel3"></div>
-        <div class="reel" id="reel4"></div>
     </div>
 
-    <button id="addManual">Ajouter (manuel)</button>
-    <button id="spinBtn">SPIN</button>
+    <div>
+        <button id="addManual">Ajouter (manuel)</button>
+        <button id="spinBtn">SPIN</button>
+    </div>
 
-    <div id="queue"><b>File d’attente :</b><br>0 joueur(s)</div>
-    <div id="history"><b>Historique :</b><br></div>
+    <div class="side-panel">
+        <div id="queue"><b>File d’attente :</b><br>0 joueur(s)</div>
+        <div id="history"><b>Historique :</b><br></div>
+    </div>
 
 </div>
 
-<!-- SONS -->
-<audio id="rollingSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_566cf0c8cc.mp3" loop></audio>
-<audio id="megaSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_d6a23d4c42.mp3"></audio>
-<audio id="gigaSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_5b9e0bcd13.mp3"></audio>
-
-<!-- EFFETS -->
-<div id="fireworks"></div>
-<div id="confetti"></div>
-
 <script>
-/* --- ICONES --- */
+/* --- ÉMOTES --- */
 const icons = [
     "https://i.imgur.com/G8vdXLL.png",
     "https://i.imgur.com/vt2N6hE.png",
@@ -152,134 +113,75 @@ const icons = [
     "https://i.imgur.com/6jQy2rA.png"
 ];
 
-/* DOM */
-const reels = [
-    document.getElementById("reel1"),
-    document.getElementById("reel2"),
-    document.getElementById("reel3"),
-    document.getElementById("reel4")
-];
-
+/* --- DOM --- */
+const r1 = document.getElementById("reel1");
+const r2 = document.getElementById("reel2");
+const r3 = document.getElementById("reel3");
 const btnSpin = document.getElementById("spinBtn");
 const btnAdd = document.getElementById("addManual");
 const queueDiv = document.getElementById("queue");
 const historyDiv = document.getElementById("history");
 
+/* FILE D’ATTENTE */
 let file = [];
 
+/* AUTO-AJOUT LORS D’UN CADEAU (tu appelles cette fonction quand TikTok envoie l’event) */
+function ajouterPseudoAuto(pseudo) {
+    file.push(pseudo);
+    majFile();
+}
+
+/* MODE MANUEL */
 btnAdd.addEventListener("click", () => {
     const pseudo = "Joueur_" + Math.floor(Math.random() * 9999);
     file.push(pseudo);
     majFile();
 });
 
+/* MET À JOUR L’AFFICHAGE FILE */
 function majFile() {
     queueDiv.innerHTML = "<b>File d’attente :</b><br>" + file.length + " joueur(s)<br><br>";
-    file.forEach(p => queueDiv.innerHTML += "• " + p + "<br>");
-}
-
-function randomIcon() {
-    return icons[Math.floor(Math.random() * icons.length)];
-}
-
-/* FEUX D’ARTIFICE */
-function launchFireworks() {
-    const fw = document.getElementById("fireworks");
-    fw.style.display = "block";
-    fw.innerHTML = "";
-
-    for (let i = 0; i < 20; i++) {
-        const f = document.createElement("div");
-        f.classList.add("firework");
-        f.style.left = Math.random() * window.innerWidth + "px";
-        f.style.top = Math.random() * window.innerHeight + "px";
-        fw.appendChild(f);
-    }
-
-    setTimeout(() => fw.style.display = "none", 1200);
-}
-
-/* CONFETTIS */
-function launchConfetti() {
-    const co = document.getElementById("confetti");
-    co.style.display = "block";
-    co.innerHTML = "";
-
-    for (let i = 0; i < 80; i++) {
-        const c = document.createElement("div");
-        c.style.position = "absolute";
-        c.style.width = "8px";
-        c.style.height = "8px";
-        c.style.background = `hsl(${Math.random()*360},100%,60%)`;
-        c.style.left = Math.random() * innerWidth + "px";
-        c.style.top = "-20px";
-        c.style.opacity = Math.random();
-        c.style.animation = `fall ${1 + Math.random()*2}s linear`;
-        co.appendChild(c);
-    }
-
-    setTimeout(() => co.style.display = "none", 2500);
+    file.forEach(p => {
+        queueDiv.innerHTML += "• " + p + "<br>";
+    });
 }
 
 /* SPIN */
 btnSpin.addEventListener("click", spin);
 
 function spin() {
-    if (file.length === 0) { alert("Aucun joueur dans la file !"); return; }
+    if (file.length === 0) {
+        alert("Aucun joueur dans la file !");
+        return;
+    }
 
     const joueur = file.shift();
     majFile();
 
-    const rolling = document.getElementById("rollingSound");
-    const mega = document.getElementById("megaSound");
-    const giga = document.getElementById("gigaSound");
+    const i1 = randomIcon();
+    const i2 = randomIcon();
+    const i3 = randomIcon();
 
-    rolling.currentTime = 0;
-    rolling.play();
+    r1.innerHTML = `<img src="${i1}">`;
+    r2.innerHTML = `<img src="${i2}">`;
+    r3.innerHTML = `<img src="${i3}">`;
 
-    let results = [];
+    let gain = "PERDU";
+    if (i1 === i2 && i2 === i3) gain = "MEGA WIN";
+    else if (i1 === i2 || i2 === i3 || i1 === i3) gain = "GAGNE";
 
-    reels.forEach(r => r.classList.add("spin"));
-
-    // Tirage
-    results = [
-        randomIcon(),
-        randomIcon(),
-        randomIcon(),
-        randomIcon()
-    ];
-
-    // Arrêts progressifs
-    reels.forEach((reel, index) => {
-        setTimeout(() => {
-            reel.innerHTML = `<img src="${results[index]}">`;
-            reel.classList.remove("spin");
-        }, 600 + index * 300);
-    });
-
-    setTimeout(() => {
-        rolling.pause();
-
-        let gain = "PERDU";
-
-        const allEqual = results.every(v => v === results[0]);
-        const anyPair = new Set(results).size <= 3;
-
-        if (allEqual) {
-            gain = "MEGA WIN";
-            mega.play();
-            launchFireworks();
-            launchConfetti();
-        } else if (anyPair) {
-            gain = "GIGA WIN";
-            giga.play();
-            launchConfetti();
-        }
-
-        historyDiv.innerHTML += `<br><b>${joueur}</b> → ${gain}`;
-    }, 2000);
+    addHistory(joueur, gain);
 }
 
+/* RANDOM */
+function randomIcon() {
+    return icons[Math.floor(Math.random() * icons.length)];
+}
+
+/* HISTORIQUE */
+function addHistory(user, result) {
+    historyDiv.innerHTML += `<br><b>${user}</b> → ${result}`;
+}
 </script>
 
 </body>
