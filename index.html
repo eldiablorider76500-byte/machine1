@@ -1,308 +1,123 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>Slot 3B TikTok</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slot 3B TikTok</title>
 
-<style>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(circle at top, #1d3350, #050811 60%);
+      font-family: Arial, sans-serif;
+      color: white;
+    }
 
-body {
-    margin: 0;
-    background: radial-gradient(circle at top, #0d1526, #05070d);
-    font-family: Arial, sans-serif;
-    color: white;
-    overflow-x: hidden;
-}
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: auto;
+      padding-top: 40px;
+      text-align: center;
+    }
 
-/* --------- CONTAINER GLOBAL -------- */
-#main {
-    width: 90%;
-    margin: auto;
-    margin-top: 60px;
-}
+    h1 {
+      font-size: 38px;
+      color: #ffd54f;
+      text-shadow: 0 0 15px #ff00e6;
+    }
 
-/* --------- TITRE -------- */
-#titleBox {
-    background: #351236;
-    padding: 25px;
-    border-radius: 20px;
-    text-align: center;
-    margin-bottom: 25px;
-}
+    #slot-box {
+      margin-top: 40px;
+      padding: 30px;
+      border-radius: 25px;
+      background: rgba(0, 0, 0, 0.35);
+      box-shadow: 0 0 30px rgba(255, 0, 200, 0.3);
+    }
 
-#titleBox h1 {
-    margin: 0;
-    font-size: 32px;
-    color: #ffd32a;
-    letter-spacing: 3px;
-}
+    .reels {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 30px;
+      border: 4px solid #ff00b8;
+      border-radius: 25px;
+      background: linear-gradient(180deg, #ff00b8, #ff9100);
+    }
 
-/* -------- ZONE MACHINE -------- */
-#slotBox {
-    width: 100%;
-    background: rgba(20, 10, 40, 0.65);
-    border-radius: 20px;
-    padding: 20px;
-    min-height: 480px;
-    display: flex;
-    justify-content: center;
-    position: relative;
-}
+    .reel {
+      width: 140px;
+      height: 160px;
+      background: #0a0f1d;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 0 20px black;
+    }
 
-/* -------- CADRE NEON -------- */
-#neonFrame {
-    width: 60%;
-    height: 300px;
-    padding: 20px;
-    border-radius: 20px;
-    background: linear-gradient(45deg, #ff00c8, #ffa200);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+    .reel img {
+      width: 80%;
+      height: auto;
+    }
 
-/* --------- REELS -------- */
-.reelContainer {
-    width: 80%;
-    height: 230px;
-    background: #0a0f1c;
-    border-radius: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 25px;
-}
+    .inputs {
+      margin-top: 30px;
+    }
 
-.reel {
-    width: 140px;
-    height: 180px;
-    background: #121a2b;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+    input {
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      width: 160px;
+      margin: 5px;
+      text-align: center;
+    }
 
-.reel img {
-    max-width: 90px;
-}
+    button {
+      padding: 12px 25px;
+      margin: 10px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(#00e5ff, #00b0ff);
+      color: black;
+      font-weight: bold;
+      font-size: 14px;
+    }
 
-/* ----- SIDEBAR À DROITE ----- */
-#sidePanel {
-    position: absolute;
-    right: -350px;
-    top: 0;
-    width: 330px;
-    background: rgba(30, 20, 60, 0.8);
-    padding: 18px;
-    border-radius: 12px;
-}
-
-h3 {
-    margin-top: 10px;
-    border-bottom: 1px solid #666;
-    padding-bottom: 3px;
-}
-
-/* file + gagnants */
-#queueList, #winnersList {
-    font-size: 14px;
-}
-
-/* ------ FORM CADEAUX ------ */
-#giftBox {
-    margin-top: 30px;
-    display: flex;
-    justify-content: space-between;
-}
-
-.inputBlock {
-    width: 40%;
-}
-
-input {
-    width: 90%;
-    padding: 7px;
-    border-radius: 7px;
-    border: none;
-    margin-bottom: 10px;
-}
-
-button {
-    padding: 10px 22px;
-    font-size: 16px;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-}
-
-#manualBtn {
-    background: #ffca00;
-}
-
-#spinBtn {
-    background: #00c8ff;
-}
-
-</style>
+    #spin {
+      background: linear-gradient(#ffea00, #ff6f00);
+    }
+  </style>
 </head>
+
 <body>
 
-<div id="main">
+<div class="container">
+  <h1>SLOT 3B TIKTOK</h1>
+  <p>4 mêmes cadeaux = GAIN • Loup = GIGA WIN • Moto = MEGA WIN</p>
 
-    <div id="titleBox">
-        <h1>SLOT 3B TIKTOK</h1>
-        <div style="margin-top:10px;">
-            4 mêmes cadeaux sur la ligne = gain • Loup = <b>GIGA WIN</b> • Moto = <b>MEGA WIN</b>
-        </div>
-        <div id="statsTop" style="margin-top:5px;font-size:14px;">
-            Joueur : - • Cadeau : 0 pièces • Tours restants : 0  
-            <span style="float:right;">Tours joués : 0 • Depuis gros gain : 0</span>
-        </div>
+  <div id="slot-box">
+    <div class="reels">
+      <div class="reel"><img id="r1" src="IMG-20251120-WA0017.jpg"></div>
+      <div class="reel"><img id="r2" src="IMG-20251120-WA0019.jpg"></div>
+      <div class="reel"><img id="r3" src="IMG-20251120-WA0034.jpg"></div>
+      <div class="reel"><img id="r4" src="IMG-20251120-WA0020.jpg"></div>
     </div>
 
-    <div id="slotBox">
-
-        <!-- MACHINE -->
-        <div id="neonFrame">
-            <div class="reelContainer">
-                <div class="reel"><img id="r1" src="reel1.png"></div>
-                <div class="reel"><img id="r2" src="reel2.png"></div>
-                <div class="reel"><img id="r3" src="reel3.png"></div>
-                <div class="reel"><img id="r4" src="reel4.png"></div>
-            </div>
-        </div>
-
-        <!-- PANEL DROITE -->
-        <div id="sidePanel">
-            <h3>Connexion TikTok</h3>
-            <div id="tiktokStatus">🟢 Connecté au serveur</div>
-
-            <h3>File d'attente</h3>
-            <div id="queueList">Aucun joueur en attente.</div>
-
-            <h3>Historique des gagnants (session)</h3>
-            <div id="winnersList">Aucun gagnant pour l'instant.</div>
-        </div>
-
+    <div class="inputs">
+      <input placeholder="Pseudo">
+      <input placeholder="Valeur du cadeau">
+      <br>
+      <button>Valider le cadeau</button>
+      <button id="spin">SPIN</button>
     </div>
 
-    <!-- FORMULAIRE ADD CADEAU -->
-    <div id="giftBox">
-        <div class="inputBlock">
-            <label>Pseudo TikTok :</label><br>
-            <input id="manualName" placeholder="Pseudo…">
-        </div>
-
-        <div class="inputBlock">
-            <label>Valeur du cadeau (pièces) :</label><br>
-            <input id="manualCoins" placeholder="ex: 99">
-        </div>
-
-        <div style="width:20%;display:flex;flex-direction:column;justify-content:center;">
-            <button id="manualBtn">AJOUTER (MANUEL)</button>
-            <button id="spinBtn" style="margin-top:10px;">SPIN</button>
-        </div>
-    </div>
-
+  </div>
 </div>
-
-<script>
-
-// ===============================
-//    VARIABLES LOCALES
-// ===============================
-
-let queue = [];
-let winners = [];
-let currentPlayer = null;
-let remaining = 0;
-
-
-// ===============================
-//    AFFICHAGES
-// ===============================
-
-function refreshQueue() {
-    let box = document.getElementById("queueList");
-    if (queue.length === 0) {
-        box.innerHTML = "Aucun joueur en attente.";
-        return;
-    }
-    box.innerHTML = queue.map((p,i)=> `${i+1}. ${p.name} — ${p.tours} tour(s)`).join("<br>");
-}
-
-function refreshWinners() {
-    let box = document.getElementById("winnersList");
-    if (winners.length === 0) {
-        box.innerHTML = "Aucun gagnant pour l'instant.";
-        return;
-    }
-    box.innerHTML = winners.map(w=> `🎉 ${w.name} — ${w.gift}`).join("<br>");
-}
-
-
-// ===============================
-//    AJOUT MANUEL CADEAU
-// ===============================
-
-function valueToTours(v) {
-    if (v < 49) return 0;
-    if (v <= 98) return 1;
-    if (v <= 298) return 3;
-    if (v <= 2988) return 7;
-    return 70;
-}
-
-document.getElementById("manualBtn").onclick = () => {
-    let name = document.getElementById("manualName").value.trim();
-    let coins = parseInt(document.getElementById("manualCoins").value);
-
-    if (!name || isNaN(coins)) {
-        alert("Entre un pseudo et une valeur correcte !");
-        return;
-    }
-
-    let tours = valueToTours(coins);
-    if (tours <= 0) {
-        alert("Minimum 49 pièces !");
-        return;
-    }
-
-    queue.push({ name, tours, gift: coins });
-    refreshQueue();
-
-    document.getElementById("manualName").value = "";
-    document.getElementById("manualCoins").value = "";
-};
-
-
-// ===============================
-//    SPIN MANUEL
-// ===============================
-
-document.getElementById("spinBtn").onclick = () => {
-
-    if (queue.length === 0) {
-        alert("Aucun joueur !");
-        return;
-    }
-
-    let p = queue.shift();
-    refreshQueue();
-
-    remaining = p.tours - 1;
-    currentPlayer = p;
-
-    document.getElementById("statsTop").innerHTML =
-        `Joueur : ${p.name} • Cadeau : ${p.gift} pièces • Tours restants : ${remaining}`;
-
-    winners.push({ name: p.name, gift: p.gift + " pièces" });
-    refreshWinners();
-};
-
-</script>
 
 </body>
 </html>
