@@ -3,198 +3,305 @@
 <head>
 <meta charset="UTF-8">
 <title>Slot 3B TikTok</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-    body {
-        background: radial-gradient(circle at top, #0e1425, #02040a);
-        margin: 0;
-        font-family: Arial, sans-serif;
-        color: white;
-        text-align: center;
-    }
 
-    .main {
-        width: 1000px;
-        margin: auto;
-        margin-top: 80px;
-        padding: 40px;
-        border-radius: 20px;
-        background: rgba(20, 0, 40, 0.7);
-        box-shadow: 0 0 40px #6200ff40;
-    }
+body {
+    margin: 0;
+    background: radial-gradient(circle at top, #0d1526, #05070d);
+    font-family: Arial, sans-serif;
+    color: white;
+    overflow-x: hidden;
+}
 
-    h1 {
-        font-size: 32px;
-        color: #ffdd55;
-        text-shadow: 0 0 12px #ff00ff;
-        letter-spacing: 2px;
-        margin-bottom: 25px;
-    }
+/* --------- CONTAINER GLOBAL -------- */
+#main {
+    width: 90%;
+    margin: auto;
+    margin-top: 60px;
+}
 
-    /* CADRE NÉON */
-    .slot-frame {
-        width: 650px;
-        height: 250px;
-        margin: auto;
-        border-radius: 20px;
-        padding: 20px;
-        background: linear-gradient(45deg, #ff00ff, #ff8800, #ffee00);
-        box-shadow: 0 0 20px #ff00ff;
-    }
+/* --------- TITRE -------- */
+#titleBox {
+    background: #351236;
+    padding: 25px;
+    border-radius: 20px;
+    text-align: center;
+    margin-bottom: 25px;
+}
 
-    .slot-inner {
-        background: #0d0d16;
-        border-radius: 15px;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 20px;
-        padding: 15px;
-    }
+#titleBox h1 {
+    margin: 0;
+    font-size: 32px;
+    color: #ffd32a;
+    letter-spacing: 3px;
+}
 
-    .reel {
-        width: 120px;
-        height: 140px;
-        background: #0a0a12;
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: inset 0 0 20px #000;
-    }
+/* -------- ZONE MACHINE -------- */
+#slotBox {
+    width: 100%;
+    background: rgba(20, 10, 40, 0.65);
+    border-radius: 20px;
+    padding: 20px;
+    min-height: 480px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
 
-    .reel img {
-        width: 100px;
-        height: 100px;
-    }
+/* -------- CADRE NEON -------- */
+#neonFrame {
+    width: 60%;
+    height: 300px;
+    padding: 20px;
+    border-radius: 20px;
+    background: linear-gradient(45deg, #ff00c8, #ffa200);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-    .right-panel {
-        float: right;
-        width: 280px;
-        text-align: left;
-    }
+/* --------- REELS -------- */
+.reelContainer {
+    width: 80%;
+    height: 230px;
+    background: #0a0f1c;
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px;
+}
 
-    .panel-box {
-        background: rgba(255, 255, 255, 0.08);
-        padding: 14px;
-        border-radius: 10px;
-        margin-bottom: 18px;
-    }
+.reel {
+    width: 140px;
+    height: 180px;
+    background: #121a2b;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-    .buttons {
-        margin-top: 20px;
-    }
+.reel img {
+    max-width: 90px;
+}
 
-    button {
-        padding: 12px 25px;
-        font-size: 17px;
-        border-radius: 8px;
-        border: none;
-        cursor: pointer;
-        font-weight: bold;
-    }
+/* ----- SIDEBAR À DROITE ----- */
+#sidePanel {
+    position: absolute;
+    right: -350px;
+    top: 0;
+    width: 330px;
+    background: rgba(30, 20, 60, 0.8);
+    padding: 18px;
+    border-radius: 12px;
+}
 
-    #btnAdd { background: #ffaa00; }
-    #btnSpin { background: #00ff7f; }
+h3 {
+    margin-top: 10px;
+    border-bottom: 1px solid #666;
+    padding-bottom: 3px;
+}
+
+/* file + gagnants */
+#queueList, #winnersList {
+    font-size: 14px;
+}
+
+/* ------ FORM CADEAUX ------ */
+#giftBox {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.inputBlock {
+    width: 40%;
+}
+
+input {
+    width: 90%;
+    padding: 7px;
+    border-radius: 7px;
+    border: none;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 10px 22px;
+    font-size: 16px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+#manualBtn {
+    background: #ffca00;
+}
+
+#spinBtn {
+    background: #00c8ff;
+}
+
 </style>
 </head>
-
 <body>
 
-<div class="main">
+<div id="main">
 
-    <h1>SLOT 3B TIKTOK</h1>
-
-    <div class="right-panel">
-        <div class="panel-box" id="queueBox">
-            <b>File d'attente :</b><br>
-            0 joueur(s)
+    <div id="titleBox">
+        <h1>SLOT 3B TIKTOK</h1>
+        <div style="margin-top:10px;">
+            4 mêmes cadeaux sur la ligne = gain • Loup = <b>GIGA WIN</b> • Moto = <b>MEGA WIN</b>
         </div>
-
-        <div class="panel-box" id="historyBox">
-            <b>Historique des gagnants :</b><br>
+        <div id="statsTop" style="margin-top:5px;font-size:14px;">
+            Joueur : - • Cadeau : 0 pièces • Tours restants : 0  
+            <span style="float:right;">Tours joués : 0 • Depuis gros gain : 0</span>
         </div>
     </div>
 
-    <div class="slot-frame">
-        <div class="slot-inner">
-            <div class="reel" id="r1"></div>
-            <div class="reel" id="r2"></div>
-            <div class="reel" id="r3"></div>
-            <div class="reel" id="r4"></div>
+    <div id="slotBox">
+
+        <!-- MACHINE -->
+        <div id="neonFrame">
+            <div class="reelContainer">
+                <div class="reel"><img id="r1" src="reel1.png"></div>
+                <div class="reel"><img id="r2" src="reel2.png"></div>
+                <div class="reel"><img id="r3" src="reel3.png"></div>
+                <div class="reel"><img id="r4" src="reel4.png"></div>
+            </div>
         </div>
+
+        <!-- PANEL DROITE -->
+        <div id="sidePanel">
+            <h3>Connexion TikTok</h3>
+            <div id="tiktokStatus">🟢 Connecté au serveur</div>
+
+            <h3>File d'attente</h3>
+            <div id="queueList">Aucun joueur en attente.</div>
+
+            <h3>Historique des gagnants (session)</h3>
+            <div id="winnersList">Aucun gagnant pour l'instant.</div>
+        </div>
+
     </div>
 
-    <div class="buttons">
-        <button id="btnAdd">AJOUTER (MANUEL)</button>
-        <button id="btnSpin">SPIN</button>
+    <!-- FORMULAIRE ADD CADEAU -->
+    <div id="giftBox">
+        <div class="inputBlock">
+            <label>Pseudo TikTok :</label><br>
+            <input id="manualName" placeholder="Pseudo…">
+        </div>
+
+        <div class="inputBlock">
+            <label>Valeur du cadeau (pièces) :</label><br>
+            <input id="manualCoins" placeholder="ex: 99">
+        </div>
+
+        <div style="width:20%;display:flex;flex-direction:column;justify-content:center;">
+            <button id="manualBtn">AJOUTER (MANUEL)</button>
+            <button id="spinBtn" style="margin-top:10px;">SPIN</button>
+        </div>
     </div>
 
 </div>
 
 <script>
-const icones = [
-    "https://i.imgur.com/G8vdXLL.png",
-    "https://i.imgur.com/vt2N6hE.png",
-    "https://i.imgur.com/KkvyH2L.png",
-    "https://i.imgur.com/6jQy2rA.png"
-];
+
+// ===============================
+//    VARIABLES LOCALES
+// ===============================
 
 let queue = [];
+let winners = [];
+let currentPlayer = null;
+let remaining = 0;
 
-const reels = [
-    document.getElementById("r1"),
-    document.getElementById("r2"),
-    document.getElementById("r3"),
-    document.getElementById("r4")
-];
 
-function majQueue() {
-    document.getElementById("queueBox").innerHTML =
-        "<b>File d'attente :</b><br>" + queue.length + " joueur(s)<br><br>" +
-        queue.map(j => "• " + j).join("<br>");
+// ===============================
+//    AFFICHAGES
+// ===============================
+
+function refreshQueue() {
+    let box = document.getElementById("queueList");
+    if (queue.length === 0) {
+        box.innerHTML = "Aucun joueur en attente.";
+        return;
+    }
+    box.innerHTML = queue.map((p,i)=> `${i+1}. ${p.name} — ${p.tours} tour(s)`).join("<br>");
 }
 
-document.getElementById("btnAdd").onclick = () => {
-    const pseudo = "Joueur_" + Math.floor(Math.random() * 9999);
-    queue.push(pseudo);
-    majQueue();
+function refreshWinners() {
+    let box = document.getElementById("winnersList");
+    if (winners.length === 0) {
+        box.innerHTML = "Aucun gagnant pour l'instant.";
+        return;
+    }
+    box.innerHTML = winners.map(w=> `🎉 ${w.name} — ${w.gift}`).join("<br>");
+}
+
+
+// ===============================
+//    AJOUT MANUEL CADEAU
+// ===============================
+
+function valueToTours(v) {
+    if (v < 49) return 0;
+    if (v <= 98) return 1;
+    if (v <= 298) return 3;
+    if (v <= 2988) return 7;
+    return 70;
+}
+
+document.getElementById("manualBtn").onclick = () => {
+    let name = document.getElementById("manualName").value.trim();
+    let coins = parseInt(document.getElementById("manualCoins").value);
+
+    if (!name || isNaN(coins)) {
+        alert("Entre un pseudo et une valeur correcte !");
+        return;
+    }
+
+    let tours = valueToTours(coins);
+    if (tours <= 0) {
+        alert("Minimum 49 pièces !");
+        return;
+    }
+
+    queue.push({ name, tours, gift: coins });
+    refreshQueue();
+
+    document.getElementById("manualName").value = "";
+    document.getElementById("manualCoins").value = "";
 };
 
-document.getElementById("btnSpin").onclick = () => {
+
+// ===============================
+//    SPIN MANUEL
+// ===============================
+
+document.getElementById("spinBtn").onclick = () => {
+
     if (queue.length === 0) {
         alert("Aucun joueur !");
         return;
     }
 
-    const joueur = queue.shift();
-    majQueue();
+    let p = queue.shift();
+    refreshQueue();
 
-    let resultats = [];
+    remaining = p.tours - 1;
+    currentPlayer = p;
 
-    reels.forEach((r, i) => {
-        r.innerHTML = "<img src='https://i.imgur.com/3oQZP61.gif' width='70'>";
-        setTimeout(() => {
-            const ic = icones[Math.floor(Math.random() * icones.length)];
-            resultats[i] = ic;
-            r.innerHTML = `<img src="${ic}">`;
-        }, 400 + i * 300);
-    });
+    document.getElementById("statsTop").innerHTML =
+        `Joueur : ${p.name} • Cadeau : ${p.gift} pièces • Tours restants : ${remaining}`;
 
-    setTimeout(() => {
-        const unique = new Set(resultats).size;
-
-        let gagne =
-            unique === 1 ? "MEGA WIN" :
-            unique === 2 || unique === 3 ? "GIGA WIN" :
-            "PERDU";
-
-        document.getElementById("historyBox").innerHTML +=
-            `<br><b>${joueur}</b> → ${gagne}`;
-
-    }, 1800);
+    winners.push({ name: p.name, gift: p.gift + " pièces" });
+    refreshWinners();
 };
+
 </script>
 
 </body>
