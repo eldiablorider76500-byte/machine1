@@ -72,8 +72,7 @@
       color:#b0a5ff;
     }
 
-    /* >>> Changement ici : machine + panneau à droite <<< */
-
+    /* MACHINE + COLONNE DROITE */
     .machine-body {
       flex:1;
       display:flex;
@@ -83,7 +82,7 @@
     }
 
     .machine-main {
-      flex:3;
+      flex:1;
       display:flex;
       flex-direction:column;
       gap:14px;
@@ -91,7 +90,8 @@
     }
 
     .side-panel {
-      flex:1.4;
+      width:350px; /* ta colonne droite */
+      max-width:350px;
       background:rgba(0,0,0,0.4);
       border-radius:18px;
       padding:10px 12px;
@@ -112,7 +112,7 @@
       background:rgba(8,12,36,0.9);
       border:1px solid rgba(255,255,255,0.08);
       padding:8px;
-      max-height:180px;
+      max-height:160px;
       overflow-y:auto;
       font-size:12px;
       line-height:1.4;
@@ -133,11 +133,8 @@
     .tiktok-ok   { color:#00e676; }
     .tiktok-bad  { color:#ff5252; }
 
-    .machine-main .reels-container {
-      flex:1;
-    }
-
     .reels-container {
+      flex:1;
       border-radius:26px;
       padding:18px 14px;
       background:radial-gradient(circle at top,#3147a0,#0b1023 55%,#040612 100%);
@@ -330,7 +327,6 @@
       box-shadow:0 0 8px rgba(255,255,255,0.2);
     }
 
-    /* Responsive */
     @media (max-width:900px){
       .machine-wrapper { padding:16px; }
       .machine-title { font-size:26px; }
@@ -338,6 +334,8 @@
         flex-direction:column;
       }
       .side-panel {
+        width:100%;
+        max-width:none;
         order:-1;
       }
       .machine-footer {
@@ -424,7 +422,7 @@
 
         <div class="machine-footer">
           <div class="control-panel">
-            <!-- Mode manuel : toujours dispo pour tester ou si TikTok ne marche pas -->
+            <!-- Mode manuel pour tester / dépannage -->
             <div>
               <label for="playerName">Pseudo TikTok (manuel) :</label><br>
               <input id="playerName" type="text" placeholder="Pseudo…" />
@@ -436,7 +434,7 @@
             <div class="helper-text">
               Minimum <strong>49 pièces</strong> pour jouer.<br>
               49–98 → 1 tour • 99–298 → 3 tours • 299–2998 → 7 tours • 2999+ → 70 tours.<br>
-              Ajout auto à la file si TikTok envoie le cadeau.
+              Les cadeaux TikTok ajoutent automatiquement les joueurs dans la file.
             </div>
           </div>
 
@@ -503,19 +501,16 @@
 
     const NON_BIG_SYMBOLS = SYMBOLS.filter(s => !s.isBig);
 
-    // Petits lots 15–20
     const SMALL_REWARD_IDS = [
       "donuts","rosa","manette","confetti",
       "parfum","tofu","glace","casquette"
     ];
 
-    // Lots 70 tours
     const MEDIUM_REWARD_IDS = [
       "rosejamais","pistolet","corgi","casquette",
       "positivite","confetti","amourlangage","rosa","parfum"
     ];
 
-    // Cycle complet 260+
     const BIG_260_SEQUENCE = [
       "cygne","pistolet","moto","loup",
       "pistolet","cygne","moto","pistolet","loup",
@@ -525,10 +520,9 @@
 
     /* ============ ÉTAT GLOBAL ============ */
 
-    // File d’attente : plusieurs joueurs
-    // { pseudo, tours, gains, lastGiftCoins }
+    // File d’attente : [{ pseudo, tours, gains, lastGiftCoins }]
     let queue = [];
-    // Historique des gagnants de la session : { pseudo, gains }
+    // Historique session : [{ pseudo, gains }]
     let history = [];
 
     let isSpinning   = false;
@@ -594,8 +588,7 @@
         currentGainsDisplay.textContent = p.gains.toString();
       }
       totalSpinsDisplay.textContent = totalSpins.toString();
-      // Pour l’instant on ne suit pas les “tours depuis gros gain” → reste à 0
-      sinceBigDisplay.textContent   = "0";
+      sinceBigDisplay.textContent   = "0"; // pas géré finement pour l’instant
       spinBtn.disabled = (queue.length === 0);
     }
 
@@ -674,7 +667,7 @@
 
       const existing = queue.find(p => p.pseudo === pseudo);
       if (existing) {
-        existing.tours       += tours;
+        existing.tours        += tours;
         existing.lastGiftCoins = coins;
       } else {
         queue.push({
@@ -697,24 +690,20 @@
       let forcedSymbolId = null;
       lastRewardSource = null;
 
-      // 1) première fois 200 → moto
       if (!moto200Given && spinIndex === 200) {
         forcedSymbolId   = "moto";
         moto200Given     = true;
         lastRewardSource = "200";
       }
-      // 2) >200 et multiple de 260 → cycle spécial
       else if (spinIndex > 200 && spinIndex % 260 === 0) {
         forcedSymbolId   = BIG_260_SEQUENCE[big260Index];
         big260Index      = (big260Index + 1) % BIG_260_SEQUENCE.length;
         lastRewardSource = "260";
       }
-      // 3) multiple de 70
       else if (spinIndex % 70 === 0) {
         forcedSymbolId   = MEDIUM_REWARD_IDS[Math.floor(Math.random() * MEDIUM_REWARD_IDS.length)];
         lastRewardSource = "70";
       }
-      // 4) petit lot 15–20
       else if (spinIndex === nextSmallRewardAt) {
         forcedSymbolId   = SMALL_REWARD_IDS[Math.floor(Math.random() * SMALL_REWARD_IDS.length)];
         nextSmallRewardAt = spinIndex + getRandomInt(15, 20);
@@ -733,8 +722,7 @@
       return finalSymbols;
     }
 
-    // Retourne le nombre de "pièces gagnées" sur ce spin
-    // 🔧 Tu peux ajuster les valeurs si tu veux d’autres gains.
+    // Gain en "pièces" selon le symbole (tu peux ajuster les valeurs)
     function computeGainFromResult(allSame, winningSymbol){
       if (!allSame || !winningSymbol) return 0;
 
@@ -749,7 +737,7 @@
       }
     }
 
-    /* ============ SPIN ============ */
+    /* ============ SPIN (manuel) ============ */
 
     function startSpin(finalSymbols){
       isSpinning = true;
@@ -787,11 +775,9 @@
               queue[0].gains += gain;
             }
 
-            // Gestion des tours restants
             if (queue.length > 0) {
               queue[0].tours -= 1;
               if (queue[0].tours <= 0) {
-                // Joueur terminé → on l’ajoute à l’historique puis on le retire
                 history.push({
                   pseudo: queue[0].pseudo,
                   gains:  queue[0].gains
@@ -830,7 +816,6 @@
         showWinBanner("big", winningSymbol);
       }
 
-      // Effet spécial pour les tours 260
       if (lastRewardSource === "260") {
         fxFireworks.classList.remove("hidden");
         fxConfetti.classList.remove("hidden");
@@ -839,9 +824,9 @@
       return computeGainFromResult(true, winningSymbol);
     }
 
-    /* ============ ÉVÉNEMENTS BOUTONS ============ */
+    /* ============ BOUTONS (manuel) ============ */
 
-    // Ajout manuel (pour tester ou si TikTok ne marche pas)
+    // Ajout manuel (pratique pour tester)
     setGiftBtn.addEventListener("click", () => {
       const name  = document.getElementById("playerName").value.trim();
       const coins = parseInt(document.getElementById("giftCoins").value, 10);
@@ -864,6 +849,7 @@
       addPlayerToQueue(name, coins);
     });
 
+    // SPIN manuel
     spinBtn.addEventListener("click", () => {
       if (isSpinning) return;
       if (queue.length === 0) {
@@ -873,7 +859,6 @@
 
       const current = queue[0];
       if (current.tours <= 0) {
-        // Au cas où, on le retire
         history.push({ pseudo: current.pseudo, gains: current.gains });
         queue.shift();
         renderHistory();
@@ -889,11 +874,10 @@
 
     /* ============ TIKTOK WEBSOCKET ============ */
 
-    // 👉 Ici on se connecte à ton petit serveur Node / autre,
-    // qui lui écoute TikTok Live et renvoie des JSON de type :
+    // Reçoit les cadeaux depuis ton serveur Node (mode live + mode test)
+    // Format attendu :
     // { type:"gift", username:"@pseudo", coins:99 }
     function handleGiftEvent(data){
-      // On tente de récupérer un pseudo et un nombre de coins
       const username = data.username || data.user || data.uniqueId || "@inconnu";
       const coins    = data.coins || data.diamondCount || 0;
       if (!coins) return;
@@ -901,9 +885,7 @@
     }
 
     function connectTikTokWS(){
-      // 🔧 À ADAPTER : mets ici l’URL de ton serveur WebSocket
-      // Exemple local : ws://localhost:8080
-      const wsUrl = "ws://localhost:8080";
+      const wsUrl = "ws://localhost:8080"; // ton serveur Node en local
       let ws;
 
       try {
@@ -926,7 +908,6 @@
         tiktokStatusEl.textContent = "Déconnecté (reconnexion...)";
         tiktokStatusEl.classList.remove("tiktok-ok");
         tiktokStatusEl.classList.add("tiktok-bad");
-        // Reconnexion après 3s
         setTimeout(connectTikTokWS, 3000);
       };
 
