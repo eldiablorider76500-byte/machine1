@@ -1,270 +1,123 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Slot 3B TikTok</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slot 3B TikTok</title>
 
-<style>
-body {
-    margin: 0;
-    background: radial-gradient(circle at top, #0f1625, #000 70%);
-    font-family: Arial, sans-serif;
-    color: white;
-    overflow-x: hidden;
-}
-
-#main-container {
-    width: 100%;
-    padding: 20px;
-}
-
-h1 {
-    text-align: center;
-    margin-top: 10px;
-    font-size: 38px;
-    color: #ffdd55;
-    text-shadow: 0 0 12px #ff00ff;
-}
-
-#top-info {
-    text-align: center;
-    margin: 10px 0 20px;
-}
-
-#slot-machine {
-    width: 900px;
-    margin: auto;
-    padding: 20px;
-    background: #1b0d25;
-    border-radius: 20px;
-    box-shadow: 0 0 25px #ff00ff;
-}
-
-.slot-frame {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-    background: linear-gradient(180deg, #ff00c8, #ff8d00);
-    border-radius: 18px;
-}
-
-.reel {
-    width: 180px;
-    height: 220px;
-    background: #111a2c;
-    border-radius: 15px;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.reel img {
-    width: 150px;
-    height: auto;
-}
-
-#right-panel {
-    position: fixed;
-    left: 20px;
-    top: 120px;
-    width: 250px;
-}
-
-.panel-block {
-    background: #0d0d12;
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 12px;
-    box-shadow: 0 0 15px #5d3396;
-}
-
-.panel-block h3 {
-    margin-top: 0;
-    font-size: 18px;
-    color: #ffbb55;
-}
-
-#winners-list, #queue-list {
-    margin-top: 10px;
-    font-size: 14px;
-}
-
-.dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    display: inline-block;
-}
-
-.red { background: red; }
-.green { background: lime; }
-
-#bottom-panel {
-    width: 100%;
-    padding: 20px;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    background: #12081d;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-#manual-panel input {
-    background: #1a1a2b;
-    color: white;
-    border: 1px solid #444;
-    border-radius: 8px;
-    padding: 6px 10px;
-    margin-right: 10px;
-}
-
-#manual-add, #spin-btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 12px;
-    background: #00d9ff;
-    color: #000;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 0 12px #00eaff;
-}
-
-#spin-btn:disabled {
-    background: #555;
-    cursor: not-allowed;
-}
-</style>
-
-</head>
-<body>
-
-<h1>SLOT 3B TIKTOK</h1>
-
-<div id="top-info">
-    Joueur : <span id="pName">-</span> •
-    Cadeau : <span id="pGift">0</span> pièces •
-    Tours : <span id="pTurns">0</span>
-</div>
-
-<div id="slot-machine">
-    <div class="slot-frame">
-        <div class="reel"><img id="r1" src="IMG-20251120-WA0017.jpg"></div>
-        <div class="reel"><img id="r2" src="IMG-20251120-WA0019.jpg"></div>
-        <div class="reel"><img id="r3" src="IMG-20251120-WA0034.jpg"></div>
-        <div class="reel"><img id="r4" src="IMG-20251120-WA0020.jpg"></div>
-    </div>
-</div>
-
-<div id="right-panel">
-
-    <div class="panel-block">
-        <h3>Connexion TikTok</h3>
-        <p><span id="statusDot" class="dot red"></span> Déconnecté</p>
-    </div>
-
-    <div class="panel-block">
-        <h3>File d'attente</h3>
-        <div id="queue-list">Aucun joueur.</div>
-    </div>
-
-    <div class="panel-block">
-        <h3>Historique des gagnants</h3>
-        Total gagnants : <span id="winTotal">0</span>
-        <div id="winners-list"></div>
-    </div>
-
-</div>
-
-<div id="bottom-panel">
-    <div id="manual-panel">
-        <input id="manual-name" placeholder="Pseudo…">
-        <input id="manual-gift" placeholder="Pièces…">
-        <button id="manual-add">Ajouter</button>
-    </div>
-
-    <button id="spin-btn" disabled>SPIN</button>
-</div>
-
-<script>
-let queue = [];
-let currentPlayer = null;
-let winners = 0;
-
-const pName = document.getElementById("pName");
-const pGift = document.getElementById("pGift");
-const pTurns = document.getElementById("pTurns");
-
-function updateQueue() {
-    const box = document.getElementById("queue-list");
-    if (queue.length === 0) box.innerHTML = "Aucun joueur.";
-    else box.innerHTML = queue.map((p,i)=>`${i+1}. ${p.name} — ${p.turns} tours`).join("<br>");
-}
-
-function nextPlayer() {
-    currentPlayer = queue.shift() || null;
-
-    if (!currentPlayer) {
-        pName.textContent = "-";
-        pGift.textContent = "0";
-        pTurns.textContent = "0";
-        document.getElementById("spin-btn").disabled = true;
-        updateQueue();
-        return;
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(circle at top, #1d3350, #050811 60%);
+      font-family: Arial, sans-serif;
+      color: white;
     }
 
-    pName.textContent = currentPlayer.name;
-    pGift.textContent = currentPlayer.gift;
-    pTurns.textContent = currentPlayer.turns;
-    document.getElementById("spin-btn").disabled = false;
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: auto;
+      padding-top: 40px;
+      text-align: center;
+    }
 
-    updateQueue();
-}
+    h1 {
+      font-size: 38px;
+      color: #ffd54f;
+      text-shadow: 0 0 15px #ff00e6;
+    }
 
-function addPlayer(name, gift) {
-    let turns = 0;
+    #slot-box {
+      margin-top: 40px;
+      padding: 30px;
+      border-radius: 25px;
+      background: rgba(0, 0, 0, 0.35);
+      box-shadow: 0 0 30px rgba(255, 0, 200, 0.3);
+    }
 
-    if (gift >= 2999) turns = 70;
-    else if (gift >= 299) turns = 7;
-    else if (gift >= 99) turns = 3;
-    else if (gift >= 49) turns = 1;
+    .reels {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 30px;
+      border: 4px solid #ff00b8;
+      border-radius: 25px;
+      background: linear-gradient(180deg, #ff00b8, #ff9100);
+    }
 
-    queue.push({name, gift, turns});
-    if (!currentPlayer) nextPlayer();
-    else updateQueue();
-}
+    .reel {
+      width: 140px;
+      height: 160px;
+      background: #0a0f1d;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 0 20px black;
+    }
 
-document.getElementById("manual-add").onclick = () => {
-    const name = document.getElementById("manual-name").value.trim();
-    const gift = parseInt(document.getElementById("manual-gift").value);
+    .reel img {
+      width: 80%;
+      height: auto;
+    }
 
-    if (!name || isNaN(gift) || gift < 49) return alert("Cadeau invalide.");
+    .inputs {
+      margin-top: 30px;
+    }
 
-    addPlayer(name, gift);
+    input {
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      width: 160px;
+      margin: 5px;
+      text-align: center;
+    }
 
-    document.getElementById("manual-name").value = "";
-    document.getElementById("manual-gift").value = "";
-};
+    button {
+      padding: 12px 25px;
+      margin: 10px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(#00e5ff, #00b0ff);
+      color: black;
+      font-weight: bold;
+      font-size: 14px;
+    }
 
-document.getElementById("spin-btn").onclick = () => {
-    if (!currentPlayer) return;
+    #spin {
+      background: linear-gradient(#ffea00, #ff6f00);
+    }
+  </style>
+</head>
 
-    const imgs = ["IMG-20251120-WA0017.jpg","IMG-20251120-WA0019.jpg","IMG-20251120-WA0034.jpg","IMG-20251120-WA0020.jpg","IMG-20251120-WA0027.jpg"];
-    r1.src = imgs[Math.floor(Math.random()*imgs.length)];
-    r2.src = imgs[Math.floor(Math.random()*imgs.length)];
-    r3.src = imgs[Math.floor(Math.random()*imgs.length)];
-    r4.src = imgs[Math.floor(Math.random()*imgs.length)];
+<body>
 
-    currentPlayer.turns--;
-    pTurns.textContent = currentPlayer.turns;
+<div class="container">
+  <h1>SLOT 3B TIKTOK</h1>
+  <p>4 mêmes cadeaux = GAIN • Loup = GIGA WIN • Moto = MEGA WIN</p>
 
-    if (currentPlayer.turns <= 0) nextPlayer();
-};
+  <div id="slot-box">
+    <div class="reels">
+      <div class="reel"><img id="r1" src="IMG-20251120-WA0017.jpg"></div>
+      <div class="reel"><img id="r2" src="IMG-20251120-WA0019.jpg"></div>
+      <div class="reel"><img id="r3" src="IMG-20251120-WA0034.jpg"></div>
+      <div class="reel"><img id="r4" src="IMG-20251120-WA0020.jpg"></div>
+    </div>
 
-</script>
+    <div class="inputs">
+      <input placeholder="Pseudo">
+      <input placeholder="Valeur du cadeau">
+      <br>
+      <button>Valider le cadeau</button>
+      <button id="spin">SPIN</button>
+    </div>
+
+  </div>
+</div>
 
 </body>
 </html>
