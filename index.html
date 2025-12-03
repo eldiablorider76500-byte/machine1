@@ -2,131 +2,665 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Slot 3B Tiktok</title>
+<title>Slot 3B TIKTOK</title>
 <style>
-body {
-    background: #0e0520;
-    font-family: Arial, sans-serif;
-    color: white;
-    text-align: center;
-}
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
 
-.slot-container {
-    width: 820px;
-    margin: 20px auto;
-    padding: 20px;
-    border-radius: 20px;
-    background: #130720;
-    box-shadow: 0 0 25px #ff00ff;
-}
+    body {
+        font-family: Arial, sans-serif;
+        background: radial-gradient(circle at top, #32145a 0%, #050014 60%, #020008 100%);
+        color: #fff;
+        height: 100vh;
+        overflow: hidden;
+    }
 
-.reels {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    padding: 25px;
-    border-radius: 25px;
-    background: linear-gradient(45deg, #ff00ff, #ff8800);
-}
+    .app {
+        width: 1340px;
+        height: 760px;
+        margin: 0 auto;
+        padding: 30px 40px;
+    }
 
-.slot {
-    width: 180px;
-    height: 240px;
-    background: #0b0e1a;
-    border-radius: 14px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-}
+    h1 {
+        text-align: center;
+        font-size: 40px;
+        letter-spacing: 6px;
+        margin-bottom: 10px;
+        text-shadow: 0 0 15px #ffdd80, 0 0 30px #ff6aff;
+    }
 
-.slot img {
-    width: 90%;
-    height: auto;
-    object-fit: contain;
-}
+    .subtitle {
+        text-align: center;
+        font-size: 14px;
+        color: #ffe9c4;
+        margin-bottom: 20px;
+    }
 
-button {
-    margin-top: 25px;
-    padding: 15px 40px;
-    font-size: 20px;
-    border-radius: 15px;
-    border: none;
-    cursor: pointer;
-    background: #ffa600;
-    color: black;
-    font-weight: bold;
-}
+    .top-info {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        margin-bottom: 10px;
+        color: #f9daff;
+    }
+
+    .main-row {
+        display: flex;
+        gap: 20px;
+    }
+
+    /* --- Zone slot principale --- */
+    .slot-wrapper {
+        flex: 1.5;
+        background: #070213;
+        border-radius: 30px;
+        padding: 16px;
+        box-shadow: 0 0 25px rgba(255, 0, 255, 0.25);
+    }
+
+    .slot-border {
+        width: 100%;
+        height: 380px;
+        border-radius: 28px;
+        padding: 12px;
+        background: linear-gradient(135deg,#ff00ff,#ff9900,#00ffd5);
+    }
+
+    .slot-inner {
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at top, #21263a, #050712);
+        border-radius: 22px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .reels {
+        display: flex;
+        gap: 22px;
+        width: 90%;
+        justify-content: center;
+    }
+
+    .reel {
+        width: 180px;
+        height: 260px;
+        border-radius: 18px;
+        background: #050814;
+        box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .reel img {
+        width: 90%;
+        height: auto;
+        object-fit: contain;
+        filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
+        transition: transform 0.1s;
+    }
+
+    .reel.spinning img {
+        animation: reelWiggle 0.25s linear infinite;
+    }
+
+    @keyframes reelWiggle {
+        0% { transform: translateY(-4px); }
+        50% { transform: translateY(4px); }
+        100% { transform: translateY(-4px); }
+    }
+
+    /* --- Colonne droite --- */
+    .right-panel {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .panel-box {
+        background: #080319;
+        border-radius: 16px;
+        padding: 12px 16px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.7);
+        font-size: 13px;
+    }
+
+    .panel-title {
+        color: #ffdd80;
+        font-weight: bold;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        font-size: 12px;
+    }
+
+    .panel-value {
+        color: #ffffff;
+        font-size: 13px;
+    }
+
+    .status-dot {
+        display: inline-block;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        margin-right: 5px;
+        background: #ff4444;
+        box-shadow: 0 0 8px #ff4444;
+    }
+
+    .status-dot.ok {
+        background: #33ff77;
+        box-shadow: 0 0 8px #33ff77;
+    }
+
+    /* --- Bas : pseudo, valeur, boutons --- */
+    .bottom-row {
+        margin-top: 18px;
+        display: flex;
+        gap: 14px;
+    }
+
+    .input-card {
+        flex: 1.7;
+        background: #070213;
+        border-radius: 18px;
+        padding: 14px 18px;
+        font-size: 13px;
+    }
+
+    .input-row {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 10px;
+    }
+
+    .field {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .field label {
+        font-size: 12px;
+        color: #f9daff;
+    }
+
+    .field input {
+        background: #050814;
+        border-radius: 999px;
+        border: 1px solid #2a2040;
+        padding: 7px 12px;
+        color: #fff;
+        font-size: 13px;
+        outline: none;
+    }
+
+    .field input::placeholder {
+        color: #7e6f9f;
+    }
+
+    .rules {
+        font-size: 11px;
+        color: #c9b2ff;
+        line-height: 1.3;
+        margin-top: 6px;
+    }
+
+    .rules span {
+        color: #ffdd80;
+    }
+
+    .buttons-card {
+        flex: 0.9;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 18px;
+    }
+
+    .btn {
+        border: none;
+        border-radius: 999px;
+        padding: 12px 26px;
+        font-weight: bold;
+        font-size: 15px;
+        cursor: pointer;
+        box-shadow: 0 0 15px rgba(0,0,0,0.6);
+        transition: transform 0.1s, box-shadow 0.1s, filter 0.1s;
+    }
+
+    .btn:active {
+        transform: translateY(2px);
+        box-shadow: 0 0 5px rgba(0,0,0,0.4);
+        filter: brightness(0.9);
+    }
+
+    .btn-add {
+        background: radial-gradient(circle at top, #ffd45e, #ff8b00);
+        color: #201100;
+    }
+
+    .btn-spin {
+        background: radial-gradient(circle at top, #00ffbf, #0091ff);
+        color: #001019;
+        padding-inline: 35px;
+    }
+
+    /* --- Bannière de gain --- */
+    .win-banner {
+        position: absolute;
+        left: 50%;
+        top: 28%;
+        transform: translate(-50%, -50%) scale(0.4);
+        background: radial-gradient(circle at top, #fff5d6, #ffb347);
+        padding: 20px 40px;
+        border-radius: 999px;
+        text-align: center;
+        color: #5b2100;
+        box-shadow: 0 0 25px rgba(255, 222, 120, 0.9);
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .win-banner.show {
+        animation: bannerPop 1s forwards;
+    }
+
+    @keyframes bannerPop {
+        0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+        40% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
+        100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    }
+
+    .win-title {
+        font-size: 28px;
+        font-weight: 900;
+        letter-spacing: 3px;
+        margin-bottom: 6px;
+        text-shadow: 0 0 10px #ff6a00;
+    }
+
+    .win-text {
+        font-size: 14px;
+    }
+
+    .win-title.giga {
+        color: #b300ff;
+        text-shadow: 0 0 15px #ff30ff;
+    }
+
+    .win-title.mega {
+        color: #008cff;
+        text-shadow: 0 0 15px #00f6ff;
+    }
+
+    /* --- Fireworks --- */
+    #fx-layer {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+    }
+
+    .firework {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #fff;
+        opacity: 0;
+        animation: firework 1s ease-out forwards;
+    }
+
+    @keyframes firework {
+        0% { transform: translate(0,0) scale(0.4); opacity: 1; }
+        70% { opacity: 1; }
+        100% { transform: translate(var(--dx), var(--dy)) scale(0.1); opacity: 0; }
+    }
+
+    /* --- Petit texte en bas --- */
+    .footer {
+        position: absolute;
+        bottom: 8px;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        font-size: 11px;
+        color: #7a6aa0;
+    }
 </style>
 </head>
 <body>
+<div class="app">
+    <h1>SLOT 3B TIKTOK</h1>
+    <p class="subtitle">
+        4 mêmes cadeaux sur la ligne = gain · Loup = GIGA WIN · Moto = MEGA WIN
+    </p>
 
-<h1>SLOT 3B TIKTOK</h1>
-
-<div class="slot-container">
-    <div class="reels">
-        <div class="slot"><img src="images/IMG-20251120-WA0027.jpg"></div>
-        <div class="slot"><img src="images/IMG-20251120-WA0030.jpg"></div>
-        <div class="slot"><img src="images/IMG-20251120-WA0022.jpg"></div>
-        <div class="slot"><img src="images/IMG-20251120-WA0035.jpg"></div>
+    <div class="top-info">
+        <div>Joueur : - · Cadeau : 0 pièces · Tours restants : 0</div>
+        <div>Tours joués : 0 · Depuis gros gain : 0</div>
     </div>
 
-    <button id="spinBtn">SPIN</button>
+    <div class="main-row">
+        <!-- Zone Slot -->
+        <div class="slot-wrapper">
+            <div class="slot-border">
+                <div class="slot-inner">
+                    <div class="reels">
+                        <div class="reel"><img src="IMG-20251120-WA0017.jpg" alt=""></div>
+                        <div class="reel"><img src="IMG-20251120-WA0018.jpg" alt=""></div>
+                        <div class="reel"><img src="IMG-20251120-WA0019.jpg" alt=""></div>
+                        <div class="reel"><img src="IMG-20251120-WA0020.jpg" alt=""></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Colonne droite -->
+        <div class="right-panel">
+            <div class="panel-box">
+                <div class="panel-title">FILE D'ATTENTE</div>
+                <div class="panel-value">Nombre de joueurs : <span id="queueCount">0</span></div>
+            </div>
+
+            <div class="panel-box">
+                <div class="panel-title">HISTORIQUE DES GAGNANTS (SESSION)</div>
+                <div class="panel-value">Total gagnants : <span id="winnersCount">0</span></div>
+                <div id="lastWin" style="margin-top:6px; font-size:12px; color:#d8c6ff;">Dernier gain : -</div>
+            </div>
+
+            <div class="panel-box">
+                <div class="panel-title">STATUT TIKTOK</div>
+                <div class="panel-value">
+                    <span class="status-dot" id="tiktokDot"></span>
+                    <span id="tiktokStatus">Déconnecté du serveur</span>
+                </div>
+                <div style="margin-top:6px; font-size:11px; color:#bfb3ff;">
+                    Lance ton serveur Node puis un vrai live TikTok avec ton pseudo.<br>
+                    Les cadeaux validés seront ajoutés automatiquement dans la file.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bas -->
+    <div class="bottom-row">
+        <div class="input-card">
+            <div class="input-row">
+                <div class="field">
+                    <label>Pseudo TikTok :</label>
+                    <input type="text" id="pseudoInput" placeholder="Pseudo...">
+                </div>
+                <div class="field">
+                    <label>Valeur du cadeau (pièces) :</label>
+                    <input type="number" id="valueInput" placeholder="ex : 99">
+                </div>
+            </div>
+            <div class="rules">
+                Minimum <span>49 pièces</span> pour jouer.<br>
+                49–98 = 1 tour · 99–298 = 3 tours · 299–998 = 7 tours · 999+ = 70 tours.<br>
+                Les cadeaux TikTok reçus ajoutent automatiquement le joueur dans la file.
+            </div>
+        </div>
+
+        <div class="buttons-card">
+            <button class="btn btn-add" id="addManualBtn">
+                AJOUTER<br>(MANUEL)
+            </button>
+            <button class="btn btn-spin" id="spinBtn">
+                SPIN
+            </button>
+        </div>
+    </div>
+
+    <!-- Bannière de gain -->
+    <div class="win-banner" id="winBanner">
+        <div class="win-title" id="winTitle">WIN</div>
+        <div class="win-text" id="winText">Bravo !</div>
+    </div>
+
+    <!-- Couche effets -->
+    <div id="fx-layer"></div>
+
+    <div class="footer">
+        3B Bo Bo Boom on t'a dit · Slot 3B TikTok
+    </div>
 </div>
 
 <script>
-// ====== LISTE DE TOUS TES GIFTS ======
-const giftImages = [
-    "IMG-20251120-WA0017.jpg", // cygne
-    "IMG-20251120-WA0018.jpg", // loup
-    "IMG-20251120-WA0019.jpg", // rose éternelle
-    "IMG-20251120-WA0020.jpg", // casquette
-    "IMG-20251120-WA0021.jpg", // manette
-    "IMG-20251120-WA0022.jpg", // confetti
-    "IMG-20251120-WA0023.jpg", // langage doigts
-    "IMG-20251120-WA0024.jpg", // donuts
-    "IMG-20251120-WA0025.jpg", // glace
-    "IMG-20251120-WA0026.jpg", // parfum
-    "IMG-20251120-WA0027.jpg", // corgi
-    "IMG-20251120-WA0028.jpg", // gants
-    "IMG-20251120-WA0029.jpg", // rose
-    "IMG-20251120-WA0030.jpg", // GG
-    "IMG-20251120-WA0031.jpg", // positivité
-    "IMG-20251120-WA0032.jpg", // tofu
-    "IMG-20251120-WA0033.jpg", // cœur doigts
-    "IMG-20251120-WA0034.jpg", // cœur nuage
-    "IMG-20251120-WA0035.jpg", // moto
-    "IMG-20251120-WA0042.jpg"  // pistolet rose
-];
+    // ===== LISTE COMPLETE DE TES GIFTS (même dossier que ce fichier) =====
+    const gifts = [
+        "IMG-20251120-WA0017.jpg", // cygne
+        "IMG-20251120-WA0018.jpg", // loup
+        "IMG-20251120-WA0019.jpg", // rose éternelle
+        "IMG-20251120-WA0020.jpg", // casquette
+        "IMG-20251120-WA0021.jpg", // manette
+        "IMG-20251120-WA0022.jpg", // confetti
+        "IMG-20251120-WA0023.jpg", // main signe
+        "IMG-20251120-WA0024.jpg", // donuts
+        "IMG-20251120-WA0025.jpg", // glace
+        "IMG-20251120-WA0026.jpg", // parfum
+        "IMG-20251120-WA0027.jpg", // corgi
+        "IMG-20251120-WA0028.jpg", // gants
+        "IMG-20251120-WA0029.jpg", // rose
+        "IMG-20251120-WA0030.jpg", // GG
+        "IMG-20251120-WA0031.jpg", // boule couleur
+        "IMG-20251120-WA0032.jpg", // chat
+        "IMG-20251120-WA0033.jpg", // coeur main
+        "IMG-20251120-WA0034.jpg", // coeur nuage
+        "IMG-20251120-WA0035.jpg", // moto
+        "IMG-20251120-WA0042.jpg"  // pistolet rose
+    ];
 
-// ====== ROULEAUX ======
-const reels = document.querySelectorAll(".slot img");
+    const reels = document.querySelectorAll(".reel");
+    const reelImages = document.querySelectorAll(".reel img");
+    const spinBtn = document.getElementById("spinBtn");
+    const winBanner = document.getElementById("winBanner");
+    const winTitle = document.getElementById("winTitle");
+    const winText = document.getElementById("winText");
+    const fxLayer = document.getElementById("fx-layer");
+    const winnersCountEl = document.getElementById("winnersCount");
+    const lastWinEl = document.getElementById("lastWin");
 
-function spinReel(imgElement, delay) {
-    let i = 0;
+    let isSpinning = false;
+    let winnersCount = 0;
 
-    const interval = setInterval(() => {
-        imgElement.src = "images/" + giftImages[i % giftImages.length];
-        i++;
-    }, 80);
+    // ===== SONS SANS FICHIERS (Web Audio) =====
+    let audioCtx = null;
+    function getAudioCtx() {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        return audioCtx;
+    }
 
-    setTimeout(() => {
-        clearInterval(interval);
+    let spinOsc = null;
 
-        // Image finale au hasard
-        const randomIndex = Math.floor(Math.random() * giftImages.length);
-        imgElement.src = "images/" + giftImages[randomIndex];
+    function startSpinSound() {
+        const ctx = getAudioCtx();
+        spinOsc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        spinOsc.type = "sawtooth";
+        spinOsc.frequency.value = 220;
+        gain.gain.value = 0.03;
+        spinOsc.connect(gain).connect(ctx.destination);
+        spinOsc.start();
+    }
 
-    }, delay);
-}
+    function stopSpinSound() {
+        if (spinOsc) {
+            spinOsc.stop();
+            spinOsc.disconnect();
+            spinOsc = null;
+        }
+    }
 
-document.getElementById("spinBtn").addEventListener("click", () => {
-    spinReel(reels[0], 1000);
-    spinReel(reels[1], 1300);
-    spinReel(reels[2], 1600);
-    spinReel(reels[3], 1900);
-});
+    function playBeep(freq, duration, volume) {
+        const ctx = getAudioCtx();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "square";
+        osc.frequency.value = freq;
+        gain.gain.value = volume;
+        osc.connect(gain).connect(ctx.destination);
+        osc.start();
+        setTimeout(() => {
+            osc.stop();
+            osc.disconnect();
+        }, duration);
+    }
+
+    function playSmallWinSound() {
+        playBeep(880, 150, 0.06);
+        setTimeout(() => playBeep(1200, 200, 0.05), 120);
+    }
+
+    function playBigWinSound() {
+        playBeep(660, 180, 0.08);
+        setTimeout(() => playBeep(990, 180, 0.08), 160);
+        setTimeout(() => playBeep(1320, 250, 0.08), 320);
+    }
+
+    // ===== FIREWORKS =====
+    function triggerFireworks() {
+        for (let i = 0; i < 60; i++) {
+            const fw = document.createElement("div");
+            fw.className = "firework";
+            const angle = Math.random() * Math.PI * 2;
+            const distance = 160 + Math.random() * 160;
+            const dx = Math.cos(angle) * distance;
+            const dy = Math.sin(angle) * distance;
+            fw.style.setProperty("--dx", dx + "px");
+            fw.style.setProperty("--dy", dy + "px");
+            fw.style.left = (50 + (Math.random() * 20 - 10)) + "%";
+            fw.style.top = (35 + (Math.random() * 10 - 5)) + "%";
+            fw.style.background = ["#ffef6b","#ff4fe9","#7dfffc","#ffffff"][Math.floor(Math.random()*4)];
+            fxLayer.appendChild(fw);
+            setTimeout(() => fw.remove(), 1100);
+        }
+    }
+
+    // ===== BANNIERE DE GAIN =====
+    function showWinBanner(type, message, level) {
+        winTitle.textContent = type;
+        winText.textContent = message;
+
+        winTitle.classList.remove("giga","mega");
+        if (level === "giga") winTitle.classList.add("giga");
+        if (level === "mega") winTitle.classList.add("mega");
+
+        winBanner.classList.remove("show");
+        void winBanner.offsetWidth; // reset animation
+        winBanner.classList.add("show");
+
+        setTimeout(() => {
+            winBanner.classList.remove("show");
+        }, 2500);
+    }
+
+    function randomGift() {
+        const idx = Math.floor(Math.random() * gifts.length);
+        return gifts[idx];
+    }
+
+    // ===== SPIN =====
+    function startSpin() {
+        if (isSpinning) return;
+        isSpinning = true;
+
+        // pour activer audio en premier clic sur mobile
+        getAudioCtx();
+
+        startSpinSound();
+        clearFxLayer();
+
+        const finalSymbols = [];
+        const durations = [1500, 1800, 2100, 2400];
+
+        reels.forEach((reel, index) => {
+            const img = reel.querySelector("img");
+            reel.classList.add("spinning");
+
+            let t = 0;
+            const interval = setInterval(() => {
+                img.src = randomGift();
+                t += 80;
+            }, 80);
+
+            setTimeout(() => {
+                clearInterval(interval);
+                reel.classList.remove("spinning");
+
+                const finalGift = randomGift();
+                img.src = finalGift;
+                finalSymbols[index] = finalGift;
+
+                if (index === reels.length - 1) {
+                    // tous les rouleaux ont fini
+                    stopSpinSound();
+                    handleResult(finalSymbols);
+                    isSpinning = false;
+                }
+            }, durations[index]);
+        });
+    }
+
+    function clearFxLayer() {
+        fxLayer.innerHTML = "";
+    }
+
+    function handleResult(symbols) {
+        const allSame = symbols.every(s => s === symbols[0]);
+
+        if (!allSame) return;
+
+        winnersCount++;
+        winnersCountEl.textContent = winnersCount.toString();
+        lastWinEl.textContent = "Dernier gain : " + symbols[0];
+
+        // gain normal
+        playSmallWinSound();
+        showWinBanner("WIN", "4 cadeaux identiques, bien joué !");
+
+        // GIGA WIN = loup x4
+        if (symbols[0] === "IMG-20251120-WA0018.jpg") {
+            showWinBanner("GIGA WIN", "Loup x4 ! GIGA WIN !!!", "giga");
+            triggerFireworks();
+            playBigWinSound();
+        }
+
+        // MEGA WIN = moto x4
+        if (symbols[0] === "IMG-20251120-WA0035.jpg") {
+            showWinBanner("MEGA WIN", "Moto x4 ! MEGA WIN !!!", "mega");
+            triggerFireworks();
+            playBigWinSound();
+        }
+    }
+
+    spinBtn.addEventListener("click", startSpin);
+
+    // Bouton "Ajouter (manuel)" -> ici juste un placeholder visuel
+    document.getElementById("addManualBtn").addEventListener("click", () => {
+        const pseudo = document.getElementById("pseudoInput").value || "Inconnu";
+        const value = parseInt(document.getElementById("valueInput").value || "0", 10);
+        let tours = 0;
+        if (value >= 49 && value <= 98) tours = 1;
+        else if (value >= 99 && value <= 298) tours = 3;
+        else if (value >= 299 && value <= 998) tours = 7;
+        else if (value >= 999) tours = 70;
+
+        alert("Joueur ajouté (faux pour l'instant) : " + pseudo + " · " + tours + " tours.");
+    });
 </script>
-
 </body>
 </html>
