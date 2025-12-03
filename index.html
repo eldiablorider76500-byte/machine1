@@ -475,61 +475,9 @@
     let isSpinning = false;
     let winnersCount = 0;
 
-    // ===== SONS SANS FICHIERS (Web Audio) =====
-    let audioCtx = null;
-    function getAudioCtx() {
-        if (!audioCtx) {
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        }
-        return audioCtx;
-    }
-
-    let spinOsc = null;
-
-    function startSpinSound() {
-        const ctx = getAudioCtx();
-        spinOsc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        spinOsc.type = "sawtooth";
-        spinOsc.frequency.value = 220;
-        gain.gain.value = 0.03;
-        spinOsc.connect(gain).connect(ctx.destination);
-        spinOsc.start();
-    }
-
-    function stopSpinSound() {
-        if (spinOsc) {
-            spinOsc.stop();
-            spinOsc.disconnect();
-            spinOsc = null;
-        }
-    }
-
-    function playBeep(freq, duration, volume) {
-        const ctx = getAudioCtx();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = "square";
-        osc.frequency.value = freq;
-        gain.gain.value = volume;
-        osc.connect(gain).connect(ctx.destination);
-        osc.start();
-        setTimeout(() => {
-            osc.stop();
-            osc.disconnect();
-        }, duration);
-    }
-
-    function playSmallWinSound() {
-        playBeep(880, 150, 0.06);
-        setTimeout(() => playBeep(1200, 200, 0.05), 120);
-    }
-
-    function playBigWinSound() {
-        playBeep(660, 180, 0.08);
-        setTimeout(() => playBeep(990, 180, 0.08), 160);
-        setTimeout(() => playBeep(1320, 250, 0.08), 320);
-    }
+    // compteur de tours
+    let totalTours = 0;
+    const toursDisplayEl = document.querySelector(".top-info div:nth-child(2)");
 
     // ===== FIREWORKS =====
     function triggerFireworks() {
@@ -578,10 +526,10 @@
         if (isSpinning) return;
         isSpinning = true;
 
-        // pour activer audio en premier clic sur mobile
-        getAudioCtx();
+        // compteur de tours à chaque clic sur SPIN
+        totalTours++;
+        toursDisplayEl.textContent = "Tours joués : " + totalTours + " · Depuis gros gain : 0";
 
-        startSpinSound();
         clearFxLayer();
 
         const finalSymbols = [];
@@ -591,10 +539,8 @@
             const img = reel.querySelector("img");
             reel.classList.add("spinning");
 
-            let t = 0;
             const interval = setInterval(() => {
                 img.src = randomGift();
-                t += 80;
             }, 80);
 
             setTimeout(() => {
@@ -607,7 +553,6 @@
 
                 if (index === reels.length - 1) {
                     // tous les rouleaux ont fini
-                    stopSpinSound();
                     handleResult(finalSymbols);
                     isSpinning = false;
                 }
@@ -629,21 +574,18 @@
         lastWinEl.textContent = "Dernier gain : " + symbols[0];
 
         // gain normal
-        playSmallWinSound();
         showWinBanner("WIN", "4 cadeaux identiques, bien joué !");
 
         // GIGA WIN = loup x4
         if (symbols[0] === "IMG-20251120-WA0018.jpg") {
             showWinBanner("GIGA WIN", "Loup x4 ! GIGA WIN !!!", "giga");
             triggerFireworks();
-            playBigWinSound();
         }
 
         // MEGA WIN = moto x4
         if (symbols[0] === "IMG-20251120-WA0035.jpg") {
             showWinBanner("MEGA WIN", "Moto x4 ! MEGA WIN !!!", "mega");
             triggerFireworks();
-            playBigWinSound();
         }
     }
 
