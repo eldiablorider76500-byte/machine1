@@ -1,666 +1,429 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>Slot 3B TIKTOK</title>
-<style>
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
+  <meta charset="UTF-8" />
+  <title>Slot 3B TikTok</title>
+
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
 
     body {
-        font-family: Arial, sans-serif;
-        background: radial-gradient(circle at top, #32145a 0%, #050014 60%, #020008 100%);
-        color: #fff;
-        height: 100vh;
-        overflow: hidden;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1d3350 0, #050811 55%, #02030a 100%);
+      color:#fff;
+      height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
 
-    .app {
-        width: 1340px;
-        height: 760px;
-        margin: 0 auto;
-        padding: 30px 40px;
+    .machine {
+      width:90vw;
+      max-width:1300px;
+      height:90vh;
+      max-height:750px;
+      border-radius:40px;
+      padding:30px;
+      background:linear-gradient(120deg,#271235,#120616 40%,#1c1634 100%);
+      box-shadow:0 0 40px rgba(255,0,255,0.15), 0 0 80px rgba(255,128,0,0.14);
+      display:flex;
+      flex-direction:column;
+      position:relative;
     }
 
-    h1 {
-        text-align: center;
-        font-size: 40px;
-        letter-spacing: 6px;
-        margin-bottom: 10px;
-        text-shadow: 0 0 15px #ffdd80, 0 0 30px #ff6aff;
+    .title {
+      text-align:center;
+      font-size:40px;
+      font-weight:800;
+      letter-spacing:3px;
+      text-transform:uppercase;
+      color:#ffd54f;
+      text-shadow:0 0 10px rgba(255,215,0,0.8), 0 0 18px #ff0080;
+      margin-bottom:10px;
     }
 
     .subtitle {
-        text-align: center;
-        font-size: 14px;
-        color: #ffe9c4;
-        margin-bottom: 20px;
+      text-align:center;
+      margin-bottom:20px;
+      color:#f7e8ff;
+      font-size:14px;
+      opacity:0.85;
     }
 
     .top-info {
-        display: flex;
-        justify-content: space-between;
-        font-size: 13px;
-        margin-bottom: 10px;
-        color: #f9daff;
+      display:flex;
+      justify-content:space-between;
+      padding:0 20px;
+      margin-bottom:12px;
+      font-size:14px;
+      color:#d6d0ff;
     }
 
-    .main-row {
-        display: flex;
-        gap: 20px;
+    /* REELS */
+    .reels-box {
+      flex:1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin-bottom:20px;
     }
 
-    /* --- Zone slot principale --- */
-    .slot-wrapper {
-        flex: 1.5;
-        background: #070213;
-        border-radius: 30px;
-        padding: 16px;
-        box-shadow: 0 0 25px rgba(255, 0, 255, 0.25);
+    .reels-frame {
+      width:900px;
+      height:330px;
+      padding:18px;
+      border-radius:22px;
+      background:linear-gradient(180deg,#ff00b8,#ff9100);
+      box-shadow:0 0 25px rgba(255,64,129,0.6);
     }
 
-    .slot-border {
-        width: 100%;
-        height: 380px;
-        border-radius: 28px;
-        padding: 12px;
-        background: linear-gradient(135deg,#ff00ff,#ff9900,#00ffd5);
-    }
-
-    .slot-inner {
-        width: 100%;
-        height: 100%;
-        background: radial-gradient(circle at top, #21263a, #050712);
-        border-radius: 22px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .reels {
-        display: flex;
-        gap: 22px;
-        width: 90%;
-        justify-content: center;
+    .reels-inner {
+      background:radial-gradient(circle at top,#121b33,#050814 80%);
+      height:100%;
+      border-radius:18px;
+      display:flex;
+      justify-content:space-evenly;
+      align-items:center;
+      padding:10px 15px;
     }
 
     .reel {
-        width: 180px;
-        height: 260px;
-        border-radius: 18px;
-        background: #050814;
-        box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
+      width:150px;
+      height:100%;
+      background:linear-gradient(#161f32,#080a12);
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:inset 0 0 12px rgba(0,0,0,0.8);
+      overflow:hidden;
     }
 
     .reel img {
-        width: 90%;
-        height: auto;
-        object-fit: contain;
-        filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
-        transition: transform 0.1s;
+      width:80%;
+      object-fit:contain;
+      filter:drop-shadow(0 0 10px rgba(0,0,0,0.8));
     }
 
-    .reel.spinning img {
-        animation: reelWiggle 0.25s linear infinite;
-    }
-
-    @keyframes reelWiggle {
-        0% { transform: translateY(-4px); }
-        50% { transform: translateY(4px); }
-        100% { transform: translateY(-4px); }
-    }
-
-    /* --- Colonne droite --- */
+    /* PANNEAU DROITE */
     .right-panel {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
+      position:absolute;
+      right:30px;
+      top:150px;
+      width:360px;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
     }
 
-    .panel-box {
-        background: #080319;
-        border-radius: 16px;
-        padding: 12px 16px;
-        box-shadow: 0 0 15px rgba(0,0,0,0.7);
-        font-size: 13px;
+    .box {
+      background:rgba(0,0,0,0.35);
+      border-radius:12px;
+      padding:12px;
+      font-size:14px;
+      box-shadow:inset 0 0 8px rgba(0,0,0,0.4);
     }
 
-    .panel-title {
-        color: #ffdd80;
-        font-weight: bold;
-        margin-bottom: 6px;
-        text-transform: uppercase;
-        font-size: 12px;
+    .box-title {
+      font-weight:700;
+      color:#ffdd7d;
+      margin-bottom:6px;
     }
 
-    .panel-value {
-        color: #ffffff;
-        font-size: 13px;
-    }
-
-    .status-dot {
-        display: inline-block;
-        width: 9px;
-        height: 9px;
-        border-radius: 50%;
-        margin-right: 5px;
-        background: #ff4444;
-        box-shadow: 0 0 8px #ff4444;
-    }
-
-    .status-dot.ok {
-        background: #33ff77;
-        box-shadow: 0 0 8px #33ff77;
-    }
-
-    /* --- Bas : pseudo, valeur, boutons --- */
-    .bottom-row {
-        margin-top: 18px;
-        display: flex;
-        gap: 14px;
-    }
-
-    .input-card {
-        flex: 1.7;
-        background: #070213;
-        border-radius: 18px;
-        padding: 14px 18px;
-        font-size: 13px;
-    }
-
-    .input-row {
-        display: flex;
-        gap: 16px;
-        margin-bottom: 10px;
-    }
-
-    .field {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-    }
-
-    .field label {
-        font-size: 12px;
-        color: #f9daff;
-    }
-
-    .field input {
-        background: #050814;
-        border-radius: 999px;
-        border: 1px solid #2a2040;
-        padding: 7px 12px;
-        color: #fff;
-        font-size: 13px;
-        outline: none;
-    }
-
-    .field input::placeholder {
-        color: #7e6f9f;
-    }
-
-    .rules {
-        font-size: 11px;
-        color: #c9b2ff;
-        line-height: 1.3;
-        margin-top: 6px;
-    }
-
-    .rules span {
-        color: #ffdd80;
-    }
-
-    .buttons-card {
-        flex: 0.9;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 18px;
+    .controls {
+      display:flex;
+      gap:10px;
+      margin-top:15px;
+      width:100%;
+      justify-content:center;
     }
 
     .btn {
-        border: none;
-        border-radius: 999px;
-        padding: 12px 26px;
-        font-weight: bold;
-        font-size: 15px;
-        cursor: pointer;
-        box-shadow: 0 0 15px rgba(0,0,0,0.6);
-        transition: transform 0.1s, box-shadow 0.1s, filter 0.1s;
+      padding:10px 20px;
+      border-radius:999px;
+      font-size:16px;
+      font-weight:700;
+      border:none;
+      cursor:pointer;
+      transition:0.15s;
     }
 
-    .btn:active {
-        transform: translateY(2px);
-        box-shadow: 0 0 5px rgba(0,0,0,0.4);
-        filter: brightness(0.9);
-    }
+    .btn-manual { background:#ffb300; color:#320000; }
+    .btn-spin { background:#00e676; color:#042c10; }
 
-    .btn-add {
-        background: radial-gradient(circle at top, #ffd45e, #ff8b00);
-        color: #201100;
-    }
-
-    .btn-spin {
-        background: radial-gradient(circle at top, #00ffbf, #0091ff);
-        color: #001019;
-        padding-inline: 35px;
-    }
-
-    /* --- Bannière de gain --- */
-    .win-banner {
-        position: absolute;
-        left: 50%;
-        top: 28%;
-        transform: translate(-50%, -50%) scale(0.4);
-        background: radial-gradient(circle at top, #fff5d6, #ffb347);
-        padding: 20px 40px;
-        border-radius: 999px;
-        text-align: center;
-        color: #5b2100;
-        box-shadow: 0 0 25px rgba(255, 222, 120, 0.9);
-        opacity: 0;
-        pointer-events: none;
-    }
-
-    .win-banner.show {
-        animation: bannerPop 1s forwards;
-    }
-
-    @keyframes bannerPop {
-        0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
-        40% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
-        100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-    }
-
-    .win-title {
-        font-size: 28px;
-        font-weight: 900;
-        letter-spacing: 3px;
-        margin-bottom: 6px;
-        text-shadow: 0 0 10px #ff6a00;
-    }
-
-    .win-text {
-        font-size: 14px;
-    }
-
-    .win-title.giga {
-        color: #b300ff;
-        text-shadow: 0 0 15px #ff30ff;
-    }
-
-    .win-title.mega {
-        color: #008cff;
-        text-shadow: 0 0 15px #00f6ff;
-    }
-
-    /* --- Fireworks --- */
-    #fx-layer {
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        overflow: hidden;
-    }
-
-    .firework {
-        position: absolute;
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: #fff;
-        opacity: 0;
-        animation: firework 1s ease-out forwards;
-    }
-
-    @keyframes firework {
-        0% { transform: translate(0,0) scale(0.4); opacity: 1; }
-        70% { opacity: 1; }
-        100% { transform: translate(var(--dx), var(--dy)) scale(0.1); opacity: 0; }
-    }
-
-    /* --- Petit texte en bas --- */
-    .footer {
-        position: absolute;
-        bottom: 8px;
-        left: 0;
-        width: 100%;
-        text-align: center;
-        font-size: 11px;
-        color: #7a6aa0;
-    }
-</style>
+    .btn:active { transform:scale(0.96); }
+  </style>
 </head>
 <body>
-<div class="app">
-    <h1>SLOT 3B TIKTOK</h1>
-    <p class="subtitle">
-        4 mêmes cadeaux sur la ligne = gain · Loup = GIGA WIN · Moto = MEGA WIN
-    </p>
+<div class="machine">
 
-    <div class="top-info">
-        <div>Joueur : - · Cadeau : 0 pièces · Tours restants : 0</div>
-        <div>Tours joués : 0 · Depuis gros gain : 0</div>
+  <div class="title">SLOT 3B TIKTOK</div>
+  <div class="subtitle">4 mêmes cadeaux = gain • Loup = GIGA WIN • Moto = MEGA WIN</div>
+
+  <div class="top-info">
+    <div>Joueur : <span id="playerNameDisplay">-</span> • Cadeau : <span id="giftCoinsDisplay">0</span> pièces • Tours restants : <span id="spinsLeftDisplay">0</span></div>
+    <div>Tours joués : <span id="totalSpinsDisplay">0</span></div>
+  </div>
+
+  <div class="reels-box">
+    <div class="reels-frame">
+      <div class="reels-inner">
+        <div class="reel"><img id="reel0"></div>
+        <div class="reel"><img id="reel1"></div>
+        <div class="reel"><img id="reel2"></div>
+        <div class="reel"><img id="reel3"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="right-panel">
+    <div class="box">
+      <div class="box-title">File d'attente</div>
+      <div id="queueCount">Aucun joueur</div>
     </div>
 
-    <div class="main-row">
-        <!-- Zone Slot -->
-        <div class="slot-wrapper">
-            <div class="slot-border">
-                <div class="slot-inner">
-                    <div class="reels">
-                        <div class="reel"><img src="IMG-20251120-WA0017.jpg" alt=""></div>
-                        <div class="reel"><img src="IMG-20251120-WA0018.jpg" alt=""></div>
-                        <div class="reel"><img src="IMG-20251120-WA0019.jpg" alt=""></div>
-                        <div class="reel"><img src="IMG-20251120-WA0020.jpg" alt=""></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Colonne droite -->
-        <div class="right-panel">
-            <div class="panel-box">
-                <div class="panel-title">FILE D'ATTENTE</div>
-                <div class="panel-value">Nombre de joueurs : <span id="queueCount">0</span></div>
-            </div>
-
-            <div class="panel-box">
-                <div class="panel-title">HISTORIQUE DES GAGNANTS (SESSION)</div>
-                <div class="panel-value">Total gagnants : <span id="winnersCount">0</span></div>
-                <div id="lastWin" style="margin-top:6px; font-size:12px; color:#d8c6ff;">Dernier gain : -</div>
-            </div>
-
-            <div class="panel-box">
-                <div class="panel-title">STATUT TIKTOK</div>
-                <div class="panel-value">
-                    <span class="status-dot" id="tiktokDot"></span>
-                    <span id="tiktokStatus">Déconnecté du serveur</span>
-                </div>
-                <div style="margin-top:6px; font-size:11px; color:#bfb3ff;">
-                    Lance ton serveur Node puis un vrai live TikTok avec ton pseudo.<br>
-                    Les cadeaux validés seront ajoutés automatiquement dans la file.
-                </div>
-            </div>
-        </div>
+    <div class="box">
+      <div class="box-title">Gagnants (session)</div>
+      <div id="winnersList">Aucun gagnant</div>
     </div>
 
-    <!-- Bas -->
-    <div class="bottom-row">
-        <div class="input-card">
-            <div class="input-row">
-                <div class="field">
-                    <label>Pseudo TikTok :</label>
-                    <input type="text" id="pseudoInput" placeholder="Pseudo...">
-                </div>
-                <div class="field">
-                    <label>Valeur du cadeau (pièces) :</label>
-                    <input type="number" id="valueInput" placeholder="ex : 99">
-                </div>
-            </div>
-            <div class="rules">
-                Minimum <span>49 pièces</span> pour jouer.<br>
-                49–98 = 1 tour · 99–298 = 3 tours · 299–998 = 7 tours · 999+ = 70 tours.<br>
-                Les cadeaux TikTok reçus ajoutent automatiquement le joueur dans la file.
-            </div>
-        </div>
-
-        <div class="buttons-card">
-            <button class="btn btn-add" id="addManualBtn">
-                AJOUTER<br>(MANUEL)
-            </button>
-            <button class="btn btn-spin" id="spinBtn">
-                SPIN
-            </button>
-        </div>
+    <div class="box">
+      <div class="box-title">Statut TikTok</div>
+      <div id="tiktokStatus">Déconnecté</div>
     </div>
+  </div>
 
-    <!-- Bannière de gain -->
-    <div class="win-banner" id="winBanner">
-        <div class="win-title" id="winTitle">WIN</div>
-        <div class="win-text" id="winText">Bravo !</div>
-    </div>
+  <div style="width:100%;display:flex;justify-content:center;margin-top:10px;">
+    <input id="playerName" placeholder="Pseudo..." style="width:160px;padding:6px;border-radius:8px;border:none;">
+    <input id="giftCoins" placeholder="ex : 99" type="number" style="width:120px;margin-left:8px;padding:6px;border-radius:8px;border:none;">
+  </div>
 
-    <!-- Couche effets -->
-    <div id="fx-layer"></div>
-
-    <div class="footer">
-        3B Bo Bo Boom on t'a dit · Slot 3B TikTok
-    </div>
+  <div class="controls">
+    <button class="btn btn-manual" id="addManualBtn">AJOUTER (MANUEL)</button>
+    <button class="btn btn-spin" id="spinBtn" disabled>SPIN</button>
+  </div>
 </div>
-
 <script>
-    // ===== LISTE COMPLETE DE TES GIFTS (même dossier que ce fichier) =====
-    const gifts = [
-        "IMG-20251120-WA0017.jpg", // cygne
-        "IMG-20251120-WA0018.jpg", // loup
-        "IMG-20251120-WA0019.jpg", // rose éternelle
-        "IMG-20251120-WA0020.jpg", // casquette
-        "IMG-20251120-WA0021.jpg", // manette
-        "IMG-20251120-WA0022.jpg", // confetti
-        "IMG-20251120-WA0023.jpg", // main signe
-        "IMG-20251120-WA0024.jpg", // donuts
-        "IMG-20251120-WA0025.jpg", // glace
-        "IMG-20251120-WA0026.jpg", // parfum
-        "IMG-20251120-WA0027.jpg", // corgi
-        "IMG-20251120-WA0028.jpg", // gants
-        "IMG-20251120-WA0029.jpg", // rose
-        "IMG-20251120-WA0030.jpg", // GG
-        "IMG-20251120-WA0031.jpg", // boule couleur
-        "IMG-20251120-WA0032.jpg", // chat
-        "IMG-20251120-WA0033.jpg", // coeur main
-        "IMG-20251120-WA0034.jpg", // coeur nuage
-        "IMG-20251120-WA0035.jpg", // moto
-        "IMG-20251120-WA0042.jpg"  // pistolet rose
-    ];
+/* -------------------------------------------
+   CONFIGURATION DES IMAGES (TES CADEAUX)
+-------------------------------------------- */
+const IMAGE_PATH = "Cadeaux/"; // ton dossier sur GitHub
 
-    const reels = document.querySelectorAll(".reel");
-    const reelImages = document.querySelectorAll(".reel img");
-    const spinBtn = document.getElementById("spinBtn");
-    const winBanner = document.getElementById("winBanner");
-    const winTitle = document.getElementById("winTitle");
-    const winText = document.getElementById("winText");
-    const fxLayer = document.getElementById("fx-layer");
-    const winnersCountEl = document.getElementById("winnersCount");
-    const lastWinEl = document.getElementById("lastWin");
+// liste EXACTE des fichiers (comme sur ton screenshot)
+const SYMBOLS = [
+  "IMG-20251120-WA0017.jpg",
+  "IMG-20251120-WA0018.jpg",
+  "IMG-20251120-WA0019.jpg",
+  "IMG-20251120-WA0020.jpg",
+  "IMG-20251120-WA0021.jpg",
+  "IMG-20251120-WA0022.jpg",
+  "IMG-20251120-WA0023.jpg",
+  "IMG-20251120-WA0024.jpg",
+  "IMG-20251120-WA0025.jpg",
+  "IMG-20251120-WA0026.jpg",
+  "IMG-20251120-WA0027.jpg",
+  "IMG-20251120-WA0028.jpg",
+  "IMG-20251120-WA0029.jpg",
+  "IMG-20251120-WA0030.jpg",
+  "IMG-20251120-WA0031.jpg",
+  "IMG-20251120-WA0032.jpg",
+  "IMG-20251120-WA0033.jpg",
+  "IMG-20251120-WA0034.jpg",
+  "IMG-20251120-WA0035.jpg",
+  "IMG-20251120-WA0036.jpg",
+  "IMG-20251120-WA0037.jpg",
+  "IMG-20251120-WA0042.jpg"
+];
 
-    let isSpinning = false;
-    let winnersCount = 0;
+// pour tirer un symbole au hasard
+function randomSymbol() {
+  const file = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+  return IMAGE_PATH + file;
+}
 
-    // ===== SONS SANS FICHIERS (Web Audio) =====
-    let audioCtx = null;
-    function getAudioCtx() {
-        if (!audioCtx) {
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        }
-        return audioCtx;
-    }
+/* -------------------------------------------
+   INITIALISATION DES REELS (IMAGES AU DÉMARRAGE)
+-------------------------------------------- */
 
-    let spinOsc = null;
+const reels = [
+  document.getElementById("reel0"),
+  document.getElementById("reel1"),
+  document.getElementById("reel2"),
+  document.getElementById("reel3")
+];
 
-    function startSpinSound() {
-        const ctx = getAudioCtx();
-        spinOsc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        spinOsc.type = "sawtooth";
-        spinOsc.frequency.value = 220;
-        gain.gain.value = 0.03;
-        spinOsc.connect(gain).connect(ctx.destination);
-        spinOsc.start();
-    }
+// au démarrage → met une image aléatoire
+function initReels() {
+  for (let i = 0; i < reels.length; i++) {
+    reels[i].src = randomSymbol();
+  }
+}
 
-    function stopSpinSound() {
-        if (spinOsc) {
-            spinOsc.stop();
-            spinOsc.disconnect();
-            spinOsc = null;
-        }
-    }
+initReels();
+/* -------------------------------------------
+   VARIABLES DU JEU
+-------------------------------------------- */
 
-    function playBeep(freq, duration, volume) {
-        const ctx = getAudioCtx();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = "square";
-        osc.frequency.value = freq;
-        gain.gain.value = volume;
-        osc.connect(gain).connect(ctx.destination);
-        osc.start();
-        setTimeout(() => {
-            osc.stop();
-            osc.disconnect();
-        }, duration);
-    }
+let queue = [];            // file d'attente
+let currentPlayer = null;  // joueur en cours
+let spinsLeft = 0;         // tours restants du joueur
+let totalSpins = 0;        // total pour affichage
 
-    function playSmallWinSound() {
-        playBeep(880, 150, 0.06);
-        setTimeout(() => playBeep(1200, 200, 0.05), 120);
-    }
+/* -------------------------------------------
+   MISE À JOUR DE L’AFFICHAGE
+-------------------------------------------- */
 
-    function playBigWinSound() {
-        playBeep(660, 180, 0.08);
-        setTimeout(() => playBeep(990, 180, 0.08), 160);
-        setTimeout(() => playBeep(1320, 250, 0.08), 320);
-    }
+function refreshUI() {
+  document.getElementById("playerNameDisplay").textContent = currentPlayer ? currentPlayer.name : "-";
+  document.getElementById("giftCoinsDisplay").textContent  = currentPlayer ? currentPlayer.coins : "0";
+  document.getElementById("spinsLeftDisplay").textContent  = spinsLeft;
+  document.getElementById("totalSpinsDisplay").textContent = totalSpins;
 
-    // ===== FIREWORKS =====
-    function triggerFireworks() {
-        for (let i = 0; i < 60; i++) {
-            const fw = document.createElement("div");
-            fw.className = "firework";
-            const angle = Math.random() * Math.PI * 2;
-            const distance = 160 + Math.random() * 160;
-            const dx = Math.cos(angle) * distance;
-            const dy = Math.sin(angle) * distance;
-            fw.style.setProperty("--dx", dx + "px");
-            fw.style.setProperty("--dy", dy + "px");
-            fw.style.left = (50 + (Math.random() * 20 - 10)) + "%";
-            fw.style.top = (35 + (Math.random() * 10 - 5)) + "%";
-            fw.style.background = ["#ffef6b","#ff4fe9","#7dfffc","#ffffff"][Math.floor(Math.random()*4)];
-            fxLayer.appendChild(fw);
-            setTimeout(() => fw.remove(), 1100);
-        }
-    }
+  // file d'attente
+  if (queue.length === 0) {
+    document.getElementById("queueCount").textContent = "Aucun joueur";
+  } else {
+    document.getElementById("queueCount").textContent =
+      queue.map(p => `${p.name} (${p.spins} tours)`).join("<br>");
+  }
+}
 
-    // ===== BANNIERE DE GAIN =====
-    function showWinBanner(type, message, level) {
-        winTitle.textContent = type;
-        winText.textContent = message;
+refreshUI();
 
-        winTitle.classList.remove("giga","mega");
-        if (level === "giga") winTitle.classList.add("giga");
-        if (level === "mega") winTitle.classList.add("mega");
+/* -------------------------------------------
+   CALCUL DES TOURS EN FONCTION DES PIÈCES
+-------------------------------------------- */
 
-        winBanner.classList.remove("show");
-        void winBanner.offsetWidth; // reset animation
-        winBanner.classList.add("show");
+function calcSpins(coins) {
+  if (coins >= 2999) return 70;
+  if (coins >= 299)  return 7;
+  if (coins >= 99)   return 3;
+  if (coins >= 49)   return 1;
+  return 0;
+}
 
-        setTimeout(() => {
-            winBanner.classList.remove("show");
-        }, 2500);
-    }
+/* -------------------------------------------
+   AJOUT MANUEL D’UN JOUEUR
+-------------------------------------------- */
 
-    function randomGift() {
-        const idx = Math.floor(Math.random() * gifts.length);
-        return gifts[idx];
-    }
+document.getElementById("addManualBtn").addEventListener("click", () => {
+  const name = document.getElementById("playerName").value.trim();
+  const coins = parseInt(document.getElementById("giftCoins").value);
 
-    // ===== SPIN =====
-    function startSpin() {
-        if (isSpinning) return;
-        isSpinning = true;
+  if (!name || isNaN(coins)) return alert("Pseudo + pièces obligatoires.");
 
-        // pour activer audio en premier clic sur mobile
-        getAudioCtx();
+  const spins = calcSpins(coins);
+  if (spins === 0) return alert("49 pièces minimum.");
 
-        startSpinSound();
-        clearFxLayer();
+  // ajoute à la file
+  queue.push({ name, coins, spins });
 
-        const finalSymbols = [];
-        const durations = [1500, 1800, 2100, 2400];
+  // si aucun joueur en cours → prends le premier de la file
+  if (!currentPlayer) loadNextPlayer();
 
-        reels.forEach((reel, index) => {
-            const img = reel.querySelector("img");
-            reel.classList.add("spinning");
+  refreshUI();
+});
 
-            let t = 0;
-            const interval = setInterval(() => {
-                img.src = randomGift();
-                t += 80;
-            }, 80);
+/* -------------------------------------------
+   CHARGER LE JOUEUR SUIVANT DANS LA FILE
+-------------------------------------------- */
 
-            setTimeout(() => {
-                clearInterval(interval);
-                reel.classList.remove("spinning");
+function loadNextPlayer() {
+  if (queue.length === 0) {
+    currentPlayer = null;
+    spinsLeft = 0;
+    document.getElementById("spinBtn").disabled = true;
+    return;
+  }
 
-                const finalGift = randomGift();
-                img.src = finalGift;
-                finalSymbols[index] = finalGift;
+  currentPlayer = queue.shift();
+  spinsLeft = currentPlayer.spins;
+  document.getElementById("spinBtn").disabled = false;
+  refreshUI();
+}
 
-                if (index === reels.length - 1) {
-                    // tous les rouleaux ont fini
-                    stopSpinSound();
-                    handleResult(finalSymbols);
-                    isSpinning = false;
-                }
-            }, durations[index]);
-        });
-    }
+/* -------------------------------------------
+   SPIN → CONSOMME 1 TOUR
+-------------------------------------------- */
 
-    function clearFxLayer() {
-        fxLayer.innerHTML = "";
-    }
+document.getElementById("spinBtn").addEventListener("click", () => {
+  if (spinsLeft <= 0) return;
 
-    function handleResult(symbols) {
-        const allSame = symbols.every(s => s === symbols[0]);
+  spinsLeft--;
+  totalSpins++;
 
-        if (!allSame) return;
+  // animation rapide : change les images
+  for (let i = 0; i < reels.length; i++) {
+    reels[i].src = randomSymbol();
+  }
 
-        winnersCount++;
-        winnersCountEl.textContent = winnersCount.toString();
-        lastWinEl.textContent = "Dernier gain : " + symbols[0];
+  // si le joueur n'a plus de tours → passe au suivant
+  if (spinsLeft === 0) {
+    setTimeout(() => {
+      loadNextPlayer();
+    }, 300);
+  }
 
-        // gain normal
-        playSmallWinSound();
-        showWinBanner("WIN", "4 cadeaux identiques, bien joué !");
+  refreshUI();
+});
+/* -----------------------------------------------------------
+   WEBSOCKET (Connexion au serveur.js)
+----------------------------------------------------------- */
 
-        // GIGA WIN = loup x4
-        if (symbols[0] === "IMG-20251120-WA0018.jpg") {
-            showWinBanner("GIGA WIN", "Loup x4 ! GIGA WIN !!!", "giga");
-            triggerFireworks();
-            playBigWinSound();
-        }
+// IMPORTANT : ton serveur tourne sur ws://localhost:8080
+let ws = new WebSocket("ws://localhost:8080");
 
-        // MEGA WIN = moto x4
-        if (symbols[0] === "IMG-20251120-WA0035.jpg") {
-            showWinBanner("MEGA WIN", "Moto x4 ! MEGA WIN !!!", "mega");
-            triggerFireworks();
-            playBigWinSound();
-        }
-    }
+// Quand la machine se connecte au serveur
+ws.onopen = () => {
+  document.getElementById("tiktokStatus").textContent = "Connecté au serveur ✔";
+  document.getElementById("tiktokStatus").style.color = "#00ff8d";
+};
 
-    spinBtn.addEventListener("click", startSpin);
+// Erreur WebSocket
+ws.onerror = () => {
+  document.getElementById("tiktokStatus").textContent = "Erreur WebSocket ⚠️";
+  document.getElementById("tiktokStatus").style.color = "#ff4444";
+};
 
-    // Bouton "Ajouter (manuel)" -> ici juste un placeholder visuel
-    document.getElementById("addManualBtn").addEventListener("click", () => {
-        const pseudo = document.getElementById("pseudoInput").value || "Inconnu";
-        const value = parseInt(document.getElementById("valueInput").value || "0", 10);
-        let tours = 0;
-        if (value >= 49 && value <= 98) tours = 1;
-        else if (value >= 99 && value <= 298) tours = 3;
-        else if (value >= 299 && value <= 998) tours = 7;
-        else if (value >= 999) tours = 70;
+// Déconnexion
+ws.onclose = () => {
+  document.getElementById("tiktokStatus").textContent = "Déconnecté ❌";
+  document.getElementById("tiktokStatus").style.color = "#ff4444";
+};
 
-        alert("Joueur ajouté (faux pour l'instant) : " + pseudo + " · " + tours + " tours.");
-    });
+/* -----------------------------------------------------------
+   RÉCEPTION DES CADEAUX DEPUIS LE SERVEUR NODE
+----------------------------------------------------------- */
+
+ws.onmessage = (event) => {
+  const data = JSON.parse(event.data);
+
+  // changement de statut TikTok (connecté / déconnecté)
+  if (data.type === "status") {
+    document.getElementById("tiktokStatus").textContent =
+      data.connected ? "TikTok : Connecté ✔" : "TikTok : Déconnecté ❌";
+    document.getElementById("tiktokStatus").style.color =
+      data.connected ? "#00ff8d" : "#ff4444";
+    return;
+  }
+
+  // réception d’un cadeau → ajout automatique à la file
+  if (data.type === "gift") {
+    const username = data.user;
+    const coins = data.coins;
+
+    const spins = calcSpins(coins);
+    if (spins === 0) return; // cadeau trop faible → ignore
+
+    // push dans la file d'attente
+    queue.push({ name: username, coins: coins, spins: spins });
+
+    // si aucun joueur en cours → charge celui-ci
+    if (!currentPlayer) loadNextPlayer();
+
+    refreshUI();
+  }
+};
 </script>
 </body>
 </html>
