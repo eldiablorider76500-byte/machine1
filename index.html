@@ -347,8 +347,8 @@
     </p>
 
     <div class="top-info">
-        <div>Joueur : - · Cadeau : 0 pièces · Tours restants : 0</div>
-        <div>Tours joués : 0 · Depuis gros gain : 0</div>
+        <div id="topPlayer">Joueur : - · Cadeau : 0 pièces · Tours restants : 0</div>
+        <div id="topTours">Tours joués : 0 · Depuis gros gain : 0</div>
     </div>
 
     <div class="main-row">
@@ -383,11 +383,10 @@
                 <div class="panel-title">STATUT TIKTOK</div>
                 <div class="panel-value">
                     <span class="status-dot" id="tiktokDot"></span>
-                    <span id="tiktokStatus">Déconnecté du serveur</span>
+                    <span id="tiktokStatus">Déconnecté du serveur (mode manuel)</span>
                 </div>
                 <div style="margin-top:6px; font-size:11px; color:#bfb3ff;">
-                    Lance ton serveur Node puis un vrai live TikTok avec ton pseudo.<br>
-                    Les cadeaux validés seront ajoutés automatiquement dans la file.
+                    Ici, tu gères tout à la voix en manuel pendant le live.
                 </div>
             </div>
         </div>
@@ -409,7 +408,7 @@
             <div class="rules">
                 Minimum <span>49 pièces</span> pour jouer.<br>
                 49–98 = 1 tour · 99–298 = 3 tours · 299–998 = 7 tours · 999+ = 70 tours.<br>
-                Les cadeaux TikTok reçus ajoutent automatiquement le joueur dans la file.
+                Tu gères les tours à l’oral (mode manuel).
             </div>
         </div>
 
@@ -438,7 +437,7 @@
 </div>
 
 <script>
-    // ===== LISTE COMPLETE DE TES GIFTS (même dossier que ce fichier) =====
+    // ===== LISTE COMPLETE DES GIFTS (même dossier que ce fichier) =====
     const gifts = [
         "IMG-20251120-WA0017.jpg", // cygne
         "IMG-20251120-WA0018.jpg", // loup
@@ -452,7 +451,7 @@
         "IMG-20251120-WA0026.jpg", // parfum
         "IMG-20251120-WA0027.jpg", // corgi
         "IMG-20251120-WA0028.jpg", // gants
-        "IMG-20251120-WA0029.jpg", // rose
+        "IMG-20251120-WA0029.jpg", // rosa
         "IMG-20251120-WA0030.jpg", // GG
         "IMG-20251120-WA0031.jpg", // boule couleur
         "IMG-20251120-WA0032.jpg", // chat
@@ -462,22 +461,65 @@
         "IMG-20251120-WA0042.jpg"  // pistolet rose
     ];
 
-    const reels = document.querySelectorAll(".reel");
-    const reelImages = document.querySelectorAll(".reel img");
-    const spinBtn = document.getElementById("spinBtn");
-    const winBanner = document.getElementById("winBanner");
-    const winTitle = document.getElementById("winTitle");
-    const winText = document.getElementById("winText");
-    const fxLayer = document.getElementById("fx-layer");
+    // mapping pour les symboles importants
+    const FILE_CYGNE          = "IMG-20251120-WA0017.jpg";
+    const FILE_LOUP           = "IMG-20251120-WA0018.jpg";
+    const FILE_ROSE_ETERNELLE = "IMG-20251120-WA0019.jpg";
+    const FILE_CASQUETTE      = "IMG-20251120-WA0020.jpg";
+    const FILE_MANETTE        = "IMG-20251120-WA0021.jpg";
+    const FILE_CONFETTI       = "IMG-20251120-WA0022.jpg";
+    const FILE_DONUTS         = "IMG-20251120-WA0024.jpg";
+    const FILE_PARFUM         = "IMG-20251120-WA0026.jpg";
+    const FILE_CORGI          = "IMG-20251120-WA0027.jpg";
+    const FILE_GANTS          = "IMG-20251120-WA0028.jpg";
+    const FILE_ROSA           = "IMG-20251120-WA0029.jpg";
+    const FILE_COEUR_DOIGTS   = "IMG-20251120-WA0033.jpg";
+    const FILE_COEUR_NUAGE    = "IMG-20251120-WA0034.jpg";
+    const FILE_MOTO           = "IMG-20251120-WA0035.jpg";
+
+    // petits cadeaux pour les paliers de 70 (random)
+    const SMALL_REWARDS = [
+        FILE_DONUTS,
+        FILE_PARFUM,
+        FILE_CORGI,
+        FILE_GANTS,
+        FILE_CONFETTI,
+        FILE_MANETTE,
+        FILE_CASQUETTE,
+        FILE_ROSA,
+        FILE_COEUR_DOIGTS,
+        FILE_COEUR_NUAGE,
+        FILE_ROSE_ETERNELLE
+    ];
+
+    // cycle des gros lots (après 200, tous les +260)
+    const BIG_CYCLE = [
+        FILE_CYGNE,
+        FILE_MOTO,
+        FILE_CYGNE,
+        FILE_LOUP,
+        FILE_MOTO,
+        FILE_MOTO,
+        FILE_CYGNE,
+        FILE_MOTO
+    ];
+    let bigCycleIndex = 0;
+    let firstMotoAt200Given = false;
+
+    const reels      = document.querySelectorAll(".reel");
+    const spinBtn    = document.getElementById("spinBtn");
+    const winBanner  = document.getElementById("winBanner");
+    const winTitle   = document.getElementById("winTitle");
+    const winText    = document.getElementById("winText");
+    const fxLayer    = document.getElementById("fx-layer");
     const winnersCountEl = document.getElementById("winnersCount");
-    const lastWinEl = document.getElementById("lastWin");
+    const lastWinEl      = document.getElementById("lastWin");
 
-    let isSpinning = false;
-    let winnersCount = 0;
+    const topToursEl  = document.getElementById("topTours");
 
-    // compteur de tours
-    let totalTours = 0;
-    const toursDisplayEl = document.querySelector(".top-info div:nth-child(2)");
+    let isSpinning     = false;
+    let winnersCount   = 0;
+    let totalTours     = 0;
 
     // ===== FIREWORKS =====
     function triggerFireworks() {
@@ -501,14 +543,14 @@
     // ===== BANNIERE DE GAIN =====
     function showWinBanner(type, message, level) {
         winTitle.textContent = type;
-        winText.textContent = message;
+        winText.textContent  = message;
 
         winTitle.classList.remove("giga","mega");
         if (level === "giga") winTitle.classList.add("giga");
         if (level === "mega") winTitle.classList.add("mega");
 
         winBanner.classList.remove("show");
-        void winBanner.offsetWidth; // reset animation
+        void winBanner.offsetWidth; // reset anim
         winBanner.classList.add("show");
 
         setTimeout(() => {
@@ -521,16 +563,50 @@
         return gifts[idx];
     }
 
+    function clearFxLayer() {
+        fxLayer.innerHTML = "";
+    }
+
+    // ===== LOGIQUE DES PALIERS (200 / 260 / 70) =====
+    function getForcedSymbolForSpin(spinNumber) {
+        let forced = null;
+
+        // 200 → Moto unique
+        if (!firstMotoAt200Given && spinNumber === 200) {
+            forced = FILE_MOTO;
+            firstMotoAt200Given = true;
+            return forced;
+        }
+
+        // Après 200 : tous les +260 → gros cycle
+        if (firstMotoAt200Given && spinNumber > 200 && ((spinNumber - 200) % 260 === 0)) {
+            forced = BIG_CYCLE[bigCycleIndex];
+            bigCycleIndex = (bigCycleIndex + 1) % BIG_CYCLE.length;
+            return forced;
+        }
+
+        // Tous les 70 → petit cadeau random
+        if (spinNumber % 70 === 0) {
+            const idx = Math.floor(Math.random() * SMALL_REWARDS.length);
+            forced = SMALL_REWARDS[idx];
+            return forced;
+        }
+
+        return null;
+    }
+
     // ===== SPIN =====
     function startSpin() {
         if (isSpinning) return;
         isSpinning = true;
 
-        // compteur de tours à chaque clic sur SPIN
         totalTours++;
-        toursDisplayEl.textContent = "Tours joués : " + totalTours + " · Depuis gros gain : 0";
+        topToursEl.textContent = "Tours joués : " + totalTours + " · Depuis gros gain : 0";
 
         clearFxLayer();
+
+        const forcedSymbol = getForcedSymbolForSpin(totalTours);
+        const isForced = !!forcedSymbol;
 
         const finalSymbols = [];
         const durations = [1500, 1800, 2100, 2400];
@@ -547,61 +623,63 @@
                 clearInterval(interval);
                 reel.classList.remove("spinning");
 
-                const finalGift = randomGift();
+                const finalGift = forcedSymbol || randomGift();
                 img.src = finalGift;
                 finalSymbols[index] = finalGift;
 
                 if (index === reels.length - 1) {
-                    // tous les rouleaux ont fini
-                    handleResult(finalSymbols);
+                    handleResult(finalSymbols, isForced);
                     isSpinning = false;
                 }
             }, durations[index]);
         });
     }
 
-    function clearFxLayer() {
-        fxLayer.innerHTML = "";
-    }
-
-    function handleResult(symbols) {
+    function handleResult(symbols, isForced) {
         const allSame = symbols.every(s => s === symbols[0]);
-
         if (!allSame) return;
 
         winnersCount++;
         winnersCountEl.textContent = winnersCount.toString();
         lastWinEl.textContent = "Dernier gain : " + symbols[0];
 
-        // gain normal
-        showWinBanner("WIN", "4 cadeaux identiques, bien joué !");
+        const symbol = symbols[0];
 
         // GIGA WIN = loup x4
-        if (symbols[0] === "IMG-20251120-WA0018.jpg") {
-            showWinBanner("GIGA WIN", "Loup x4 ! GIGA WIN !!!", "giga");
+        if (symbol === FILE_LOUP) {
+            showWinBanner("GIGA WIN", "Loup ×4 ! GIGA WIN !!!", "giga");
             triggerFireworks();
+            return;
         }
 
         // MEGA WIN = moto x4
-        if (symbols[0] === "IMG-20251120-WA0035.jpg") {
-            showWinBanner("MEGA WIN", "Moto x4 ! MEGA WIN !!!", "mega");
+        if (symbol === FILE_MOTO) {
+            showWinBanner("MEGA WIN", "Moto ×4 ! MEGA WIN !!!", "mega");
             triggerFireworks();
+            return;
+        }
+
+        // petits / gros forcés (non moto/loup)
+        if (isForced) {
+            showWinBanner("WIN GARANTI", "Cadeau garanti sur ce tour !", null);
+        } else {
+            showWinBanner("WIN", "4 cadeaux identiques, bien joué !", null);
         }
     }
 
     spinBtn.addEventListener("click", startSpin);
 
-    // Bouton "Ajouter (manuel)" -> ici juste un placeholder visuel
+    // Bouton "Ajouter (MANUEL)" – purement informatif pour toi
     document.getElementById("addManualBtn").addEventListener("click", () => {
         const pseudo = document.getElementById("pseudoInput").value || "Inconnu";
-        const value = parseInt(document.getElementById("valueInput").value || "0", 10);
+        const value  = parseInt(document.getElementById("valueInput").value || "0", 10);
         let tours = 0;
         if (value >= 49 && value <= 98) tours = 1;
         else if (value >= 99 && value <= 298) tours = 3;
         else if (value >= 299 && value <= 998) tours = 7;
         else if (value >= 999) tours = 70;
 
-        alert("Joueur ajouté (faux pour l'instant) : " + pseudo + " · " + tours + " tours.");
+        alert("Joueur ajouté (manuel) : " + pseudo + " · " + tours + " tours (à gérer toi-même).");
     });
 </script>
 </body>
